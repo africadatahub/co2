@@ -1,6 +1,6 @@
 # React Starter
 
-A basic React Starter project with Tailwind CSS and Parcel.
+A basic React Starter project with Parcel.
 
 ## Install
 
