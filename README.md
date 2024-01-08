@@ -1,6 +1,6 @@
-# React Starter
+# Climate Observer 2
 
-A basic React Starter project with Parcel.
+African Climate Observer V2
 
 ## Install
 
@@ -12,10 +12,4 @@ yarn
 
 ```
 yarn dev
-```
-
-## Useful starting packages
-
-```
-yarn add bootstrap react-bootstrap axios
 ```
