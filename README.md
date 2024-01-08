@@ -13,3 +13,9 @@ yarn
 ```
 yarn dev
 ```
+
+## Useful starting packages
+
+```
+yarn add bootstrap react-bootstrap axios
+```
