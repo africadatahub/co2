@@ -1,0 +1,91 @@
+$primary: #094151;
+$control-grey: #DFE6E8;
+$theme-colors: ( 
+    "primary": $primary,
+    "control-grey": $control-grey,
+    "warning": #ffc107,
+    "light-grey": #f6f6f6,
+    "adh-orange": #ff6f47,
+    "adh-brown": #c2b59b,
+    "adh-red": #e51c23,
+);
+$border-radius: 5px;
+
+@import "bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+html {
+    font-size: 0.85rem;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: $primary;
+    min-height: 100vh;
+    position: relative;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+
+/* Form */
+
+.form-control, .form-select {
+    background-color: #f2f2f2;
+    border: none;
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+.search-results {
+    position: absolute;
+    z-index: 9999;
+    background: #fff;
+}
+
+.search-results ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.search-results li {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.search-results li:hover {
+    background: #f2f2f2;
+}
+
+.section-jump-btn {
+    display: inline-block;
+    margin-right: 1em;
+    background-color: #f2f2f2;
+    color: #000;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: #e6e6e6;
+    }
+}
+
+.co2-header {
+    padding: 2em 0;
+}
+
+.co2-section {
+    background-color: #f2f2f2;
+    padding: 2em 0;
+
+    .container {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
