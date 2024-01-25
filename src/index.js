@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { AppProvider } from './AppProvider';
-import { Co2 } from './Co2';
+import Co2 from './Co2';
 
 
 function App() {
