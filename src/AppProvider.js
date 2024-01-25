@@ -35,7 +35,7 @@ export const AppProvider = ({ children }) => {
     );
 
 
-    changeDateRange = (type, value) => {
+    const changeDateRange = (type, value) => {
 
         const params = new URLSearchParams(window.location.search);
   
@@ -65,7 +65,7 @@ export const AppProvider = ({ children }) => {
 
     }
 
-    mergeClimateData = (baseset, temperatures, indicator) => {
+    const mergeClimateData = (baseset, temperatures, indicator) => {
 
         let t = temperatures.find(t => {
             return parseInt(t.time) === parseInt(baseset.time) && parseInt(t.month_number) === parseInt(baseset.month_number);
