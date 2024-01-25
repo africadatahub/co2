@@ -21,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-export default TemperatureAnomalyChart = () => {
+const TemperatureAnomalyChart = () => {
 
     const { cities, countries, city, country, datasets, dateRange } = useContext(AppContext);
 
@@ -183,3 +183,5 @@ export default TemperatureAnomalyChart = () => {
     )
 
 }
+
+export default TemperatureAnomalyChart;

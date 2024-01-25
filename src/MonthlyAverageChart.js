@@ -21,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-export default MonthlyAverageChart = () => {
+const MonthlyAverageChart = () => {
 
     const { cities, countries, city, country, datasets, dateRange } = useContext(AppContext);
 
@@ -165,3 +165,5 @@ export default MonthlyAverageChart = () => {
     )
 
 }
+
+export default MonthlyAverageChart;

@@ -28,7 +28,7 @@ import TemperatureAnomalyChart from './TemperatureAnomalyChart';
 
 import './app.scss';
 
-export const Co2 = () => {
+const Co2 = () => {
 
     const { city, country, dateRange, changeDateRange } = useContext(AppContext);
 
@@ -319,3 +319,5 @@ export const Co2 = () => {
     )
 
 };
+
+export default Co2;

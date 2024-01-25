@@ -21,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-export default MonthlyBreakdownChart = () => {
+const MonthlyBreakdownChart = () => {
 
     const { cities, countries, city, country, datasets, dateRange } = useContext(AppContext);
 
@@ -172,3 +172,5 @@ export default MonthlyBreakdownChart = () => {
     )
 
 }
+
+export default MonthlyBreakdownChart;

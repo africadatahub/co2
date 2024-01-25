@@ -20,7 +20,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-export default AnnualTemperaturetable = () => {
+const AnnualTemperaturetable = () => {
 
     const { cities, countries, city, country, datasets, dateRange } = useContext(AppContext);
 
@@ -155,3 +155,5 @@ export default AnnualTemperaturetable = () => {
     )
 
 }
+
+export default AnnualTemperaturetable;
