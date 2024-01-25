@@ -1,13 +1,25 @@
-import React from 'react';
+import { useContext } from 'react';
+import { AppContext } from './AppContext';
+
 import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 
-const LocationInfoPanel = ({ cities, city, position, country, address }) => {
+const LocationInfoPanel = () => {
+
+    const { cities, city, country, address } = useContext(AppContext);
+
 
     return (
         <>
-            <h2>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</h2>
+            
+            {
+            country ? 
+                <h2><ReactCountryFlag countryCode={getCountryISO2(country)} svg /><span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' },{country}</span></h2> : 
+            address ?
+                <h2><ReactCountryFlag style={{position: 'relative', top: '-1px'}} countryCode={address.address.country_code} svg /><span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {address.address.country}</span></h2> : ''
+            }
+
             <br />
             
             <p>
@@ -20,12 +32,7 @@ const LocationInfoPanel = ({ cities, city, position, country, address }) => {
 
 
             
-            {
-            country ? 
-                <><ReactCountryFlag countryCode={getCountryISO2(country)} svg /><span>{country}</span></> : 
-            address ?
-                <><ReactCountryFlag style={{position: 'relative', top: '-1px'}} countryCode={address.address.country_code} svg /><span>{address.address.country}</span></> : ''
-            }
+            
         </>
     )
 }

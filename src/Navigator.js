@@ -1,8 +1,8 @@
-import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import {useEffect, useContext} from 'react';
+
+import { AppContext } from './AppContext';
+
+
 import { MapContainer, TileLayer, Tooltip, CircleMarker, Rectangle, Marker, Popup, useMap } from 'react-leaflet';
 
 
@@ -11,14 +11,16 @@ import LeafletGrid from './LeafletGrid';
 import 'leaflet/dist/leaflet.css';
 
 
-const Navigator = ({ countries, cities, city, position, setPosition, country, address, interacted }) => {
+const Navigator = () => {
 
-    React.useEffect(() => {
-        console.log(position);
+    const { position, address, interacted } = useContext(AppContext);
+
+
+    useEffect(() => {
+        
     }, [position]);
 
-    React.useEffect(() => {
-        console.log(address);
+    useEffect(() => {
     }, [address]);
 
     const changePosition = (latlng) => {
@@ -36,7 +38,8 @@ const Navigator = ({ countries, cities, city, position, setPosition, country, ad
                         url="https://tile.openstreetmap.de/{z}/{x}/{y}.png"
                     />
                     <LeafletGrid position={position} interacted={interacted} setPosition={changePosition}/>
-                    
+
+
                 </MapContainer>
             </div>
         </>

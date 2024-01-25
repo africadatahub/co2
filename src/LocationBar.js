@@ -1,4 +1,7 @@
-import React from 'react';
+import { useEffect, useContext, useState, useRef } from 'react';
+import { AppContext } from './AppContext';
+
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -10,19 +13,18 @@ import getCountryISO2 from 'country-iso-3-to-2';
 
 
 
+const LocationBar = () => {
+
+    const { cities, countries, city, address } = useContext(AppContext);
+
+    const [searchResults, setSearchResults] = useState([]);
+
+    const searchRef = useRef(null);
 
 
-
-const LocationBar = ({countries, cities, city, position, address}) => {
-
-    const [searchResults, setSearchResults] = React.useState([]);
-
-    const searchRef = React.useRef(null);
-
-
-    React.useEffect(() => {
+    useEffect(() => {
         if(address != '' && address != undefined) {
-            searchRef.current.value = address;
+            searchRef.current.value = address.display_name;
         }
     }, [address]);
   
@@ -70,7 +72,7 @@ const LocationBar = ({countries, cities, city, position, address}) => {
     }
 
     const changeLocation = (type, value) => {
-        if(value != 'location') {
+        if(value != 'location' && value != '') {
             if(type == 'city') {
                 document.location.search = '?city=' + value;
             } else {
@@ -95,7 +97,7 @@ const LocationBar = ({countries, cities, city, position, address}) => {
                     </Col>
                     <Col>
                         <Form.Select onChange={(e) =>changeLocation('city', e.target.value)} value={city} className="py-2">
-                            <option>Choose a city</option>
+                            <option value=''>Choose a city</option>
                             {
                                 // cities sort
                                 cities.sort((a, b) => {

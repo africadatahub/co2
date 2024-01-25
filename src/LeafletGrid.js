@@ -1,19 +1,25 @@
-import React from "react";
+import { useEffect, useContext } from "react";
+import { AppContext } from "./AppContext";
+
+
 import { useLeafletContext } from "@react-leaflet/core";
-import { useEffect } from "react";
 import * as L from "leaflet";
 
-const LeafletGrid = ({position, setPosition, interacted}) => {
+const LeafletGrid = () => {
+
+    const { position, setPosition, interacted } = useContext(AppContext);
+
+
     const context = useLeafletContext();
     const container = context.map;
-    const tileSize = 1; // Change this value to your desired tile size in degrees
+    const tileSize = 1; 
     
     const changePosition = (latlng) => {
         setPosition(latlng);
     }
    
 
-    React.useEffect(() => {
+    useEffect(() => {
         if(interacted) {
             highlightTile({lat:position[0],lng:position[1]}, false);
         }
@@ -85,7 +91,8 @@ const LeafletGrid = ({position, setPosition, interacted}) => {
         L.rectangle(bounds, { color: 'rgb(255, 122, 0, 1)', weight: 2 }).addTo(container);
 
         
-        console.log("Middle point: " + (gridY + tileSize / 2) + ", " + (gridX + tileSize / 2));
+        let middlePoint = [gridY + tileSize / 2, gridX + tileSize / 2];
+ 
 
         if(changeLocation) {
             // container.panTo(new L.LatLng(gridY + tileSize / 2, gridX + tileSize / 2));

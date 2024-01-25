@@ -70,6 +70,17 @@ h1 {
     text-decoration: none;
     border-radius: 5px;
 
+    &.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+
+        &:hover {
+            background-color: #f2f2f2;
+        }
+    }
+
+
+
     &:hover {
         background-color: #e6e6e6;
     }
@@ -87,5 +98,138 @@ h1 {
         padding-left: 0 !important;
         padding-right: 0 !important;
     }
+
+    .section-info {
+        padding-top: 1.5em;
+
+        h4, h5 {
+            font-weight: 800;
+            margin-bottom: 1em;
+        }
+
+        p {
+            margin-bottom: 2em;
+        }
+
+        .faq {
+
+            .card {
+                border: none;
+                margin-bottom: 0.5em;
+
+                .card-header {
+                    font-weight: 800;
+                    cursor: pointer;
+
+                    &:hover {
+                        background: #f2f2f2;
+                    }
+                }
+
+            }
+        }
+
+    }
 }
+
+/*** Charts ***/
+
+.chart-wrapper {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(17, 65, 81, 0.2);
+    border-radius: 0 0 5px 5px;
+
+    header {
+        background: #114151;
+        color: #fff;
+        padding: 1em;
+        border-radius: 5px 5px 0 0;
+
+        h3 {
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+
+            .location-highlight {
+                display: inline-block;
+                padding: 0.25em 0.5em;
+                background: rgba(255,255,255,0.2);
+                border-radius: 5px;
+            }
+        }
+
+    }
+
+    .chart-controls {
+        background: rgba(17, 65, 81, 0.04);
+        padding: 1em;
+
+        .form-select {
+            background-color: #e7ecee;
+        }
+
+        .btn-primary {
+            background: rgba(17, 65, 81, 0.04);
+            color: rgba(17, 65, 81, 1);
+            border-color: rgba(17, 65, 81, 0.04);
+
+            &:hover {
+                background: rgba(17, 65, 81, 0.1);
+                border-color: rgba(17, 65, 81, 0.1);
+            }
+        }
+
+    }
+
+    .chart-container {
+        padding: 2em 0;
+
+        .xAxis .recharts-cartesian-axis-tick{
+            transform: translateY(18px);
+            
+        }
+
+        .xAxis .recharts-cartesian-axis-tick-line {
+            transform: translateY(-18px);
+        }
+
+        .xAxis .recharts-cartesian-axis-tick-value {
+            font-size: 11px;
+            margin-bottom: 5px;
+            
+            
+        }
+
+        .custom-tooltip {
+            background: rgba(255,255,255,0.8);
+            padding: 1em !important;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(17, 65, 81, 0.2);
+            font-size: 0.8rem;
+            width: 200px;
+
+            .tooltip-date {
+                font-size: 1rem;
+                font-weight: 600;
+            }
+
+            .tooltip-item-name {
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .tooltip-item-value {
+                text-align: right;
+            }
+
+        }
+
+    }
+
+    footer {
+        border-top: 1px solid rgba(17, 65, 81, 0.1);
+        padding: 1em;
+    }
+}
+
 
