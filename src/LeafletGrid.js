@@ -72,7 +72,7 @@ const LeafletGrid = () => {
         highlightTile(event.latlng, true);
     });
 
-    highlightTile = (latlng, changeLocation) => {
+    const highlightTile = (latlng, changeLocation) => {
         var clickedLatLng = latlng;
 
         // Calculate the grid square corresponding to the clicked point
