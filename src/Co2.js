@@ -32,7 +32,7 @@ const Co2 = () => {
 
     const { city, country, dateRange, changeDateRange } = useContext(AppContext);
 
-    ContextAwareToggle = ({ children, eventKey, callback }) => {
+    const ContextAwareToggle = ({ children, eventKey, callback }) => {
         const { activeEventKey } = useContext(AccordionContext);
 
         const decoratedOnClick = useAccordionButton(
