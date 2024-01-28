@@ -8,7 +8,7 @@ import * as countries from './data/countries.json';
 
 export const AppProvider = ({ children }) => {
 
-    const [dateRange, setDateRange] = useState([2018, 2022]);
+    const [dateRange, setDateRange] = useState([2012, 2022]);
 	const [position, setPosition] = useState([-1.2920659, 36.8219462]);
 	const [city, setCity] = useState('');
 	const [country, setCountry] = useState('');
@@ -33,6 +33,40 @@ export const AppProvider = ({ children }) => {
             }
         }
     );
+    const [annualAvgTemperature, setAnnualAvgTemperature] = useState(null);
+    const [annualAvgPrecipitation, setAnnualAvgPrecipitation] = useState(null);
+    const [maxPrecipitation, setMaxPrecipitation] = useState(null);
+    const [precipDatasets, setPrecipDatasets] = useState(
+        {
+            gpcc_precipitation: 'f308c5a0-d590-49c8-b673-ad8a5bb489f2',
+            gpcc_precipitation_avg: 'b159ff95-c3d0-461d-a95f-0afd5d2c20ed',
+            data: []
+        }
+    );
+    const temperatureScale = [
+        {min: -Infinity, max: -1, color: '#08306b'},
+        {min: -1, max: -0.5, color: '#6baed6'},
+        {min: -0.5, max: 0, color: '#deebf7'},
+        {min: 0, max: 0.5, color: '#fee0d2'},
+        {min: 0.5, max: 1, color: '#fdcc8a'},
+        {min: 1, max: 1.5, color: '#fc9272'},
+        {min: 1.5, max: Infinity, color: '#67000d'}
+    ]
+
+    const getAnomalyColor = (anomaly) => {
+
+        if (anomaly < -1) return '#08306b';
+        if (anomaly < -0.5) return '#6baed6'; 
+        if (anomaly < 0) return '#deebf7';
+        if (anomaly < 0.5) return '#fee0d2';
+        if (anomaly < 1) return '#fdcc8a';
+        if (anomaly < 1.5) return '#fc9272';
+      
+        return '#67000d';
+      
+    }
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
     const changeDateRange = (type, value) => {
@@ -212,6 +246,93 @@ export const AppProvider = ({ children }) => {
 
     }
 
+    async function getPrecipData() {
+
+        const promiseArr = [];
+
+        let min = 0;
+        let max = 0;
+
+        ['gpcc_precipitation', 'gpcc_precipitation_avg'].forEach(dataset => {
+
+            let ds = precipDatasets[dataset];
+
+            let query = dataset == 'gpcc_precipitation' ? 'https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ds + '"%20WHERE%20latitude%20%3E%3D%20' + (position[0] - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (position[0] + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (position[1] - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (position[1] + 0.5) + '%20AND%20year%20%3E%3D%20' + dateRange[0] + '%20AND%20year%20%3C%3D%20' + (dateRange[1] + 1) + '%20' : 'https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ds + '"%20WHERE%20latitude%20%3E%3D%20' + (position[0] - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (position[0] + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (position[1] - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (position[1] + 0.5) + '%20'
+            
+            promiseArr.push(
+            axios.get(query, {
+                headers: {
+                    "Authorization": process.env.CKAN
+                }
+            })
+                .then(response => {
+                    let data = response.data.result.records;
+                    
+                    data.forEach(record => {
+                        if(record.precip > max) max = record.precip;
+                    });
+                    
+                    data.forEach(record => {
+                        record.year = parseInt(record.year);
+                        record.precip = parseFloat(record.precip);
+                        record.month_number = parseInt(record.month_number);
+                        record.precip_scale = (record.precip - min) / (max - min);
+                    })
+
+                    // sort data by year and then month
+                    data.sort((a, b) => {
+
+                        const aYear = parseInt(a.year);
+                        const bYear = parseInt(b.year);
+                      
+                        const aMonth = parseInt(a.month_number); 
+                        const bMonth = parseInt(b.month_number);
+                      
+                        if(aYear < bYear) return -1;
+                        if(aYear > bYear) return 1;
+                        
+                        if(aMonth < bMonth) return -1; 
+                        if(aMonth > bMonth) return 1;
+                      
+                        return 0;
+                      
+                    });
+                    
+                    return data;
+
+
+                })
+                .catch(e => console.log(e))
+            );
+
+        });
+
+        const [
+            gpccPrecipitationResponse,
+            gpccPrecipitationAverageResponse,
+        ] = await Promise.all(promiseArr);
+
+        const gpccPrecipitationData = await gpccPrecipitationResponse;
+        const gpccPrecipitationAverageData = await gpccPrecipitationAverageResponse;
+
+        gpccPrecipitationData.forEach(record => {
+                
+            let avg = gpccPrecipitationAverageData.find(r => r.month_number == record.month_number);
+
+            if(avg == undefined) {
+                record.precip_avg = null;
+            } else {
+                record.precip_avg = avg.precip;
+            }
+                
+        });
+
+
+        setPrecipDatasets({...precipDatasets, data: gpccPrecipitationData});
+        setMaxPrecipitation(max);
+        
+    }
+
   
 
     useEffect(() => {
@@ -282,6 +403,58 @@ export const AppProvider = ({ children }) => {
 
     }, []);
 
+    const getAnnualAvgTemperature = () => {
+            
+        let annualAvg = 0;
+
+        datasets.data.forEach(record => {
+            if(record.time == '2021') {
+                annualAvg += parseFloat(record.avg_temperature);
+            }
+        });
+
+        annualAvg = annualAvg / 12;
+
+        return annualAvg;
+
+    
+    }
+
+    const getAnnualPrecipitation = () => {
+
+        let annualAvg = 0;
+
+        precipDatasets.data.forEach(record => {
+            if(record.year == 2020) {
+                annualAvg += parseFloat(record.precip);
+            }
+        });
+
+        annualAvg = annualAvg / 12;
+
+        return annualAvg;
+
+    }
+    
+
+    useEffect(() => {
+
+        if(datasets.data.length > 0) {
+            setAnnualAvgTemperature(getAnnualAvgTemperature());
+        }
+
+
+    }, [datasets]);
+
+    useEffect(() => {
+
+        if(precipDatasets.data.length > 0) {
+            setAnnualAvgPrecipitation(getAnnualPrecipitation());
+        }
+
+    }, [precipDatasets]);
+
+
     useEffect(() => {
         if (city != '' && city != 'location') {
             let city_data = cities.filter(c => c.city.replaceAll(' ', '-').toLowerCase() == city)[0];
@@ -300,6 +473,7 @@ export const AppProvider = ({ children }) => {
 
     useEffect(() => {
         getTempData();
+        getPrecipData();
 
     },[position])
     
@@ -320,7 +494,14 @@ export const AppProvider = ({ children }) => {
         interacted,
         setInteracted,
         changeDateRange,
-        datasets
+        datasets,
+        precipDatasets,
+        temperatureScale,
+        getAnomalyColor,
+        monthNames,
+        annualAvgTemperature,
+        annualAvgPrecipitation,
+        maxPrecipitation
     };
 
     return (

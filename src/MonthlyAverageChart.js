@@ -23,33 +23,44 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyAverageChart = () => {
 
-    const { cities, countries, city, country, datasets, dateRange } = useContext(AppContext);
+    const { cities, countries, city, country, datasets, dateRange, monthNames } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
-    const [tickCount, setTickCount] = useState(0);
-
-   
-
+    const [showMaxMin, setShowMaxMin] = useState(true);
+    const [showClimatology, setShowClimatology] = useState(true);
 
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{label}</div>
-                    <Row>
-                        <Col className="tooltip-item-name">Maximum Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.max_temperature).toFixed(2)}&deg;</Col>
-                    </Row>
-                    <Row>
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]} {payload[0].payload.time}</div>
+                    {
+                        showMaxMin &&
+                        <Row style={{color: '#fca5a5'}}>
+                            <Col className="tooltip-item-name">Maximum Temperature</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.max_temperature).toFixed(2)}&deg;</Col>
+                        </Row>
+                    }
+                    <Row style={{color: '#bd00ff'}}>
                         <Col className="tooltip-item-name">Average Temperature</Col>
                         <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_temperature).toFixed(2)}&deg;</Col>
                     </Row>
-                    <Row>
-                        <Col className="tooltip-item-name">Minumum Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.min_temperature).toFixed(2)}&deg;</Col>
-                    </Row>
+                    {
+                        showMaxMin &&
+                        <Row style={{color: '#a0c4fd'}}>
+                            <Col className="tooltip-item-name">Minumum Temperature</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.min_temperature).toFixed(2)}&deg;</Col>
+                        </Row>
+                    }
+                    {
+                        showClimatology &&
+                        <Row style={{color: '#ed8f38'}}>
+                            <Col className="tooltip-item-name">Historical Average</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_climatology).toFixed(2)}&deg;</Col>
+                        </Row>
+                    }   
                 </Container>
             );
         }
@@ -59,10 +70,9 @@ const MonthlyAverageChart = () => {
 
     useEffect(() => {
 
-        const uniqueTime = [...new Set(datasets.data.map(item => item.time))];
-
+       
         setChartData(datasets.data);
-        setTickCount(uniqueTime.length);
+        
     
     }, [datasets]);
 
@@ -73,7 +83,7 @@ const MonthlyAverageChart = () => {
                 {<h3>
                     {
                         <>Average Monthly Temperature in <span className="location-highlight">
-                                <ReactCountryFlag countryCode={getCountryISO2(country)} svg /> 
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
                                 <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
@@ -91,11 +101,9 @@ const MonthlyAverageChart = () => {
                                     <Dropdown.Toggle>
                                         <Icon path={mdiCog} size={1} /> View Options
                                     </Dropdown.Toggle>
-
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => setShowClimatology(!showClimatology)}><input type="checkbox" checked={showClimatology}/> Historical Avg</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => setShowMaxMin(!showMaxMin)}><input type="checkbox" checked={showMaxMin}/> Max/Min Range</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -106,15 +114,11 @@ const MonthlyAverageChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            <Col xs="auto">
-                                <Button className="chart-control-btn"><Icon path={mdiShareVariant} size={1} /> Share</Button>
-                            </Col>     
                         </Row>
                     </Col>
                 </Row>                
@@ -139,12 +143,17 @@ const MonthlyAverageChart = () => {
                             <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey="date"  angle={-90} tickCount={tickCount}/>
+                    <XAxis dataKey="time"  angle={-90} interval={11}/>
                     <YAxis/>
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
                     <Line type="linear" dataKey="avg_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="2"/>
-                    <Area type="linear" dataKey="maxmin_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
+                    {
+                        showMaxMin && <Area type="linear" dataKey="maxmin_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
+                    }
+                    {
+                        showClimatology && <Line type="linear" dataKey="avg_climatology" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                    }
                 </ComposedChart>
                 </ResponsiveContainer>
             </div>
@@ -152,10 +161,33 @@ const MonthlyAverageChart = () => {
             <footer>
                 <Row>
                     <Col>
-                        Legend
+                        <div className="legend-item">
+                            <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
+                            <div className="legend-item-label">Avg Temp</div>
+                        </div>
+                        {
+                            showMaxMin &&
+                            <>
+                                <div className="legend-item">
+                                    <div className="legend-item-color" style={{backgroundColor: '#fca5a5'}}></div>
+                                    <div className="legend-item-label">Max Temp</div>
+                                </div>
+                                <div className="legend-item">
+                                    <div className="legend-item-color" style={{backgroundColor: '#a0c4fd'}}></div>
+                                    <div className="legend-item-label">Min Temp</div>
+                                </div>
+                            </>
+                        }
+                        {
+                            showClimatology &&
+                            <div className="legend-item">
+                                <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
+                                <div className="legend-item-label">Historical Avg</div>
+                            </div>
+                        }
                     </Col>
-                    <Col>
-                        Source
+                    <Col xs="auto">
+                        Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
                     </Col>
                 </Row>
             </footer>

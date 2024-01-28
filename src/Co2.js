@@ -11,6 +11,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import AccordionContext from 'react-bootstrap/AccordionContext';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import Card from 'react-bootstrap/Card';
+import Navbar from 'react-bootstrap/Navbar';
 
 import { Icon } from '@mdi/react';
 import { mdiThermometer, mdiWeatherPouring, mdiFactory, mdiLandPlots } from '@mdi/js';
@@ -23,7 +24,9 @@ import MonthlyAverageChart from './MonthlyAverageChart';
 import MonthlyBreakdownChart from './MonthlyBreakdownChart';
 import AnnualTemperatureTable from './AnnualTemperatureTable';
 import TemperatureAnomalyChart from './TemperatureAnomalyChart';
-
+import MonthlyPrecipitationChart from './MonthlyPrecipitationChart';
+import MonthlyPrecipBreakdownChart from './MonthlyPrecipBreakdownChart';
+import AnnualPrecipTable from './AnnualPrecipTable';
 
 
 import './app.scss';
@@ -31,6 +34,30 @@ import './app.scss';
 const Co2 = () => {
 
     const { city, country, dateRange, changeDateRange } = useContext(AppContext);
+
+
+    useEffect(() => {
+        const navbar = document.querySelector('.navbar');
+
+        const handleScroll = () => {
+            const navbarTop = navbar.getBoundingClientRect().top;
+
+            if (navbarTop === 0) {
+                navbar.classList.add('sticking');
+            } else {
+                navbar.classList.remove('sticking');
+            }
+           
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, []);
+
+
 
     const ContextAwareToggle = ({ children, eventKey, callback }) => {
         const { activeEventKey } = useContext(AccordionContext);
@@ -43,13 +70,6 @@ const Co2 = () => {
         const isCurrentEventKey = activeEventKey === eventKey;
 
         return (
-            // <button
-            //     type="button"
-            //     style={{ backgroundColor: isCurrentEventKey ? 'red' : 'blue' }}
-            //     onClick={decoratedOnClick}
-            // >
-            //     {children}
-            // </button>
             <Row onClick={decoratedOnClick}>
                 <Col>
                     {children}
@@ -66,7 +86,7 @@ const Co2 = () => {
     
 
     return (
-        <>
+        <>  
             <Container className="py-4">
 
                 <LocationBar />
@@ -82,51 +102,59 @@ const Co2 = () => {
                     </Row>
                 </div>
 
-
-                <Row className="justify-content-between">
-                    <Col xs="auto">
-                        <Row>
-                            <Col xs="auto" className="pt-2"><Form.Label>Jump to section:</Form.Label></Col>
-                            <Col>
-                                <a href="#temperature" className="section-jump-btn"><Icon path={mdiThermometer} size={1} /> Temperature</a>
-                                <a href="#" className="section-jump-btn disabled"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a>
-                                <a href="#" className="section-jump-btn disabled"><Icon path={mdiFactory} size={1} />CO<sub>2</sub> Exmissions</a>
-                                <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a>
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col xs="auto">
-                        <Row>
-                            <Col xs="auto" className="pt-2">
-                                <Form.Label>Adjust date range:</Form.Label>
-                            </Col>
-                            <Col xs="auto">
-                                <Form.Select aria-label="Default select example" value={dateRange[0]} onChange={(e) => changeDateRange('start', e.target.value)}>
-                                    {
-                                        [...Array(2023 - 1993 + 1)].map((_, i) => {
-                                            let year = 1993 + i;
-                                            return <option key={year} value={year}>{year}</option>
-                                        })
-                                    }
-                                </Form.Select>
-                            </Col>
-                            <Col xs="auto" className="pt-2"><Form.Label>TO</Form.Label></Col>
-                            <Col xs="auto">
-                                <Form.Select aria-label="Default select example" value={dateRange[1]} onChange={(e) => changeDateRange('end', e.target.value)}>
-                                    {
-                                        [...Array(2023 - 1993 + 1)].map((_, i) => {
-                                            let year = 1993 + i;
-                                            return <option key={year} value={year}>{year}</option>
-                                        })
-                                    }
-                                </Form.Select>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-
             </Container>
 
+                <Navbar sticky="top">
+
+                    <Container className="justify-content-between">
+                
+                        <Row>
+                            <Col xs="auto">
+                                <Row>
+                                    <Col xs="auto" className="pt-2"><Form.Label>Jump to section:</Form.Label></Col>
+                                    <Col>
+                                        <a href="#temperature" className="section-jump-btn"><Icon path={mdiThermometer} size={1} /> Temperature</a>
+                                        <a href="#rainfall" className="section-jump-btn"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a>
+                                        <a href="#" className="section-jump-btn disabled"><Icon path={mdiFactory} size={1} />CO<sub>2</sub> Emissions</a>
+                                        <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col xs="auto">
+                                <Row>
+                                    <Col xs="auto" className="pt-2">
+                                        <Form.Label>Adjust date range:</Form.Label>
+                                    </Col>
+                                    <Col xs="auto">
+                                        <Form.Select aria-label="Default select example" value={dateRange[0]} onChange={(e) => changeDateRange('start', e.target.value)}>
+                                            {
+                                                [...Array(2023 - 1993 + 1)].map((_, i) => {
+                                                    let year = 1993 + i;
+                                                    return <option key={year} value={year}>{year}</option>
+                                                })
+                                            }
+                                        </Form.Select>
+                                    </Col>
+                                    <Col xs="auto" className="pt-2"><Form.Label>TO</Form.Label></Col>
+                                    <Col xs="auto">
+                                        <Form.Select aria-label="Default select example" value={dateRange[1]} onChange={(e) => changeDateRange('end', e.target.value)}>
+                                            {
+                                                [...Array(2023 - 1993 + 1)].map((_, i) => {
+                                                    let year = 1993 + i;
+                                                    return <option key={year} value={year}>{year}</option>
+                                                })
+                                            }
+                                        </Form.Select>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+
+                    </Container>
+
+                </Navbar>
+
+            
             <Container className="co2-header">
                 <header>
                     <h3><a name="temperature"><Icon path={mdiThermometer} size={1} /> Temperature</a></h3>
@@ -201,7 +229,7 @@ const Co2 = () => {
                                         <ContextAwareToggle eventKey="1">How can I use this data?</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="1">
-                                        <Card.Body>This chart would be useful to include in a story to show a pattern of increasing temperatures over time, since it is comparing like for like. We’ve included a trend line to show change over time, and a line marking the historical average temperature.</Card.Body>
+                                        <Card.Body>This chart would be useful to include in a story to show a pattern of increasing temperatures over time, since it is comparing like for like. We've included a trend line to show change over time, and a line marking the historical average temperature.</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                                 <Card>
@@ -253,7 +281,7 @@ const Co2 = () => {
                 </Container>
             </Container>
 
-            {/* <Container className="co2-header">
+            <Container className="co2-header">
                 <header>
                     <h3><a name="rainfall"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a></h3>
                 </header>
@@ -262,19 +290,118 @@ const Co2 = () => {
             <Container fluid className="co2-section">
                 <Container>
                     <Row>
-                        <Col md={4}>
-                            <h4>Lorem ipsum</h4>
+                        <Col md={4} className="section-info">
+                            <h4>Monthly Actual Rainfall</h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc.
+                                Our rainfall data comes from the <a href="https://gpcc.dwd.de/" target="_blank">Global Precipitation Climatology Centre (GPCC)</a>. As with the temperature data above, this data is modelled at the global scale to estimate rainfall at any given moment in time. It is measured in millimetres of rain per month (mm).
                             </p>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">How does the heatmap work?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>This graphic shows months on the x-axis and years on the y-axis. Wetter months are a darker blue in colour. It gives you a high level overview of rainfall patterns in a region - which is the rainy months, for example? - and years that may be of interest.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="1">Can I use this data? </ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="1">
+                                        <Card.Body>You certainly can. Our full dataset is downloadable here, and you can share this graphic by clicking the download or share buttons.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="2">Should I use this graphic in a story?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="2">
+                                        <Card.Body>Probably not. Again, this is a very high level view of what is happening relating to rainfall. It requires some effort to see details. Readers may be better served with a more simple visualisation, like below.
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </Col>
                         <Col>
+                            <MonthlyPrecipitationChart />
                         </Col>
                     </Row>
                 </Container>
             </Container>
 
-            <Container className="co2-header">
+            <Container fluid className="co2-section">
+                <Container>
+                    <Row>
+                        <Col md={4} className="section-info">
+                            <h4>Monthly Rainfall Breakdown</h4>
+                            <p>
+                                This chart also shows the GPCC data for your location, but in this case we have illustrated it as a line chart showing a single month over time. 
+                            </p>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">Why is this a better chart for storytelling?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>It's likely that most of your reporting will be around specific incidents or time periods. Using a line chart helps readers to focus on details, such as whether this June was unusually wet, or if an unexpected storm really was an anomaly.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="1">Can I change the timeframe?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="1">
+                                        <Card.Body>You can, and you should before including this in your work. Sometimes you may want to show all the data - to demonstrate changing seasonal patterns. But to illustrate that this month was unusually wet you'll probably want a more focussed image with the historical average (which we've also included).
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="2">Where is the wettest place in Africa? </ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="2">
+                                        <Card.Body>Glad you asked. That honour goes to San Antonio de Ureca, in Equatorial  Guinea. It receives a <a href="https://www.africadatahub.org/data-resources/climate-observer?position=3.2553153,8.584609" target="_blank">staggering 10 450mm of rain a year</a>. That's almost 20 times more rain than London!
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
+                        </Col>
+                        <Col>
+                            <MonthlyPrecipBreakdownChart />
+                        </Col>
+                    </Row>
+                </Container>
+            </Container>
+
+            <Container fluid className="co2-section">
+                <Container>
+                    <Row>
+                        <Col md={4} className="section-info">
+                            <h4>Annual Rainfall</h4>
+                            <p>
+                             We've also included the rainfall data as an interactive table for you, which shows the difference between a particular month and the historical average. 
+                            </p>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">Wha's the driest place in sub-Saharan Africa?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>The Namib desert in Namibia is the driest place in sub-Saharan Africa, and it's reckoned that some parts of the Namib receive less than 2mm of rain a year.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                
+                            </Accordion>
+                        </Col>
+                        <Col>
+                            <AnnualPrecipTable />
+                        </Col>
+                    </Row>
+                </Container>
+            </Container>
+
+            {/* <Container className="co2-header">
                 <header>
                     <h3><a name="emissions"><Icon path={mdiFactory} size={1} /> Emissions</a></h3>
                 </header>

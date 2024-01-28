@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
 
@@ -9,7 +9,7 @@ const LeafletGrid = () => {
 
     const { position, setPosition, interacted } = useContext(AppContext);
 
-
+    const [drawn, setDrawn] = useState(false);
     const context = useLeafletContext();
     const container = context.map;
     const tileSize = 1; 
@@ -25,6 +25,7 @@ const LeafletGrid = () => {
         }
     }, [position]);
 
+    
     var tiles = new L.GridLayer();
     tiles.setZIndex(10000);
     tiles.setOpacity(1);
@@ -65,7 +66,10 @@ const LeafletGrid = () => {
         return tile;
     };
 
-    tiles.addTo(container);
+    if(!drawn) {
+        tiles.addTo(container);
+        setDrawn(true);
+    }
 
     // Event listener for map click
     container.on('click', (event) => {

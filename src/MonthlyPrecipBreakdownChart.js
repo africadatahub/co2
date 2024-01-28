@@ -18,12 +18,9 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
+const MonthlyPrecipBreakdownChart = () => {
 
-
-
-const MonthlyBreakdownChart = () => {
-
-    const { cities, countries, city, country, datasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, city, country, precipDatasets, dateRange, monthNames } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -37,12 +34,12 @@ const MonthlyBreakdownChart = () => {
                 <Container className="custom-tooltip">
                     <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
                     <Row style={{color: "#bd00ff"}}>
-                        <Col className="tooltip-item-name">Average Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_temperature).toFixed(2)}&deg;</Col>
+                        <Col className="tooltip-item-name">Rainfall</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip).toFixed(2)}mm</Col>
                     </Row>
                     <Row style={{color: "#ed8f38"}}>
                         <Col className="tooltip-item-name">Historical Average</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_climatology).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip_avg).toFixed(2)}mm</Col>
                     </Row>
                 </Container>
             );
@@ -51,7 +48,7 @@ const MonthlyBreakdownChart = () => {
 
     const changeMonthlyBreakdown = (month) => {
        
-        let monthData = datasets.data.filter(item => item.month_number == parseInt(month));
+        let monthData = precipDatasets.data.filter(item => parseInt(item.month_number) == (parseInt(month) + 1));
 
         setChartData(monthData);
         setSelectedMonth(month);
@@ -62,7 +59,7 @@ const MonthlyBreakdownChart = () => {
 
     useEffect(() => {
         changeMonthlyBreakdown(selectedMonth);
-    }, [datasets]);
+    }, [precipDatasets]);
 
     return (
         <section className="chart-wrapper">
@@ -70,8 +67,8 @@ const MonthlyBreakdownChart = () => {
             <header>
                 {<h3>
                     {
-                        <>Monthly Temperature Breakdown in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div>
+                        <>Monthly Precipitation Breakdown in <span className="location-highlight">
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
                                 <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
@@ -121,6 +118,9 @@ const MonthlyBreakdownChart = () => {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
+                            {/* <Col xs="auto">
+                                <Button className="chart-control-btn"><Icon path={mdiShareVariant} size={1} /> Share</Button>
+                            </Col>      */}
                         </Row>
                     </Col>
                 </Row>                
@@ -140,14 +140,15 @@ const MonthlyBreakdownChart = () => {
                     }}
                    >
                     
-                    <XAxis dataKey="time"  angle={-90}/>
+                    <XAxis dataKey="year"  angle={-90}/>
                     <YAxis/>
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="avg_temperature" stroke="#bd00ff" dot={false} strokeWidth="2"/>
+                    <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="2"/>
                     {
                         showClimatology &&
-                        <Line type="linear" dataKey="avg_climatology" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                        <Line type="linear" dataKey="precip_avg" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+
                     }
                 </ComposedChart>
                 </ResponsiveContainer>
@@ -158,7 +159,7 @@ const MonthlyBreakdownChart = () => {
                     <Col>
                         <div className="legend-item">
                             <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
-                            <div className="legend-item-label">{monthNames[selectedMonth]} Avg</div>
+                            <div className="legend-item-label">{monthNames[selectedMonth]}</div>
                         </div>
                         {
                             showClimatology &&
@@ -169,7 +170,7 @@ const MonthlyBreakdownChart = () => {
                         }
                     </Col>
                     <Col xs="auto">
-                        Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
+                        Data source: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a>
                     </Col>
                 </Row>
             </footer>
@@ -180,4 +181,4 @@ const MonthlyBreakdownChart = () => {
 
 }
 
-export default MonthlyBreakdownChart;
+export default MonthlyPrecipBreakdownChart;

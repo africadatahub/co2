@@ -15,14 +15,6 @@ const Navigator = () => {
 
     const { position, address, interacted } = useContext(AppContext);
 
-
-    useEffect(() => {
-        
-    }, [position]);
-
-    useEffect(() => {
-    }, [address]);
-
     const changePosition = (latlng) => {
         setPosition(latlng);
     }

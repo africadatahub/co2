@@ -21,19 +21,23 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-const AnnualTemperaturetable = () => {
+const AnnualPrecipTable = () => {
 
-    const { cities, countries, city, country, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames } = useContext(AppContext);
+    const { cities, city, country, precipDatasets, dateRange, monthNames } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
+
+    
+
 
     const [selectedYear, setSelectedYear] = useState(dateRange[1]);
 
     const changeYear = () => {
 
-        let yearData = datasets.data.filter(item => parseInt(item.time) == parseInt(selectedYear));
+        let yearData = precipDatasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
 
         setChartData(yearData);
+    
     
     }
 
@@ -41,7 +45,7 @@ const AnnualTemperaturetable = () => {
 
         changeYear();        
     
-    }, [datasets, selectedYear]);
+    }, [precipDatasets, selectedYear]);
 
     return (
         <section className="chart-wrapper">
@@ -49,8 +53,8 @@ const AnnualTemperaturetable = () => {
             <header>
                 {<h3>
                     {
-                        <>Monthly temperatures in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
+                        <>Annual rainfall in <span className="location-highlight">
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div>
                                 <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
                             </span> compared to longterm average</>
                     }
@@ -72,7 +76,19 @@ const AnnualTemperaturetable = () => {
                     </Col>
                     <Col xs="auto">
                         <Row>
-                            
+                            {/* <Col xs="auto">
+                                <Dropdown>
+                                    <Dropdown.Toggle>
+                                        <Icon path={mdiCog} size={1} /> View Options
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Col> */}
                             <Col xs="auto">
                                 <Dropdown>
                                     <Dropdown.Toggle>
@@ -84,9 +100,7 @@ const AnnualTemperaturetable = () => {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            {/* <Col xs="auto">
-                                <Button className="chart-control-btn"><Icon path={mdiShareVariant} size={1} /> Share</Button>
-                            </Col>      */}
+                           
                         </Row>
                     </Col>
                 </Row>                
@@ -98,22 +112,25 @@ const AnnualTemperaturetable = () => {
                         <tr>
                             <th>Month</th>
                             <th style={{width: '100px', maxWidth: '100px'}} className="text-end">Avg</th>
-                            <th  style={{width: '100px', maxWidth: '100px'}} className="text-end">{selectedYear}</th>
-                            <th style={{width: '100px', maxWidth: '100px'}} className="text-end">Change</th>
+                            <th style={{width: '100px', maxWidth: '100px'}} className="text-end">{selectedYear}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
+                            chartData.length == 0 &&
+
+                            <tr>
+                                <td colSpan="3" className="text-center">No data available</td>
+                            </tr>
+
+                        }
+                        {
                             chartData.map((row, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td>{monthNames[row.month_number]}</td>
-                                        <td className="text-end">{row.avg_climatology.toFixed(2)}&deg;</td>
-                                        <td className="text-end">{row.avg_temperature.toFixed(2)}&deg;</td>
-                                        <td className="text-end">
-                                            {row.avg_anomaly.toFixed(2)}&deg;
-                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.avg_anomaly) }}></div>
-                                        </td>
+                                        <td>{monthNames[row.month_number-1]}</td>
+                                        <td className="text-end">{row.precip_avg.toFixed(2)}mm</td>
+                                        <td className="text-end">{row.precip.toFixed(2)}mmm</td>
                                     </tr>
                                 )
                             })
@@ -128,20 +145,10 @@ const AnnualTemperaturetable = () => {
             <footer>
                 <Row>
                     <Col>
-                        {
-                            temperatureScale.map((item, i) => {
-                                return (
-                                    <div key={i} className="legend-item">
-                                        <div className="legend-item-color" style={{backgroundColor: item.color}}></div>
-                                        <div className="legend-item-label">{item.min == -Infinity ? -1.5 : item.min} - {item.max == Infinity ? 1.5 : item.max}&deg;</div>
-                                    </div>
-                                )
-                            })
-                        }
                         
                     </Col>
                     <Col xs="auto">
-                        Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
+                        Data source: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a>
                     </Col>
                 </Row>
             </footer>
@@ -152,4 +159,4 @@ const AnnualTemperaturetable = () => {
 
 }
 
-export default AnnualTemperaturetable;
+export default AnnualPrecipTable;
