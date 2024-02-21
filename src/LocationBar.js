@@ -15,7 +15,7 @@ import getCountryISO2 from 'country-iso-3-to-2';
 
 const LocationBar = () => {
 
-    const { cities, countries, city, address } = useContext(AppContext);
+    const { cities, countries, city, setCity, address, findAddress, position, setPosition } = useContext(AppContext);
 
     const [searchResults, setSearchResults] = useState([]);
 
@@ -24,6 +24,7 @@ const LocationBar = () => {
 
     useEffect(() => {
         if(address != '' && address != undefined) {
+            console.log('LocationBar.js: address:', address);
             searchRef.current.value = address.display_name;
         }
     }, [address]);
@@ -42,7 +43,7 @@ const LocationBar = () => {
             timeout = setTimeout(() => {
                 timeout = null;
 
-                axios.get(`https://nominatim.openstreetmap.org/search?q=${e}&format=json&polygon=1&addressdetails=1&countrycodes=${countries.map(country => getCountryISO2(country.iso_code)).join(',')}`)
+                axios.get(`https://nominatim.openstreetmap.org/search?q=${e}&format=json&polygon=1&addressdetails=1&countrycodes=${countries.map(country => getCountryISO2(country.iso3)).join(',')}`)
                 .then(function (response) {
                     
                     response.data.forEach(result => {
@@ -74,11 +75,21 @@ const LocationBar = () => {
     const changeLocation = (type, value) => {
         if(value != 'location' && value != '') {
             if(type == 'city') {
-                document.location.search = '?city=' + value;
+                searchRef.current.value = '';
+                setCity(value);
             } else {
-                document.location.search = '?position=' + value.join(',');
+                window.history.pushState(
+                    {}, 
+                    '', 
+                    window.location.pathname + '?position=' + value.join(',')
+                );
+                searchRef.current.value = '';
+                setCity('location');
+                findAddress(value);
             }
         }
+        searchRef.current.value = '';
+        setSearchResults([]);
     }
 
    
@@ -105,7 +116,7 @@ const LocationBar = () => {
                                     if(a.city < b.city) return -1;
                                     return 0;
                                 }).map(cty => {
-                                    return <option key={cty.city.replace(' ','-').toLowerCase()} value={cty.city.replace(' ','-').toLowerCase()}>{cty.city}</option>
+                                    return <option key={cty.city.replaceAll(' ','-').toLowerCase()} value={cty.city.replaceAll(' ','-').toLowerCase()}>{cty.city}</option>
                                 })
                             }
                             <option hidden value="location">Custom Location</option>
@@ -115,7 +126,7 @@ const LocationBar = () => {
             </Col>
             <Col>
                 <div className="position-relative">
-                    <Form.Control className="py-2" type="text" placeholder="Search for a specific location" onChange={(e) => addressLookup(e.target.value)} ref={searchRef}/>
+                    <Form.Control id="searchRef" className="py-2" type="text" placeholder="Search for a specific location" onChange={(e) => addressLookup(e.target.value) ? addressLookup(e.target.value) : ''} ref={searchRef}/>
                     <div className="search-results">
                         <ul>
                             {

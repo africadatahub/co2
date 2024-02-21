@@ -21,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.21.3",
-    "react-vis": "^1.12.1",
+    "react-vis": "1.11.12",
+    "reaviz": "^15.7.1",
     "recharts": "^2.10.4"
   },
   "devDependencies": {

@@ -1,28 +1,27 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
+import axios from "axios";
+
 
 import { useLeafletContext } from "@react-leaflet/core";
 import * as L from "leaflet";
 
 const LeafletGrid = () => {
 
-    const { position, setPosition, interacted } = useContext(AppContext);
+    const { position, setPosition, findAddress, throttledFindAddress, setCity, setCountry } = useContext(AppContext);
 
     const [drawn, setDrawn] = useState(false);
     const context = useLeafletContext();
     const container = context.map;
     const tileSize = 1; 
-    
-    const changePosition = (latlng) => {
-        setPosition(latlng);
-    }
-   
+    let lastClickTime = 0;
+    const throttleTime = 2000; 
 
     useEffect(() => {
-        if(interacted) {
-            highlightTile({lat:position[0],lng:position[1]}, false);
-        }
+        
+        highlightTile({lat:position[0],lng:position[1]}, false);
+        
     }, [position]);
 
     
@@ -71,12 +70,19 @@ const LeafletGrid = () => {
         setDrawn(true);
     }
 
-    // Event listener for map click
-    container.on('click', (event) => {
-        highlightTile(event.latlng, true);
-    });
+    useEffect(() => {
+        container.on('click', (event) => {
+            const now = new Date().getTime();
+            if(now - lastClickTime > throttleTime) {
+                lastClickTime = now;
+                highlightTile(event.latlng, true);
+            }
+        });
+    }, [container]);
+    
 
-    const highlightTile = (latlng, changeLocation) => {
+    const highlightTile = (latlng, clicked) => {
+
         var clickedLatLng = latlng;
 
         // Calculate the grid square corresponding to the clicked point
@@ -92,16 +98,26 @@ const LeafletGrid = () => {
 
         // Highlight the grid square
         var bounds = L.latLngBounds([[gridY, gridX], [gridY + tileSize, gridX + tileSize]]);
+
         L.rectangle(bounds, { color: 'rgb(255, 122, 0, 1)', weight: 2 }).addTo(container);
 
-        
         let middlePoint = [gridY + tileSize / 2, gridX + tileSize / 2];
  
+        if(clicked) {
+            window.history.pushState(
+                {}, 
+                '', 
+                window.location.pathname + '?position=' + [gridY + tileSize / 2, gridX + tileSize / 2].join(',')
+            );
 
-        if(changeLocation) {
-            // container.panTo(new L.LatLng(gridY + tileSize / 2, gridX + tileSize / 2));
-            document.location.search = '?position=' + [gridY + tileSize / 2, gridX + tileSize / 2].join(',');
+            // TODO: position can be a string so we need to check if it's a string or a latlng
+            // if it's a string, we need to get the latlng from the string
+
+            findAddress(middlePoint);
+            
         }
+            
+       
     }
 
     return <></>;

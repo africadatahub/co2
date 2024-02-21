@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -23,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyBreakdownChart = () => {
 
-    const { cities, countries, city, country, datasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, monthNames } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -55,8 +54,6 @@ const MonthlyBreakdownChart = () => {
 
         setChartData(monthData);
         setSelectedMonth(month);
-
-        console.log(chartData);
         
     }
 
@@ -71,8 +68,8 @@ const MonthlyBreakdownChart = () => {
                 {<h3>
                     {
                         <>Monthly Temperature Breakdown in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div>
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
                 </h3>}
@@ -141,7 +138,13 @@ const MonthlyBreakdownChart = () => {
                    >
                     
                     <XAxis dataKey="time"  angle={-90}/>
-                    <YAxis/>
+                    <YAxis label={{ 
+                        value: `°C`,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: -20, }}
+                    />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
                     <Line type="linear" dataKey="avg_temperature" stroke="#bd00ff" dot={false} strokeWidth="2"/>

@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -20,7 +19,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyPrecipBreakdownChart = () => {
 
-    const { cities, city, country, precipDatasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, city, country, address, precipDatasets, dateRange, monthNames } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -32,7 +31,7 @@ const MonthlyPrecipBreakdownChart = () => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number-1]}  {label}</div>
                     <Row style={{color: "#bd00ff"}}>
                         <Col className="tooltip-item-name">Rainfall</Col>
                         <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip).toFixed(2)}mm</Col>
@@ -52,8 +51,6 @@ const MonthlyPrecipBreakdownChart = () => {
 
         setChartData(monthData);
         setSelectedMonth(month);
-
-        console.log(chartData);
         
     }
 
@@ -68,8 +65,8 @@ const MonthlyPrecipBreakdownChart = () => {
                 {<h3>
                     {
                         <>Monthly Precipitation Breakdown in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
                 </h3>}
@@ -140,8 +137,14 @@ const MonthlyPrecipBreakdownChart = () => {
                     }}
                    >
                     
-                    <XAxis dataKey="year"  angle={-90}/>
-                    <YAxis/>
+                    <XAxis dataKey="year" angle={-90}/>
+                    <YAxis label={{ 
+                        value: `mm`,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: -20, }}
+                    />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
                     <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="2"/>
@@ -170,7 +173,7 @@ const MonthlyPrecipBreakdownChart = () => {
                         }
                     </Col>
                     <Col xs="auto">
-                        Data source: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a>
+                        Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
                     </Col>
                 </Row>
             </footer>
