@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyBreakdownChart = () => {
 
-    const { cities, countries, city, country, address, datasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -113,8 +113,8 @@ const MonthlyBreakdownChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-temperature-breakdown',selectedMonth)}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-temperature-breakdown',selectedMonth)}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -123,7 +123,7 @@ const MonthlyBreakdownChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-temperature-breakdown">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 

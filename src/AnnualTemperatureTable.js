@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualTemperaturetable = () => {
 
-    const { cities, countries, city, country, address, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -79,7 +79,7 @@ const AnnualTemperaturetable = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','annual-temperature')}>CSV</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>

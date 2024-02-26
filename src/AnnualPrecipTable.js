@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualPrecipTable = () => {
 
-    const { cities, city, country, address, precipDatasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, city, country, address, precipDatasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -95,7 +95,7 @@ const AnnualPrecipTable = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','annual-precipitation')}>CSV</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>

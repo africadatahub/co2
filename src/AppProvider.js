@@ -3,6 +3,11 @@ import { AppContext } from './AppContext';
 
 import axios from 'axios';
 
+import {svgAsPng} from 'svg-to-png';
+import { saveAs } from 'file-saver';
+import {toPng} from 'dom-to-image-more';
+import html2canvas from 'html2canvas';
+
 import * as cities from './data/cities.json';
 import * as countries from './data/countries.json';
 
@@ -475,13 +480,86 @@ export const AppProvider = ({ children }) => {
 
     }
 
-    const downloadData = (set) => {
+    async function downloadData(type,set,month = null) {
 
-        // if set is temperature
+        if(type == 'png') {
 
+            let svgContainer = document.getElementById(set);
+            let svg = svgContainer.getElementsByTagName('svg')[0];
+
+            html2canvas(svgContainer).then(canvas => {
+                const link = document.createElement('a');
+                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png'; 
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+           
+        } else {
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            if(set == 'monthly-temperature') {
+                csvContent += "Month,Year,Average Temperature,Historical Average,Max Temperature,Min Temperature,Historical Max,Historical Min\n";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number] + ',' + record.time + ',' + record.avg_temperature + ',' + record.avg_climatology + ',' + record.max_temperature + ',' + record.min_temperature + ',' + record.max_climatology + ',' + record.min_climatology + '\n';
+                });
+            } else if(set == 'monthly-temperature-anomaly') {
+                csvContent += "Month,Year,Average Anomaly";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number] + ',' + record.time + ',' + record.avg_anomaly + '\n';
+                });
+            } else if(set == 'monthly-temperature-breakdown') {
+                csvContent += "Month,Year,Average Temperature,Historical Average,Max Temperature,Min Temperature,Historical Max,Historical Min\n";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number] + ',' + record.time + ',' + record.avg_temperature + ',' + record.avg_climatology + ',' + record.max_temperature + ',' + record.min_temperature + ',' + record.max_climatology + ',' + record.min_climatology + '\n';
+                });
+                month = monthNames[month];
+            } else if(set == 'monthly-precipitation') {
+                csvContent += "Month,Year,Precipitation";
+                precipDatasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.precip + '\n';
+                });
+                month = monthNames[month];
+            } else if(set == 'monthly-precipitation-breakdown') {
+                csvContent += "Month,Year,Precipitation";
+                precipDatasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.precip + '\n';
+                });
+                month = monthNames[month];
+            } else if(set == 'annual-temperature') {
+                csvContent += "Year,Month,Average Temperature,Historical Average\n";
+                datasets.data.forEach(record => {
+                    csvContent += record.time + ',' + monthNames[record.month_number] + ',' + record.avg_temperature + ',' + record.avg_climatology + '\n';
+                });
+            } else if(set == 'annual-precipitation') {
+                csvContent += "Year,Month,Precipitation,Historical Average\n";
+                precipDatasets.data.forEach(record => {
+                    csvContent += record.year + ',' + monthNames[record.month_number-1] + ',' + record.precip + ',' + record.precip_avg + '\n';
+                });
+            }
+
+
+
+            // save the csvContent to a file and download
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            
+            
+
+            if(city != 'location') {
+                link.setAttribute("download", `${set}${month != null ? '-' + month : ''}.${city}.${dateRange[0]}-${dateRange[1]}.csv`);
+            } else {
+                link.setAttribute("download", `${set}${month != null ? '-' + month : ''}.${position[0]},${position[1]}.${dateRange[0]}-${dateRange[1]}.csv`);
+            }
+            document.body.appendChild(link); 
+            link.click();
+        }
 
         
     }
+
+    
     
 
     useEffect(() => {
@@ -564,7 +642,8 @@ export const AppProvider = ({ children }) => {
         monthNames,
         annualAvgTemperature,
         annualAvgPrecipitation,
-        maxPrecipitation
+        maxPrecipitation,
+        downloadData
     };
 
     return (

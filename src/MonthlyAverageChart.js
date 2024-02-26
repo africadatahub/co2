@@ -12,17 +12,16 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+import { ChartContainer, LineChart, AreaChart } from 'reaviz';
+
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-
-
-
 const MonthlyAverageChart = () => {
 
-    const { cities, countries, city, country, address, datasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -113,8 +112,8 @@ const MonthlyAverageChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-temperature')}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-temperature')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -123,7 +122,7 @@ const MonthlyAverageChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-temperature">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 
@@ -161,6 +160,7 @@ const MonthlyAverageChart = () => {
                     }
                 </ComposedChart>
                 </ResponsiveContainer>
+                
             </div>
 
             <footer>

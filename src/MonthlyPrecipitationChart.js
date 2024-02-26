@@ -10,10 +10,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-import { interpolateYlGnBu, interpolateRdBu } from 'd3-scale-chromatic';
-
-import { XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, LineMarkSeries, MarkSeries, VerticalBarSeries, LineSeries, AreaSeries, Hint, GradientDefs, HeatmapSeries, LabelSeries, Crosshair, ContinuousColorLegend, Treemap } from 'react-vis';
-import '../node_modules/react-vis/dist/style.css';
 
 import { Heatmap, HeatmapSeries, SequentialLegend } from 'reaviz';
 
@@ -25,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyPrecipitationChart = () => {
 
-    const { cities, city, country, convertCountry, address, precipDatasets, dateRange, monthNames, maxPrecipitation } = useContext(AppContext);
+    const { cities, city, country, convertCountry, address, precipDatasets, dateRange, monthNames, maxPrecipitation, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -87,8 +83,8 @@ const MonthlyPrecipitationChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-precipitation')}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-precipitation')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -98,44 +94,7 @@ const MonthlyPrecipitationChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container precipitation-chart-container">
-                {/* {
-                    chartData.length > 0 &&
-                    <XYPlot
-                        width={document.querySelector('.chart-container') != null ? (document.querySelector('.chart-container').getBoundingClientRect().width - 50) : 1000}
-                        height={(dateRange[1] - dateRange[0]) > 10 ? 500 : 300}
-                        xType="ordinal"
-                        xDomain={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
-                        yType="ordinal"
-                        yDomain={Array.from({length: dateRange[1] - dateRange[0] + 1}, (_, i) => dateRange[0] + i).filter(year => year <= dateRange[1])}
-                    >
-                        <XAxis tickFormat={i => monthNames[i].substring(0,3)}/>
-
-                        <YAxis />
-                        <HeatmapSeries
-                            colorType="literal"
-                            data={
-                                chartData.map((d) => {
-                                    
-                                    return { 
-                                        x: parseInt(d.month_number),
-                                        y: parseInt(d.year),
-                                        color: d.precip == null ? '#ccc' : interpolateYlGnBu(parseFloat(d.precip_scale)),
-                                        precip: parseFloat(d.precip),
-                                    }
-                                    
-                                })
-                            }
-                            // onValueMouseOver={e => setHintValue(e)}
-                            // onValueMouseOut={e => setHintValue(null)}
-                        />
-                        {hintValue && (
-                            <Hint value={hintValue} style={{background: 'rgba(0,0,0,0.6)', borderRadius: '5px', padding: '0.2em', color: '#fff'}}>
-                                {parseFloat(hintValue.precip).toFixed(2)}mm
-                            </Hint>
-                        )}
-                    </XYPlot>
-                } */}
+            <div className="chart-container precipitation-chart-container" id="monthly-precipitation">
                 <Heatmap
                     height={(dateRange[1] - dateRange[0]) > 10 ? 500 : 300}
                     width={document.querySelector('.chart-container') != null ? (document.querySelector('.chart-container').getBoundingClientRect().width - 50) : 1000}

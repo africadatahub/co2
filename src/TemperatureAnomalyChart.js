@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const TemperatureAnomalyChart = () => {
 
-    const { cities, countries, city, country, address, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -86,8 +86,8 @@ const TemperatureAnomalyChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-1">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-temperature-anomaly')}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-temperature-anomaly')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -97,7 +97,7 @@ const TemperatureAnomalyChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-temperature-anomaly">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 
@@ -110,12 +110,6 @@ const TemperatureAnomalyChart = () => {
                         left: 0
                     }}
                    >
-                    <defs>
-                        <linearGradient id="maxmin" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#fca5a5" stopOpacity={0.6}/>
-                            <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
-                        </linearGradient>
-                    </defs>
                     <XAxis dataKey="time" angle={-90} interval={11}/>
                     <YAxis label={{ 
                         value: `°C`,
