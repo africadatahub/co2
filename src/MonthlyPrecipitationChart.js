@@ -96,7 +96,7 @@ const MonthlyPrecipitationChart = () => {
            
             <div className="chart-container precipitation-chart-container" id="monthly-precipitation">
                 <Heatmap
-                    height={(dateRange[1] - dateRange[0]) > 10 ? 500 : 300}
+                    height={(dateRange[1] - dateRange[0]) > 10 ? 700 : 300}
                     width={document.querySelector('.chart-container') != null ? (document.querySelector('.chart-container').getBoundingClientRect().width - 50) : 1000}
                     data={chartData}
                     series={<HeatmapSeries colorScheme="blues"/>}
