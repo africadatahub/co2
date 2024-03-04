@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const TemperatureAnomalyChart = () => {
 
-    const { cities, countries, city, country, address, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale, downloadData } = useContext(AppContext);
+    const { cities, countries, city, country, convertCountry, address, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
