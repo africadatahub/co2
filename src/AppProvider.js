@@ -22,7 +22,7 @@ export const AppProvider = ({ children }) => {
     const [datasets, setDatasets] = useState(
         {
             locations: '9d764714-2094-4455-8754-63b87d1fdce0',
-            all_data: '6bbc647c-350c-4ae0-8b4d-9011e50a1ad5',
+            all_data: '39e49666-e5a6-479c-9317-6a252c095ed4',
             data: [],
             labels: {
                 avg_temperature: 'Average Temperature',
@@ -189,8 +189,6 @@ export const AppProvider = ({ children }) => {
                     }
                 
                 })
-
-                console.log(max);
 
                 setMaxPrecipitation(max);
                 setDatasets({...datasets, data: data});

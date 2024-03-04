@@ -106,7 +106,7 @@ const AnnualTemperaturetable = () => {
                             chartData.map((row, i) => {
                                 return (
                                     <tr key={i}>
-                                        <td>{monthNames[row.month_number]}</td>
+                                        <td>{monthNames[row.month_number-1]}</td>
                                         <td className="text-end">{row.TAVG_climatology}&deg;</td>
                                         <td className="text-end">{row.TAVG_temperature}&deg;</td>
                                         <td className="text-end">
