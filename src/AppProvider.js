@@ -161,9 +161,7 @@ export const AppProvider = ({ children }) => {
 
                 let data = response.data.result.records;
 
-                console.log(data);
-
-                // sort
+            // sort
                 data.sort((a, b) => {
 
                     const aYear = parseInt(a.year);
@@ -187,6 +185,8 @@ export const AppProvider = ({ children }) => {
                     if(parseFloat(record.precip) > max) {
                         max = parseFloat(record.precip);
                     }
+
+                    record.minmax_temperature = [record.TMAX_temperature, record.TMIN_temperature]
                 
                 })
 

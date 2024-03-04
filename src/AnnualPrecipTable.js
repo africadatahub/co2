@@ -147,7 +147,7 @@ const AnnualPrecipTable = () => {
                         
                     </Col>
                     <Col xs="auto">
-                        Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
+                        Historical Average: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a> | Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
                     </Col>
                 </Row>
             </footer>

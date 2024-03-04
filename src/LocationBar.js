@@ -73,7 +73,7 @@ const LocationBar = () => {
     }
 
     const changeLocation = (type, value) => {
-        onsole.log(searchRef);
+        console.log(searchRef);
         
         if(value != 'location' && value != '') {
             if(type == 'city') {
