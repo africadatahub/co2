@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualTemperaturetable = () => {
 
-    const { cities, countries, city, country, address, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames, downloadData } = useContext(AppContext);
+    const { cities, countries, city, country, convertCountry, address, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
