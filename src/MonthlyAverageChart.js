@@ -127,7 +127,7 @@ const MonthlyAverageChart = () => {
                 <ComposedChart
                     width={800} 
                     height={250} 
-                    data={chartData} 
+                    data={chartData}
                     margin={{
                         top: 0,
                         right: 40, 

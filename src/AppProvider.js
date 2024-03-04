@@ -22,7 +22,7 @@ export const AppProvider = ({ children }) => {
     const [datasets, setDatasets] = useState(
         {
             locations: '9d764714-2094-4455-8754-63b87d1fdce0',
-            all_data: '39e49666-e5a6-479c-9317-6a252c095ed4',
+            all_data: 'd524926d-50e6-49fe-a9f3-aacd17967847',
             data: [],
             labels: {
                 avg_temperature: 'Average Temperature',
@@ -77,7 +77,6 @@ export const AppProvider = ({ children }) => {
 
 
             let data = response.data.result.records;
-
             
             if(data.length > 0) {
                 setAddress(
@@ -134,19 +133,7 @@ export const AppProvider = ({ children }) => {
         
     }
 
-    const mergeClimateData = (baseset, temperatures, indicator) => {
-
-        let t = temperatures.find(t => {
-            return parseInt(t.time) === parseInt(baseset.time) && parseInt(t.month_number) === parseInt(baseset.month_number);
-        });
-
-        if(t == undefined) {
-            return null;
-        } else {
-            return parseFloat(t[indicator]);
-        }
-    
-    }
+   
 
     async function getAllData() {
         setLoading(true);
@@ -161,7 +148,28 @@ export const AppProvider = ({ children }) => {
 
                 let data = response.data.result.records;
 
-            // sort
+                console.log(data);
+
+
+                // read all data as floats
+                data.forEach(record => {
+                    record.TAVG_temperature = parseFloat(record.TAVG_temperature);
+                    record.TMAX_temperature = parseFloat(record.TMAX_temperature);
+                    record.TMIN_temperature = parseFloat(record.TMIN_temperature);
+                    record.TAVG_climatology = parseFloat(record.TAVG_climatology);
+                    record.TMAX_climatology = parseFloat(record.TMAX_climatology);
+                    record.TMIN_climatology = parseFloat(record.TMIN_climatology);
+                    record.TAVG_anomaly = parseFloat(record.TAVG_anomaly);
+                    record.TMAX_anomaly = parseFloat(record.TMAX_anomaly);
+                    record.TMIN_anomaly = parseFloat(record.TMIN_anomaly);
+                    record.precip = parseFloat(record.precip);
+                    record.precip_hist = parseFloat(record.precip_hist);
+                });
+
+               
+
+                
+                
                 data.sort((a, b) => {
 
                     const aYear = parseInt(a.year);
@@ -182,13 +190,14 @@ export const AppProvider = ({ children }) => {
 
                 data.forEach(record => {
                         
-                    if(parseFloat(record.precip) > max) {
-                        max = parseFloat(record.precip);
+                    if(record.precip > max) {
+                        max = record.precip;
                     }
 
                     record.minmax_temperature = [record.TMAX_temperature, record.TMIN_temperature]
                 
                 })
+
 
                 setMaxPrecipitation(max);
                 setDatasets({...datasets, data: data});

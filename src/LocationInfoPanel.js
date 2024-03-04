@@ -12,7 +12,7 @@ import { mdiThermometer, mdiWeatherPouring, mdiFactory, mdiLandPlots } from '@md
 
 const LocationInfoPanel = () => {
 
-    const { country, convertCountry, cities, city, address, annualAvgTemperature, annualAvgPrecipitation, loading } = useContext(AppContext);
+    const { country, convertCountry, cities, city, address, position, annualAvgTemperature, annualAvgPrecipitation, loading } = useContext(AppContext);
 
     
     return (
@@ -54,6 +54,9 @@ const LocationInfoPanel = () => {
                 </Row> */}
             </div>
 
+            {/* <div className="mt-4">
+                {position[0]}, {position[1]}
+            </div> */}
 
             
             
