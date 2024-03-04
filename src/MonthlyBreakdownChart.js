@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -23,11 +22,11 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyBreakdownChart = () => {
 
-    const { cities, countries, city, country, datasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
-    const [selectedMonth, setSelectedMonth] = useState(0);
+    const [selectedMonth, setSelectedMonth] = useState(1);
 
     const [showClimatology, setShowClimatology] = useState(true);
 
@@ -38,11 +37,11 @@ const MonthlyBreakdownChart = () => {
                     <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
                     <Row style={{color: "#bd00ff"}}>
                         <Col className="tooltip-item-name">Average Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_temperature).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_temperature).toFixed(2)}&deg;</Col>
                     </Row>
                     <Row style={{color: "#ed8f38"}}>
                         <Col className="tooltip-item-name">Historical Average</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_climatology).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_climatology).toFixed(2)}&deg;</Col>
                     </Row>
                 </Container>
             );
@@ -55,8 +54,6 @@ const MonthlyBreakdownChart = () => {
 
         setChartData(monthData);
         setSelectedMonth(month);
-
-        console.log(chartData);
         
     }
 
@@ -71,8 +68,8 @@ const MonthlyBreakdownChart = () => {
                 {<h3>
                     {
                         <>Monthly Temperature Breakdown in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div>
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
                 </h3>}
@@ -82,18 +79,18 @@ const MonthlyBreakdownChart = () => {
                 <Row className="justify-content-between">
                     <Col xs="auto">
                         <Form.Select value={selectedMonth} onChange={e => changeMonthlyBreakdown(e.target.value)}>
-                            <option value="0">January</option>
-                            <option value="1">February</option>
-                            <option value="2">March</option>
-                            <option value="3">April</option>
-                            <option value="4">May</option>
-                            <option value="5">June</option>
-                            <option value="6">July</option>
-                            <option value="7">August</option>
-                            <option value="8">September</option>
-                            <option value="9">October</option>
-                            <option value="10">November</option>
-                            <option value="11">December</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
                         </Form.Select>
                     </Col>
                     <Col xs="auto">
@@ -116,8 +113,8 @@ const MonthlyBreakdownChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-temperature-breakdown',selectedMonth)}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-temperature-breakdown',selectedMonth)}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -126,7 +123,7 @@ const MonthlyBreakdownChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-temperature-breakdown">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 
@@ -140,14 +137,20 @@ const MonthlyBreakdownChart = () => {
                     }}
                    >
                     
-                    <XAxis dataKey="time"  angle={-90}/>
-                    <YAxis/>
+                    <XAxis dataKey="year" angle={-90} interval={1}/>
+                    <YAxis label={{ 
+                        value: `°C`,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: -20, }}
+                    />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="avg_temperature" stroke="#bd00ff" dot={false} strokeWidth="2"/>
+                    <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                     {
                         showClimatology &&
-                        <Line type="linear" dataKey="avg_climatology" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                        <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
                     }
                 </ComposedChart>
                 </ResponsiveContainer>

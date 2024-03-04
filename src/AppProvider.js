@@ -1,27 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AppContext } from './AppContext';
 
 import axios from 'axios';
+
+import {svgAsPng} from 'svg-to-png';
+import { saveAs } from 'file-saver';
+import {toPng} from 'dom-to-image-more';
+import html2canvas from 'html2canvas';
 
 import * as cities from './data/cities.json';
 import * as countries from './data/countries.json';
 
 export const AppProvider = ({ children }) => {
 
-    const [dateRange, setDateRange] = useState([2012, 2022]);
-	const [position, setPosition] = useState([-1.2920659, 36.8219462]);
-	const [city, setCity] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [dateRange, setDateRange] = useState([1993, 2023]);
+	const [position, setPosition] = useState([]);
+    const [city, setCity] = useState('');
 	const [country, setCountry] = useState('');
 	const [address, setAddress] = useState('');
-	const [interacted, setInteracted] = useState(false);
     const [datasets, setDatasets] = useState(
         {
-            max_climatology: '45a41685-5be5-4da1-ac97-1c9bb74eacf1',
-            max_temperature: 'c13119ab-750a-4c18-a146-8e9a477088fc',
-            avg_climatology: 'bae363f7-1318-43d8-9d96-dc4aac27fc7b',
-            avg_temperature: '66da171e-be57-4f16-aee2-0d86a6b69dd5',
-            min_climatology: '1aba7d74-20a5-4d95-9d09-795fa0f6bf41',
-            min_temperature: '036d381a-911d-4f6a-8964-920646bbe557',
+            locations: '9d764714-2094-4455-8754-63b87d1fdce0',
+            all_data: '6bbc647c-350c-4ae0-8b4d-9011e50a1ad5',
             data: [],
             labels: {
                 avg_temperature: 'Average Temperature',
@@ -36,13 +37,8 @@ export const AppProvider = ({ children }) => {
     const [annualAvgTemperature, setAnnualAvgTemperature] = useState(null);
     const [annualAvgPrecipitation, setAnnualAvgPrecipitation] = useState(null);
     const [maxPrecipitation, setMaxPrecipitation] = useState(null);
-    const [precipDatasets, setPrecipDatasets] = useState(
-        {
-            gpcc_precipitation: 'f308c5a0-d590-49c8-b673-ad8a5bb489f2',
-            gpcc_precipitation_avg: 'b159ff95-c3d0-461d-a95f-0afd5d2c20ed',
-            data: []
-        }
-    );
+    
+    
     const temperatureScale = [
         {min: -Infinity, max: -1, color: '#08306b'},
         {min: -1, max: -0.5, color: '#6baed6'},
@@ -67,36 +63,75 @@ export const AppProvider = ({ children }) => {
     }
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    
+    
+
+    const findAddress = (middlePoint) => {
+
+        axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + datasets.locations + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(middlePoint[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(middlePoint[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(middlePoint[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(middlePoint[1]) + 0.5) + '%20', {
+            headers: {
+                "Authorization": process.env.CKAN
+            }
+        }).then(response => {
 
 
-    const changeDateRange = (type, value) => {
+            let data = response.data.result.records;
 
-        const params = new URLSearchParams(window.location.search);
-  
-        
-        if(params.get('daterange') == null) {
-            params.set('daterange', `${dateRange[0]},${dateRange[1]}`);
-        } else {
-        
-            if(type === 'start') {
-                params.set('daterange', `${value},${params.get('daterange').split(',')[1]}`); 
+            
+            if(data.length > 0) {
+                setAddress(
+                    data[0].city != '' ? data[0].city :
+                    data[0].town != '' ? data[0].town :
+                    data[0].village != '' ? data[0].village :
+                    data[0].hamlet != '' ? data[0].hamlet :
+                    data[0].county != '' ? data[0].county :
+                    data[0].region != '' ? data[0].region :
+                    data[0].state != '' ? data[0].state :
+                    ''
+                );
+                setCity('location');
+                setCountry(convertCountry('iso2', data[0].country_code).iso3);
+                
             } else {
-                params.set('daterange', `${params.get('daterange').split(',')[0]},${value}`);
+                setAddress('');
+                setCity('');
+                setCountry('');
             }
 
+            setPosition(middlePoint);
+
+
+            
+        }).catch(e => console.log(e));
+
+    }
+
+    
+
+    convertCountry = (type, value) => {
+
+        if(value == '' || value == undefined) return '';
+
+        let country = countries.filter(c => c[type].toUpperCase() == value.toUpperCase())[0];
+
+        if(country == undefined) {
+            return '';
+        } else {
+            return country;
         }
+    
+    }
 
-        // history.push({ 
-        //     pathname: window.location.pathname,
-        //     search: params.toString()
-        // });
-
-        let search = params.toString();
-
-        const newSearch = search.replace(/%2C/g, ',');
-
-        window.location.search = newSearch;
-
+    const changeDateRange = (type, value) => {
+        
+        if(type == 'start') {
+            setDateRange([parseInt(value), dateRange[1]]);
+        } else {
+            setDateRange([dateRange[0], parseInt(value)]);
+        }
+        
+        
     }
 
     const mergeClimateData = (baseset, temperatures, indicator) => {
@@ -113,227 +148,60 @@ export const AppProvider = ({ children }) => {
     
     }
 
+    async function getAllData() {
+        setLoading(true);
+        axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + datasets.all_data + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(position[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(position[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(position[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(position[1]) + 0.5) + '%20AND%20year%20%3E%3D%20' + dateRange[0] + '%20AND%20year%20%3C%3D%20' + (dateRange[1] + 1) + '%20', {
+                headers: {
+                    "Authorization": process.env.CKAN
+                }
+            })
+            .then(response => {
+
+                let max = 0;
+
+                let data = response.data.result.records;
+
+                console.log(data);
+
+                // sort
+                data.sort((a, b) => {
+
+                    const aYear = parseInt(a.year);
+                    const bYear = parseInt(b.year);
+                  
+                    const aMonth = parseInt(a.month_number); 
+                    const bMonth = parseInt(b.month_number);
+                  
+                    if(aYear < bYear) return -1;
+                    if(aYear > bYear) return 1;
+                    
+                    if(aMonth < bMonth) return -1; 
+                    if(aMonth > bMonth) return 1;
+                  
+                    return 0;
+                  
+                });
+
+                data.forEach(record => {
+                        
+                    if(parseFloat(record.precip) > max) {
+                        max = parseFloat(record.precip);
+                    }
+                
+                })
+
+                console.log(max);
+
+                setMaxPrecipitation(max);
+                setDatasets({...datasets, data: data});
+                setLoading(false);
+
+            })
+            
+    }
     
 
-    async function getTempData() {
-
-        const promiseArr = [];
-
-        ['avg_temperature', 'avg_climatology', 'max_temperature', 'max_climatology', 'min_temperature', 'min_climatology'].forEach(dataset => {
-
-            let ds = datasets[dataset];
-            
-            promiseArr.push(
-            axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ds + '"%20WHERE%20latitude%20%3E%3D%20' + (position[0] - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (position[0] + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (position[1] - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (position[1] + 0.5) + '%20AND%20time%20%3E%3D%20' + dateRange[0] + '%20AND%20time%20%3C%3D%20' + (dateRange[1] + 1) + '%20', {
-                headers: {
-                    "Authorization": process.env.CKAN
-                }
-            })
-                .then(response => {
-                    let data = response.data.result.records;
-
-
-                    if (['max_temperature', 'avg_temperature', 'min_temperature'].includes(dataset)) {
-
-                        data.forEach(record => {
-
-                            let date = record.time.split('.');
-
-                            if(date[1] == '0416666666663') {
-                                date[1] = 0;
-                            } else if(date[1] == '125') {
-                                date[1] = 1;
-                            } else if(date[1] == '2083333333333') {
-                                date[1] = 2;
-                            } else if(date[1] == '2916666666663') {
-                                date[1] = 3;
-                            } else if(date[1] == '375') {
-                                date[1] = 4;
-                            } else if(date[1] == '4583333333333') {
-                                date[1] = 5;
-                            } else if(date[1] == '5416666666663') {
-                                date[1] = 6;
-                            } else if(date[1] == '625') {
-                                date[1] = 7;
-                            } else if(date[1] == '7083333333333') {
-                                date[1] = 8;
-                            } else if(date[1] == '7916666666663') {
-                                date[1] = 9;
-                            } else if(date[1] == '875') {
-                                date[1] = 10;
-                            } else if(date[1] == '9583333333333') {
-                                date[1] = 11;
-                            }
-
-                            record.month_number = date[1];
-                            record.time = date[0];
-                            record.date = (record.month_number + 1) + '/' + record.time;
-
-                        });
-                    } else {
-                        data.forEach(record => {
-                            record.date = (record.month_number + 1) + '/' + record.time;
-                        })
-                    }
-                   
-                    return data;
-
-
-                })
-                .catch(e => console.log(e))
-            );
-
-        });
-        
-        const [
-            avgTemperatureResponse,
-            avgClimatologyResponse,
-            maxTemperatureResponse,   
-            maxClimatologyResponse, 
-            minTemperatureResponse,
-            minClimatologyResponse 
-        ] = await Promise.all(promiseArr);
-
-        const avgTemperatureData = await avgTemperatureResponse;
-        const avgClimatologyData = await avgClimatologyResponse;
-        const maxTemperatureData = await maxTemperatureResponse;
-        const maxClimatologyData = await maxClimatologyResponse;
-        const minTemperatureData = await minTemperatureResponse;
-        const minClimatologyData = await minClimatologyResponse;
-
-        avgTemperatureData.forEach(avgt => {
-
-            avgt.avg_anomaly = parseFloat(avgt.temperature);
-            avgt.avg_climatology = mergeClimateData(avgt, avgClimatologyData, 'climatology');
-            avgt.max_climatology = mergeClimateData(avgt, maxClimatologyData, 'climatology');
-            avgt.min_climatology = mergeClimateData(avgt, minClimatologyData, 'climatology');
-
-            avgt.max_anomaly = mergeClimateData(avgt, maxTemperatureData, 'temperature');
-            avgt.min_anomaly = mergeClimateData(avgt, minTemperatureData, 'temperature');
-
-            
-            
-        });
-        
-        // sort by time and month_number
-        avgTemperatureData.sort((a, b) => {
-
-            const aTime = parseInt(a.time);
-            const bTime = parseInt(b.time);
-          
-            const aMonth = parseInt(a.month_number); 
-            const bMonth = parseInt(b.month_number);
-          
-            if(aTime < bTime) return -1;
-            if(aTime > bTime) return 1;
-            
-            if(aMonth < bMonth) return -1; 
-            if(aMonth > bMonth) return 1;
-          
-            return 0;
-          
-        });
-
-        avgTemperatureData.forEach(avgt => {
-            avgt.avg_temperature = avgt.avg_anomaly + avgt.avg_climatology;
-            avgt.max_temperature = avgt.max_anomaly + avgt.max_climatology;
-            
-            avgt.min_temperature = avgt.min_anomaly + avgt.min_climatology;
-            avgt.maxmin_temperature = [avgt.max_temperature, avgt.min_temperature];
-        });
-
-        setDatasets({...datasets, data: avgTemperatureData});
-
-    }
-
-    async function getPrecipData() {
-
-        const promiseArr = [];
-
-        let min = 0;
-        let max = 0;
-
-        ['gpcc_precipitation', 'gpcc_precipitation_avg'].forEach(dataset => {
-
-            let ds = precipDatasets[dataset];
-
-            let query = dataset == 'gpcc_precipitation' ? 'https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ds + '"%20WHERE%20latitude%20%3E%3D%20' + (position[0] - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (position[0] + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (position[1] - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (position[1] + 0.5) + '%20AND%20year%20%3E%3D%20' + dateRange[0] + '%20AND%20year%20%3C%3D%20' + (dateRange[1] + 1) + '%20' : 'https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ds + '"%20WHERE%20latitude%20%3E%3D%20' + (position[0] - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (position[0] + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (position[1] - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (position[1] + 0.5) + '%20'
-            
-            promiseArr.push(
-            axios.get(query, {
-                headers: {
-                    "Authorization": process.env.CKAN
-                }
-            })
-                .then(response => {
-                    let data = response.data.result.records;
-                    
-                    data.forEach(record => {
-                        if(record.precip > max) max = record.precip;
-                    });
-                    
-                    data.forEach(record => {
-                        record.year = parseInt(record.year);
-                        record.precip = parseFloat(record.precip);
-                        record.month_number = parseInt(record.month_number);
-                        record.precip_scale = (record.precip - min) / (max - min);
-                    })
-
-                    // sort data by year and then month
-                    data.sort((a, b) => {
-
-                        const aYear = parseInt(a.year);
-                        const bYear = parseInt(b.year);
-                      
-                        const aMonth = parseInt(a.month_number); 
-                        const bMonth = parseInt(b.month_number);
-                      
-                        if(aYear < bYear) return -1;
-                        if(aYear > bYear) return 1;
-                        
-                        if(aMonth < bMonth) return -1; 
-                        if(aMonth > bMonth) return 1;
-                      
-                        return 0;
-                      
-                    });
-                    
-                    return data;
-
-
-                })
-                .catch(e => console.log(e))
-            );
-
-        });
-
-        const [
-            gpccPrecipitationResponse,
-            gpccPrecipitationAverageResponse,
-        ] = await Promise.all(promiseArr);
-
-        const gpccPrecipitationData = await gpccPrecipitationResponse;
-        const gpccPrecipitationAverageData = await gpccPrecipitationAverageResponse;
-
-        gpccPrecipitationData.forEach(record => {
-                
-            let avg = gpccPrecipitationAverageData.find(r => r.month_number == record.month_number);
-
-            if(avg == undefined) {
-                record.precip_avg = null;
-            } else {
-                record.precip_avg = avg.precip;
-            }
-                
-        });
-
-
-        setPrecipDatasets({...precipDatasets, data: gpccPrecipitationData});
-        setMaxPrecipitation(max);
-        
-    }
-
-  
+    // INIT
 
     useEffect(() => {
 
@@ -361,20 +229,9 @@ export const AppProvider = ({ children }) => {
             if (position.includes(',')) {
                 let lat = parseFloat(position.split(',')[0]);
                 let lon = parseFloat(position.split(',')[1]);
+                findAddress([lat, lon]);
                 setPosition([lat, lon]);
-                setInteracted(true);
             }
-
-            let place = positionsearch.split('position=')[1];
-
-            // TODO: position can be a string so we need to check if it's a string or a latlng
-            // if it's a string, we need to get the latlng from the string
-
-            axios.get(`https://nominatim.openstreetmap.org/search?q=${place}&format=json&polygon=1&addressdetails=1`)
-                .then(function (response) {
-                    setAddress(response.data[0]);
-                    setCity('location');
-                })
 
 
         } else if (document.location.search.includes('city=')) {
@@ -398,18 +255,22 @@ export const AppProvider = ({ children }) => {
             if (city == 'benin city') city = 'benin-city';
 
             setCity(city);
-            setInteracted(true);
+        } else {
+            let randomCity = cities[Math.floor(Math.random() * cities.length)];
+            setCity(randomCity.city.replaceAll(' ', '-').toLowerCase());
+
         }
 
     }, []);
+    
 
     const getAnnualAvgTemperature = () => {
             
         let annualAvg = 0;
 
         datasets.data.forEach(record => {
-            if(record.time == '2021') {
-                annualAvg += parseFloat(record.avg_temperature);
+            if(parseInt(record.year) == 2023) {
+                annualAvg += parseFloat(record.TAVG_temperature);
             }
         });
 
@@ -424,8 +285,8 @@ export const AppProvider = ({ children }) => {
 
         let annualAvg = 0;
 
-        precipDatasets.data.forEach(record => {
-            if(record.year == 2020) {
+        datasets.data.forEach(record => {
+            if(parseInt(record.year) == 2023) {
                 annualAvg += parseFloat(record.precip);
             }
         });
@@ -435,24 +296,100 @@ export const AppProvider = ({ children }) => {
         return annualAvg;
 
     }
+
+    async function downloadData(type,set,month = null) {
+
+        if(type == 'png') {
+
+            let svgContainer = document.getElementById(set);
+            let svg = svgContainer.getElementsByTagName('svg')[0];
+
+            html2canvas(svgContainer).then(canvas => {
+                const link = document.createElement('a');
+                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png'; 
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+           
+        } else {
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            if(set == 'monthly-temperature') {
+                csvContent += "Month,Year,Average Temperature,Historical Average,Max Temperature,Min Temperature,Historical Max,Historical Min\n";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + ',' + record.TMAX_temperature + ',' + record.TMIN_temperature + ',' + record.TMAX_climatology + ',' + record.TMIN_climatology + '\n';
+                });
+            } else if(set == 'monthly-temperature-anomaly') {
+                csvContent += "Month,Year,Average Anomaly";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.TAVG_anomaly + '\n';
+                });
+            } else if(set == 'monthly-temperature-breakdown') {
+                csvContent += "Month,Year,Average Temperature,Historical Average,Max Temperature,Min Temperature,Historical Max,Historical Min\n";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + ',' + record.TMAX_temperature + ',' + record.TMIN_temperature + ',' + record.TMAX_climatology + ',' + record.TMIN_climatology + '\n';
+                });
+                month = monthNames[month];
+            } else if(set == 'monthly-precipitation') {
+                csvContent += "Month,Year,Precipitation";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.precip + '\n';
+                });
+                month = monthNames[month];
+            } else if(set == 'monthly-precipitation-breakdown') {
+                csvContent += "Month,Year,Precipitation";
+                datasets.data.forEach(record => {
+                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.precip + '\n';
+                });
+                month = monthNames[month];
+            } else if(set == 'annual-temperature') {
+                csvContent += "Year,Month,Average Temperature,Historical Average\n";
+                datasets.data.forEach(record => {
+                    csvContent += record.time + ',' + monthNames[record.month_number-1] + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + '\n';
+                });
+            } else if(set == 'annual-precipitation') {
+                csvContent += "Year,Month,Precipitation,Historical Average\n";
+                datasets.data.forEach(record => {
+                    csvContent += record.year + ',' + monthNames[record.month_number-1] + ',' + record.precip + ',' + record.precip_hist + '\n';
+                });
+            }
+
+
+
+            // save the csvContent to a file and download
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            
+            
+
+            if(city != 'location') {
+                link.setAttribute("download", `${set}${month != null ? '-' + month : ''}.${city}.${dateRange[0]}-${dateRange[1]}.csv`);
+            } else {
+                link.setAttribute("download", `${set}${month != null ? '-' + month : ''}.${position[0]},${position[1]}.${dateRange[0]}-${dateRange[1]}.csv`);
+            }
+            document.body.appendChild(link); 
+            link.click();
+        }
+
+        
+    }
+
+    
     
 
     useEffect(() => {
 
         if(datasets.data.length > 0) {
             setAnnualAvgTemperature(getAnnualAvgTemperature());
+            setAnnualAvgPrecipitation(getAnnualPrecipitation());
         }
 
 
     }, [datasets]);
 
-    useEffect(() => {
-
-        if(precipDatasets.data.length > 0) {
-            setAnnualAvgPrecipitation(getAnnualPrecipitation());
-        }
-
-    }, [precipDatasets]);
+   
 
 
     useEffect(() => {
@@ -466,21 +403,40 @@ export const AppProvider = ({ children }) => {
 
             setCountry(city_data.iso_code);
             setPosition([city_data.lat, city_data.lon]);
-            
-            
+
+
+            window.history.pushState(
+                {}, 
+                '', 
+                `${window.location.pathname}?city=${city}`
+            );
         }
     }, [city]);
 
     useEffect(() => {
-        getTempData();
-        getPrecipData();
 
-    },[position])
-    
+        if(position.length > 0) {
+            // getTempData();
+            // getPrecipData();
+            getAllData();
+        }
+
+    },[position, dateRange])
+
+
+    useEffect(() => {
+        // window.history.pushState(
+        //     {}, 
+        //     '', 
+        //     window.location.pathname.includes('?') ? window.location.pathname + '&daterange=' + dateRange.join(',') : window.location.pathname + '?daterange=' + dateRange.join(',')
+        // );
+    }, [dateRange]);
 
     const values = {
+        loading,
         cities,
         countries,
+        convertCountry,
         dateRange,
         setDateRange,
         position,
@@ -490,18 +446,16 @@ export const AppProvider = ({ children }) => {
         country,
         setCountry,
         address,
-        setAddress,
-        interacted,
-        setInteracted,
+        findAddress,
         changeDateRange,
         datasets,
-        precipDatasets,
         temperatureScale,
         getAnomalyColor,
         monthNames,
         annualAvgTemperature,
         annualAvgPrecipitation,
-        maxPrecipitation
+        maxPrecipitation,
+        downloadData
     };
 
     return (

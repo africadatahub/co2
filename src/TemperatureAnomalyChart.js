@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -23,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const TemperatureAnomalyChart = () => {
 
-    const { cities, countries, city, country, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -38,7 +37,7 @@ const TemperatureAnomalyChart = () => {
                     <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
                     <Row>
                         <Col className="tooltip-item-name">Temperature Anomaly</Col>
-                        <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.avg_anomaly))}}>{parseFloat(payload[0].payload.avg_anomaly).toFixed(2)}&deg;</span></Col>
+                        <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.TAVG_anomaly))}}>{parseFloat(payload[0].payload.TAVG_anomaly)}&deg;</span></Col>
                     </Row>
                 </Container>
             );
@@ -49,7 +48,7 @@ const TemperatureAnomalyChart = () => {
 
     useEffect(() => {
 
-        const uniqueTime = [...new Set(datasets.data.map(item => item.time))];
+        const uniqueTime = [...new Set(datasets.data.map(item => item.year))];
 
         setChartData(datasets.data);
         setTickCount(uniqueTime.length);
@@ -63,8 +62,8 @@ const TemperatureAnomalyChart = () => {
                 {<h3>
                     {
                         <>Relative Temperatures in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
                 </h3>}
@@ -87,8 +86,8 @@ const TemperatureAnomalyChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-1">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-temperature-anomaly')}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-temperature-anomaly')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -98,7 +97,7 @@ const TemperatureAnomalyChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-temperature-anomaly">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 
@@ -111,20 +110,20 @@ const TemperatureAnomalyChart = () => {
                         left: 0
                     }}
                    >
-                    <defs>
-                        <linearGradient id="maxmin" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#fca5a5" stopOpacity={0.6}/>
-                            <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
-                        </linearGradient>
-                    </defs>
-                    <XAxis dataKey="time" angle={-90} interval={11}/>
-                    <YAxis/>
+                    <XAxis dataKey="year" angle={-90} interval={11}/>
+                    <YAxis label={{ 
+                        value: `°C`,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: -20, }}
+                    />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Bar dataKey="avg_anomaly">
+                    <Bar dataKey="TAVG_anomaly">
                     {
                         chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.avg_anomaly)} />
+                            <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.TAVG_anomaly)} />
                         ))
                     }
                     </Bar>

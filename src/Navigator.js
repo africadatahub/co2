@@ -1,4 +1,4 @@
-import {useEffect, useContext} from 'react';
+import {useEffect, useContext, useRef} from 'react';
 
 import { AppContext } from './AppContext';
 
@@ -13,26 +13,34 @@ import 'leaflet/dist/leaflet.css';
 
 const Navigator = () => {
 
-    const { position, address, interacted } = useContext(AppContext);
+    const { position } = useContext(AppContext);
 
-    const changePosition = (latlng) => {
-        setPosition(latlng);
-    }
+    const mapRef = useRef(null);
+
+    useEffect(() => {
+        
+        if (mapRef.current) {
+          mapRef.current.panTo(position);
+        }
+    }, [position])
 
 
     return (
         <>
             <div className="fw-bold mb-1">or choose a square on the map to see its climate data:</div>
             <div>
-                <MapContainer center={position} zoom={interacted ? 7 : 6} scrollWheelZoom={false} style={{ height: 500, width: "100%" }} key={JSON.stringify(position)}>
-                    <TileLayer
-                        attribution=''
-                        url="https://tile.openstreetmap.de/{z}/{x}/{y}.png"
-                    />
-                    <LeafletGrid position={position} interacted={interacted} setPosition={changePosition}/>
+                {
+                    position.length > 0 &&
+                    <MapContainer center={position} zoom={6} scrollWheelZoom={false} style={{ height: 500, width: "100%" }} ref={mapRef}>
+                        <TileLayer
+                            attribution=''
+                            url="https://tile.openstreetmap.de/{z}/{x}/{y}.png"
+                        />
+                        <LeafletGrid position={position}/>
 
 
-                </MapContainer>
+                    </MapContainer>
+                }
             </div>
         </>
     )

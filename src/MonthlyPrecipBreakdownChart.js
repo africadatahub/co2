@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -20,11 +19,11 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyPrecipBreakdownChart = () => {
 
-    const { cities, city, country, precipDatasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
-    const [selectedMonth, setSelectedMonth] = useState(0);
+    const [selectedMonth, setSelectedMonth] = useState(1);
 
     const [showClimatology, setShowClimatology] = useState(true);
 
@@ -32,14 +31,14 @@ const MonthlyPrecipBreakdownChart = () => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number-1]}  {label}</div>
                     <Row style={{color: "#bd00ff"}}>
                         <Col className="tooltip-item-name">Rainfall</Col>
                         <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip).toFixed(2)}mm</Col>
                     </Row>
                     <Row style={{color: "#ed8f38"}}>
                         <Col className="tooltip-item-name">Historical Average</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip_avg).toFixed(2)}mm</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip_hist).toFixed(2)}mm</Col>
                     </Row>
                 </Container>
             );
@@ -48,18 +47,16 @@ const MonthlyPrecipBreakdownChart = () => {
 
     const changeMonthlyBreakdown = (month) => {
        
-        let monthData = precipDatasets.data.filter(item => parseInt(item.month_number) == (parseInt(month) + 1));
+        let monthData = datasets.data.filter(item => parseInt(item.month_number) == (parseInt(month)));
 
         setChartData(monthData);
         setSelectedMonth(month);
-
-        console.log(chartData);
         
     }
 
     useEffect(() => {
         changeMonthlyBreakdown(selectedMonth);
-    }, [precipDatasets]);
+    }, [datasets]);
 
     return (
         <section className="chart-wrapper">
@@ -68,8 +65,8 @@ const MonthlyPrecipBreakdownChart = () => {
                 {<h3>
                     {
                         <>Monthly Precipitation Breakdown in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
                 </h3>}
@@ -79,18 +76,18 @@ const MonthlyPrecipBreakdownChart = () => {
                 <Row className="justify-content-between">
                     <Col xs="auto">
                         <Form.Select value={selectedMonth} onChange={e => changeMonthlyBreakdown(e.target.value)}>
-                            <option value="0">January</option>
-                            <option value="1">February</option>
-                            <option value="2">March</option>
-                            <option value="3">April</option>
-                            <option value="4">May</option>
-                            <option value="5">June</option>
-                            <option value="6">July</option>
-                            <option value="7">August</option>
-                            <option value="8">September</option>
-                            <option value="9">October</option>
-                            <option value="10">November</option>
-                            <option value="11">December</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
                         </Form.Select>
                     </Col>
                     <Col xs="auto">
@@ -113,8 +110,8 @@ const MonthlyPrecipBreakdownChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-precipitation-breakdown', selectedMonth)}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-precipitation-breakdown')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -126,7 +123,7 @@ const MonthlyPrecipBreakdownChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-precipitation-breakdown">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 
@@ -140,14 +137,20 @@ const MonthlyPrecipBreakdownChart = () => {
                     }}
                    >
                     
-                    <XAxis dataKey="year"  angle={-90}/>
-                    <YAxis/>
+                    <XAxis dataKey="year" angle={-90}/>
+                    <YAxis label={{ 
+                        value: `mm`,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: -20, }}
+                    />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="2"/>
+                    <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                     {
                         showClimatology &&
-                        <Line type="linear" dataKey="precip_avg" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                        <Line type="linear" dataKey="precip_hist" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
 
                     }
                 </ComposedChart>
@@ -170,7 +173,7 @@ const MonthlyPrecipBreakdownChart = () => {
                         }
                     </Col>
                     <Col xs="auto">
-                        Data source: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a>
+                        Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
                     </Col>
                 </Row>
             </footer>

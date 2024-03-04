@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -13,17 +12,16 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
+import { ChartContainer, LineChart, AreaChart } from 'reaviz';
+
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 
 
-
-
-
 const MonthlyAverageChart = () => {
 
-    const { cities, countries, city, country, datasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -35,30 +33,30 @@ const MonthlyAverageChart = () => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]} {payload[0].payload.time}</div>
-                    {
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]} {payload[0].payload.year}</div>
+                    {/* {
                         showMaxMin &&
                         <Row style={{color: '#fca5a5'}}>
                             <Col className="tooltip-item-name">Maximum Temperature</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.max_temperature).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TMAX_temperature).toFixed(2)}&deg;</Col>
                         </Row>
-                    }
+                    } */}
                     <Row style={{color: '#bd00ff'}}>
                         <Col className="tooltip-item-name">Average Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_temperature).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_temperature)}&deg;</Col>
                     </Row>
-                    {
+                    {/* {
                         showMaxMin &&
                         <Row style={{color: '#a0c4fd'}}>
                             <Col className="tooltip-item-name">Minumum Temperature</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.min_temperature).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TMIN_temperature).toFixed(2)}&deg;</Col>
                         </Row>
-                    }
+                    } */}
                     {
                         showClimatology &&
                         <Row style={{color: '#ed8f38'}}>
                             <Col className="tooltip-item-name">Historical Average</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_climatology).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_climatology)}&deg;</Col>
                         </Row>
                     }   
                 </Container>
@@ -83,8 +81,8 @@ const MonthlyAverageChart = () => {
                 {<h3>
                     {
                         <>Average Monthly Temperature in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
                     }
                 </h3>}
@@ -103,7 +101,7 @@ const MonthlyAverageChart = () => {
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item onClick={() => setShowClimatology(!showClimatology)}><input type="checkbox" checked={showClimatology}/> Historical Avg</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setShowMaxMin(!showMaxMin)}><input type="checkbox" checked={showMaxMin}/> Max/Min Range</Dropdown.Item>
+                                        {/* <Dropdown.Item onClick={() => setShowMaxMin(!showMaxMin)}><input type="checkbox" checked={showMaxMin}/> Max/Min Range</Dropdown.Item> */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -114,8 +112,8 @@ const MonthlyAverageChart = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
-                                        <Dropdown.Item href="#/action-2">PNG</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','monthly-temperature')}>CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('png','monthly-temperature')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -124,7 +122,7 @@ const MonthlyAverageChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container">
+            <div className="chart-container" id="monthly-temperature">
                 <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart
                     width={800} 
@@ -143,19 +141,26 @@ const MonthlyAverageChart = () => {
                             <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey="time"  angle={-90} interval={11}/>
-                    <YAxis/>
+                    <XAxis dataKey="year"  angle={-90} interval={11}/>
+                    <YAxis label={{ 
+                        value: `°C`,
+                        style: { textAnchor: 'middle' },
+                        angle: -90,
+                        position: 'left',
+                        offset: -20, }}
+                    />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="avg_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="2"/>
-                    {
+                    <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="1"/>
+                    {/* {
                         showMaxMin && <Area type="linear" dataKey="maxmin_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
-                    }
+                    } */}
                     {
-                        showClimatology && <Line type="linear" dataKey="avg_climatology" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                        showClimatology && <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
                     }
                 </ComposedChart>
                 </ResponsiveContainer>
+                
             </div>
 
             <footer>

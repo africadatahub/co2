@@ -33,7 +33,7 @@ import './app.scss';
 
 const Co2 = () => {
 
-    const { city, country, dateRange, changeDateRange } = useContext(AppContext);
+    const { cities, city, country, convertCountry, address, dateRange, changeDateRange } = useContext(AppContext);
 
 
     useEffect(() => {
@@ -115,8 +115,8 @@ const Co2 = () => {
                                     <Col>
                                         <a href="#temperature" className="section-jump-btn"><Icon path={mdiThermometer} size={1} /> Temperature</a>
                                         <a href="#rainfall" className="section-jump-btn"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a>
-                                        <a href="#" className="section-jump-btn disabled"><Icon path={mdiFactory} size={1} />CO<sub>2</sub> Emissions</a>
-                                        <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a>
+                                        {/* <a href="#" className="section-jump-btn disabled"><Icon path={mdiFactory} size={1} />CO<sub>2</sub> Emissions</a> */}
+                                        {/* <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a> */}
                                     </Col>
                                 </Row>
                             </Col>
@@ -167,7 +167,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4>Average Monthly Temperature</h4>
                             <p>
-                                This chart shows the average monthly temperature for {city}, {country}. The red and blue areas show peak maximum and minimum temperatures for that month.
+                                This chart shows the average monthly temperature for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }, {convertCountry('iso3', country).location}. The red and blue areas show peak maximum and minimum temperatures for that month.
                             </p>
                             <h5>Frequently Asked Questions</h5>
                             
@@ -271,7 +271,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4>Temperature Anomaly</h4>
                             <p>
-                                This chart is created using the anomaly described above, and is based on the work of Ed Hawkins and #ShowYourStripes. Red bars show years in which the temperature has been higher than the historical average, green bars years in which it has been colder.
+                                This chart is created using the anomaly described above, and is based on the work of Ed Hawkins and #ShowYourStripes. Red bars show years in which the temperature has been higher than the historical average, blue bars years in which it has been colder.
                             </p>
                         </Col>
                         <Col>
@@ -385,7 +385,7 @@ const Co2 = () => {
                             <Accordion className="faq">
                                 <Card>
                                     <Card.Header>
-                                        <ContextAwareToggle eventKey="0">Wha's the driest place in sub-Saharan Africa?</ContextAwareToggle>
+                                        <ContextAwareToggle eventKey="0">What's the driest place in sub-Saharan Africa?</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
                                         <Card.Body>The Namib desert in Namibia is the driest place in sub-Saharan Africa, and it's reckoned that some parts of the Namib receive less than 2mm of rain a year.</Card.Body>

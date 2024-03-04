@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -23,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualTemperaturetable = () => {
 
-    const { cities, countries, city, country, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames } = useContext(AppContext);
+    const { cities, countries, city, country, address, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -31,7 +30,7 @@ const AnnualTemperaturetable = () => {
 
     const changeYear = () => {
 
-        let yearData = datasets.data.filter(item => parseInt(item.time) == parseInt(selectedYear));
+        let yearData = datasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
 
         setChartData(yearData);
     
@@ -50,8 +49,8 @@ const AnnualTemperaturetable = () => {
                 {<h3>
                     {
                         <>Monthly temperatures in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div> 
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> compared to longterm average</>
                     }
                 </h3>}
@@ -80,7 +79,7 @@ const AnnualTemperaturetable = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','annual-temperature')}>CSV</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -108,11 +107,11 @@ const AnnualTemperaturetable = () => {
                                 return (
                                     <tr key={i}>
                                         <td>{monthNames[row.month_number]}</td>
-                                        <td className="text-end">{row.avg_climatology.toFixed(2)}&deg;</td>
-                                        <td className="text-end">{row.avg_temperature.toFixed(2)}&deg;</td>
+                                        <td className="text-end">{row.TAVG_climatology}&deg;</td>
+                                        <td className="text-end">{row.TAVG_temperature}&deg;</td>
                                         <td className="text-end">
-                                            {row.avg_anomaly.toFixed(2)}&deg;
-                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.avg_anomaly) }}></div>
+                                            {row.TAVG_anomaly}&deg;
+                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.TAVG_anomaly) }}></div>
                                         </td>
                                     </tr>
                                 )

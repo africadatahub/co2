@@ -1,7 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { AppContext } from "./AppContext";
 
-import getCountryISO2 from 'country-iso-3-to-2';
 import ReactCountryFlag from 'react-country-flag';
 
 import Container from 'react-bootstrap/Container';
@@ -23,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualPrecipTable = () => {
 
-    const { cities, city, country, precipDatasets, dateRange, monthNames } = useContext(AppContext);
+    const { cities, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -34,7 +33,7 @@ const AnnualPrecipTable = () => {
 
     const changeYear = () => {
 
-        let yearData = precipDatasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
+        let yearData = datasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
 
         setChartData(yearData);
     
@@ -45,7 +44,7 @@ const AnnualPrecipTable = () => {
 
         changeYear();        
     
-    }, [precipDatasets, selectedYear]);
+    }, [datasets, selectedYear]);
 
     return (
         <section className="chart-wrapper">
@@ -54,8 +53,8 @@ const AnnualPrecipTable = () => {
                 {<h3>
                     {
                         <>Annual rainfall in <span className="location-highlight">
-                                <div className="country-flag-circle"><ReactCountryFlag countryCode={getCountryISO2(country)} svg /></div>
-                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }</span>
+                                <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
+                                <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> compared to longterm average</>
                     }
                 </h3>}
@@ -96,7 +95,7 @@ const AnnualPrecipTable = () => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item href="#/action-1">CSV</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => downloadData('csv','annual-precipitation')}>CSV</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -129,8 +128,8 @@ const AnnualPrecipTable = () => {
                                 return (
                                     <tr key={i}>
                                         <td>{monthNames[row.month_number-1]}</td>
-                                        <td className="text-end">{row.precip_avg.toFixed(2)}mm</td>
-                                        <td className="text-end">{row.precip.toFixed(2)}mmm</td>
+                                        <td className="text-end">{parseFloat(row.precip_hist).toFixed(2)}mm</td>
+                                        <td className="text-end">{parseFloat(row.precip).toFixed(2)}mm</td>
                                     </tr>
                                 )
                             })
@@ -148,7 +147,7 @@ const AnnualPrecipTable = () => {
                         
                     </Col>
                     <Col xs="auto">
-                        Data source: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a>
+                        Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
                     </Col>
                 </Row>
             </footer>

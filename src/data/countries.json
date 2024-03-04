@@ -1,222 +1,277 @@
 [
- {
-   "iso_code": "DZA",
-   "location": "Algeria"
- },
- {
-   "iso_code": "AGO",
-   "location": "Angola"
- },
- {
-   "iso_code": "BEN",
-   "location": "Benin"
- },
- {
-   "iso_code": "BWA",
-   "location": "Botswana"
- },
- {
-   "iso_code": "BFA",
-   "location": "Burkina Faso"
- },
- {
-   "iso_code": "BDI",
-   "location": "Burundi"
- },
- {
-   "iso_code": "CMR",
-   "location": "Cameroon"
- },
- {
-   "iso_code": "CPV",
-   "location": "Cape Verde"
- },
- {
-   "iso_code": "CAF",
-   "location": "Central African Republic"
- },
- {
-   "iso_code": "TCD",
-   "location": "Chad"
- },
- {
-   "iso_code": "COM",
-   "location": "Comoros"
- },
- {
-   "iso_code": "COG",
-   "location": "Congo"
- },
- {
-   "iso_code": "CIV",
-   "location": "Cote d'Ivoire"
- },
- {
-   "iso_code": "COD",
-   "location": "Democratic Republic of Congo"
- },
- {
-   "iso_code": "DJI",
-   "location": "Djibouti"
- },
- {
-   "iso_code": "EGY",
-   "location": "Egypt"
- },
- {
-   "iso_code": "GNQ",
-   "location": "Equatorial Guinea"
- },
- {
-   "iso_code": "ERI",
-   "location": "Eritrea"
- },
- {
-   "iso_code": "SWZ",
-   "location": "Eswatini"
- },
- {
-   "iso_code": "ETH",
-   "location": "Ethiopia"
- },
- {
-   "iso_code": "GAB",
-   "location": "Gabon"
- },
- {
-   "iso_code": "GMB",
-   "location": "Gambia"
- },
- {
-   "iso_code": "GHA",
-   "location": "Ghana"
- },
- {
-   "iso_code": "GIN",
-   "location": "Guinea"
- },
- {
-   "iso_code": "GNB",
-   "location": "Guinea-Bissau"
- },
- {
-   "iso_code": "KEN",
-   "location": "Kenya"
- },
- {
-   "iso_code": "LSO",
-   "location": "Lesotho"
- },
- {
-   "iso_code": "LBR",
-   "location": "Liberia"
- },
- {
-   "iso_code": "LBY",
-   "location": "Libya"
- },
- {
-   "iso_code": "MDG",
-   "location": "Madagascar"
- },
- {
-   "iso_code": "MWI",
-   "location": "Malawi"
- },
- {
-   "iso_code": "MLI",
-   "location": "Mali"
- },
- {
-   "iso_code": "MRT",
-   "location": "Mauritania"
- },
- {
-   "iso_code": "MUS",
-   "location": "Mauritius"
- },
- {
-   "iso_code": "MAR",
-   "location": "Morocco"
- },
- {
-   "iso_code": "MOZ",
-   "location": "Mozambique"
- },
- {
-   "iso_code": "NAM",
-   "location": "Namibia"
- },
- {
-   "iso_code": "NER",
-   "location": "Niger"
- },
- {
-   "iso_code": "NGA",
-   "location": "Nigeria"
- },
- {
-   "iso_code": "RWA",
-   "location": "Rwanda"
- },
- {
-   "iso_code": "SHN",
-   "location": "Saint Helena"
- },
- {
-   "iso_code": "STP",
-   "location": "Sao Tome and Principe"
- },
- {
-   "iso_code": "SEN",
-   "location": "Senegal"
- },
- {
-   "iso_code": "SYC",
-   "location": "Seychelles"
- },
- {
-   "iso_code": "SLE",
-   "location": "Sierra Leone"
- },
- {
-   "iso_code": "SOM",
-   "location": "Somalia"
- },
- {
-   "iso_code": "ZAF",
-   "location": "South Africa"
- },
- {
-   "iso_code": "SSD",
-   "location": "South Sudan"
- },
- {
-   "iso_code": "SDN",
-   "location": "Sudan"
- },
- {
-   "iso_code": "TZA",
-   "location": "Tanzania"
- },
- {
-   "iso_code": "TGO",
-   "location": "Togo"
- },
- {
-   "iso_code": "TUN",
-   "location": "Tunisia"
- },
- {
-   "iso_code": "UGA",
-   "location": "Uganda"
- },
- {
-   "iso_code": "ZMB",
-   "location": "Zambia"
- },
- {
-   "iso_code": "ZWE",
-   "location": "Zimbabwe"
- }
+  {
+    "iso3": "DZA",
+    "iso2": "DZ",
+    "location": "Algeria"
+  },
+  {
+    "iso3": "AGO",
+    "iso2": "AO",
+    "location": "Angola"
+  },
+  {
+    "iso3": "BEN",
+    "iso2": "BJ",
+    "location": "Benin"
+  },
+  {
+    "iso3": "BWA",
+    "iso2": "BW",
+    "location": "Botswana"
+  },
+  {
+    "iso3": "BFA",
+    "iso2": "BF",
+    "location": "Burkina Faso"
+  },
+  {
+    "iso3": "BDI",
+    "iso2": "BI",
+    "location": "Burundi"
+  },
+  {
+    "iso3": "CMR",
+    "iso2": "CM",
+    "location": "Cameroon"
+  },
+  {
+    "iso3": "CPV",
+    "iso2": "CV",
+    "location": "Cape Verde"
+  },
+  {
+    "iso3": "CAF",
+    "iso2": "CF",
+    "location": "Central African Republic"
+  },
+  {
+    "iso3": "TCD",
+    "iso2": "TD",
+    "location": "Chad"
+  },
+  {
+    "iso3": "COM",
+    "iso2": "KM",
+    "location": "Comoros"
+  },
+  {
+    "iso3": "COG",
+    "iso2": "CG",
+    "location": "Congo"
+  },
+  {
+    "iso3": "CIV",
+    "iso2": "CI",
+    "location": "Cote d'Ivoire"
+  },
+  {
+    "iso3": "COD",
+    "iso2": "CD",
+    "location": "Democratic Republic of Congo"
+  },
+  {
+    "iso3": "DJI",
+    "iso2": "DJ",
+    "location": "Djibouti"
+  },
+  {
+    "iso3": "EGY",
+    "iso2": "EG",
+    "location": "Egypt"
+  },
+  {
+    "iso3": "GNQ",
+    "iso2": "GQ",
+    "location": "Equatorial Guinea"
+  },
+  {
+    "iso3": "ERI",
+    "iso2": "ER",
+    "location": "Eritrea"
+  },
+  {
+    "iso3": "SWZ",
+    "iso2": "SZ",
+    "location": "Eswatini"
+  },
+  {
+    "iso3": "ETH",
+    "iso2": "ET",
+    "location": "Ethiopia"
+  },
+  {
+    "iso3": "GAB",
+    "iso2": "GA",
+    "location": "Gabon"
+  },
+  {
+    "iso3": "GMB",
+    "iso2": "GM",
+    "location": "Gambia"
+  },
+  {
+    "iso3": "GHA",
+    "iso2": "GH",
+    "location": "Ghana"
+  },
+  {
+    "iso3": "GIN",
+    "iso2": "GN",
+    "location": "Guinea"
+  },
+  {
+    "iso3": "GNB",
+    "iso2": "GW",
+    "location": "Guinea-Bissau"
+  },
+  {
+    "iso3": "KEN",
+    "iso2": "KE",
+    "location": "Kenya"
+  },
+  {
+    "iso3": "LSO",
+    "iso2": "LS",
+    "location": "Lesotho"
+  },
+  {
+    "iso3": "LBR",
+    "iso2": "LR",
+    "location": "Liberia"
+  },
+  {
+    "iso3": "LBY",
+    "iso2": "LY",
+    "location": "Libya"
+  },
+  {
+    "iso3": "MDG",
+    "iso2": "MG",
+    "location": "Madagascar"
+  },
+  {
+    "iso3": "MWI",
+    "iso2": "MW",
+    "location": "Malawi"
+  },
+  {
+    "iso3": "MLI",
+    "iso2": "ML",
+    "location": "Mali"
+  },
+  {
+    "iso3": "MRT",
+    "iso2": "MR",
+    "location": "Mauritania"
+  },
+  {
+    "iso3": "MUS",
+    "iso2": "MU",
+    "location": "Mauritius"
+  },
+  {
+    "iso3": "MAR",
+    "iso2": "MA",
+    "location": "Morocco"
+  },
+  {
+    "iso3": "MOZ",
+    "iso2": "MZ",
+    "location": "Mozambique"
+  },
+  {
+    "iso3": "NAM",
+    "iso2": "NA",
+    "location": "Namibia"
+  },
+  {
+    "iso3": "NER",
+    "iso2": "NE",
+    "location": "Niger"
+  },
+  {
+    "iso3": "NGA",
+    "iso2": "NG",
+    "location": "Nigeria"
+  },
+  {
+    "iso3": "RWA",
+    "iso2": "RW",
+    "location": "Rwanda"
+  },
+  {
+    "iso3": "SHN",
+    "iso2": "SH",
+    "location": "Saint Helena"
+  },
+  {
+    "iso3": "STP",
+    "iso2": "ST",
+    "location": "Sao Tome and Principe"
+  },
+  {
+    "iso3": "SEN",
+    "iso2": "SN",
+    "location": "Senegal"
+  },
+  {
+    "iso3": "SYC",
+    "iso2": "SC",
+    "location": "Seychelles"
+  },
+  {
+    "iso3": "SLE",
+    "iso2": "SL",
+    "location": "Sierra Leone"
+  },
+  {
+    "iso3": "SOM",
+    "iso2": "SO",
+    "location": "Somalia"
+  },
+  {
+    "iso3": "ZAF",
+    "iso2": "ZA",
+    "location": "South Africa"
+  },
+  {
+    "iso3": "SSD",
+    "iso2": "SS",
+    "location": "South Sudan"
+  },
+  {
+    "iso3": "SDN",
+    "iso2": "SD",
+    "location": "Sudan"
+  },
+  {
+    "iso3": "TZA",
+    "iso2": "TZ",
+    "location": "Tanzania"
+  },
+  {
+    "iso3": "TGO",
+    "iso2": "TG",
+    "location": "Togo"
+  },
+  {
+    "iso3": "TUN",
+    "iso2": "TN",
+    "location": "Tunisia"
+  },
+  {
+    "iso3": "UGA",
+    "iso2": "UG",
+    "location": "Uganda"
+  },
+  {
+    "iso3": "ZMB",
+    "iso2": "ZM",
+    "location": "Zambia"
+  },
+  {
+    "iso3": "ZWE",
+    "iso2": "ZW",
+    "location": "Zimbabwe"
+  }
 ]
