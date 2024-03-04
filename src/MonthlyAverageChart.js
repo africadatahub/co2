@@ -33,30 +33,30 @@ const MonthlyAverageChart = () => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]} {payload[0].payload.time}</div>
-                    {
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]} {payload[0].payload.year}</div>
+                    {/* {
                         showMaxMin &&
                         <Row style={{color: '#fca5a5'}}>
                             <Col className="tooltip-item-name">Maximum Temperature</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.max_temperature).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TMAX_temperature).toFixed(2)}&deg;</Col>
                         </Row>
-                    }
+                    } */}
                     <Row style={{color: '#bd00ff'}}>
                         <Col className="tooltip-item-name">Average Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_temperature).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_temperature)}&deg;</Col>
                     </Row>
-                    {
+                    {/* {
                         showMaxMin &&
                         <Row style={{color: '#a0c4fd'}}>
                             <Col className="tooltip-item-name">Minumum Temperature</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.min_temperature).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TMIN_temperature).toFixed(2)}&deg;</Col>
                         </Row>
-                    }
+                    } */}
                     {
                         showClimatology &&
                         <Row style={{color: '#ed8f38'}}>
                             <Col className="tooltip-item-name">Historical Average</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.avg_climatology).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_climatology)}&deg;</Col>
                         </Row>
                     }   
                 </Container>
@@ -101,7 +101,7 @@ const MonthlyAverageChart = () => {
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item onClick={() => setShowClimatology(!showClimatology)}><input type="checkbox" checked={showClimatology}/> Historical Avg</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => setShowMaxMin(!showMaxMin)}><input type="checkbox" checked={showMaxMin}/> Max/Min Range</Dropdown.Item>
+                                        {/* <Dropdown.Item onClick={() => setShowMaxMin(!showMaxMin)}><input type="checkbox" checked={showMaxMin}/> Max/Min Range</Dropdown.Item> */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -141,7 +141,7 @@ const MonthlyAverageChart = () => {
                             <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey="time"  angle={-90} interval={11}/>
+                    <XAxis dataKey="year"  angle={-90} interval={11}/>
                     <YAxis label={{ 
                         value: `°C`,
                         style: { textAnchor: 'middle' },
@@ -151,12 +151,12 @@ const MonthlyAverageChart = () => {
                     />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="avg_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="2"/>
-                    {
+                    <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="1"/>
+                    {/* {
                         showMaxMin && <Area type="linear" dataKey="maxmin_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
-                    }
+                    } */}
                     {
-                        showClimatology && <Line type="linear" dataKey="avg_climatology" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                        showClimatology && <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
                     }
                 </ComposedChart>
                 </ResponsiveContainer>

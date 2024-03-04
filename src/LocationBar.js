@@ -73,11 +73,16 @@ const LocationBar = () => {
     }
 
     const changeLocation = (type, value) => {
+        onsole.log(searchRef);
+        
         if(value != 'location' && value != '') {
             if(type == 'city') {
+                console.log('here1');
+                
                 searchRef.current.value = '';
                 setCity(value);
             } else {
+                console.log('here2');
                 window.history.pushState(
                     {}, 
                     '', 

@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualPrecipTable = () => {
 
-    const { cities, city, country, address, precipDatasets, dateRange, monthNames, downloadData } = useContext(AppContext);
+    const { cities, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -33,7 +33,7 @@ const AnnualPrecipTable = () => {
 
     const changeYear = () => {
 
-        let yearData = precipDatasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
+        let yearData = datasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
 
         setChartData(yearData);
     
@@ -44,7 +44,7 @@ const AnnualPrecipTable = () => {
 
         changeYear();        
     
-    }, [precipDatasets, selectedYear]);
+    }, [datasets, selectedYear]);
 
     return (
         <section className="chart-wrapper">
@@ -128,7 +128,7 @@ const AnnualPrecipTable = () => {
                                 return (
                                     <tr key={i}>
                                         <td>{monthNames[row.month_number-1]}</td>
-                                        <td className="text-end">{parseFloat(row.precip_avg).toFixed(2)}mm</td>
+                                        <td className="text-end">{parseFloat(row.precip_hist).toFixed(2)}mm</td>
                                         <td className="text-end">{parseFloat(row.precip).toFixed(2)}mm</td>
                                     </tr>
                                 )

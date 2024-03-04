@@ -21,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyPrecipitationChart = () => {
 
-    const { cities, city, country, convertCountry, address, precipDatasets, dateRange, monthNames, maxPrecipitation, downloadData } = useContext(AppContext);
+    const { cities, city, country, convertCountry, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -39,8 +39,10 @@ const MonthlyPrecipitationChart = () => {
             heatmapData.push({key: monthNames[i-1], data: []});
         }
 
-        precipDatasets.data.forEach((d) => {
-            heatmapData.filter(h => h.key ==  monthNames[d.month_number-1])[0].data.push({key: d.year, data: d.precip});
+        datasets.data.forEach((d) => {
+            if(d.year < 2024) {
+                heatmapData.filter(h => h.key ==  monthNames[d.month_number-1])[0].data.push({key: d.year, data: parseFloat(d.precip)});
+            }
         })
         
         
@@ -48,7 +50,7 @@ const MonthlyPrecipitationChart = () => {
 
         setChartData(heatmapData);
     
-    }, [precipDatasets]);
+    }, [datasets]);
 
     
 
@@ -69,9 +71,7 @@ const MonthlyPrecipitationChart = () => {
             <div className="chart-controls">
                 <Row className="justify-content-between">
                     <Col xs="auto">
-                        {/* <Form.Select>
-                            <option>Long term average</option>
-                        </Form.Select> */}
+                        
                     </Col>
                     <Col xs="auto">
                         <Row>

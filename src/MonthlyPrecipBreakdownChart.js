@@ -19,11 +19,11 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyPrecipBreakdownChart = () => {
 
-    const { cities, city, country, address, precipDatasets, dateRange, monthNames, downloadData } = useContext(AppContext);
+    const { cities, city, country, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
-    const [selectedMonth, setSelectedMonth] = useState(0);
+    const [selectedMonth, setSelectedMonth] = useState(1);
 
     const [showClimatology, setShowClimatology] = useState(true);
 
@@ -38,7 +38,7 @@ const MonthlyPrecipBreakdownChart = () => {
                     </Row>
                     <Row style={{color: "#ed8f38"}}>
                         <Col className="tooltip-item-name">Historical Average</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip_avg).toFixed(2)}mm</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip_hist).toFixed(2)}mm</Col>
                     </Row>
                 </Container>
             );
@@ -47,7 +47,7 @@ const MonthlyPrecipBreakdownChart = () => {
 
     const changeMonthlyBreakdown = (month) => {
        
-        let monthData = precipDatasets.data.filter(item => parseInt(item.month_number) == (parseInt(month) + 1));
+        let monthData = datasets.data.filter(item => parseInt(item.month_number) == (parseInt(month)));
 
         setChartData(monthData);
         setSelectedMonth(month);
@@ -56,7 +56,7 @@ const MonthlyPrecipBreakdownChart = () => {
 
     useEffect(() => {
         changeMonthlyBreakdown(selectedMonth);
-    }, [precipDatasets]);
+    }, [datasets]);
 
     return (
         <section className="chart-wrapper">
@@ -76,18 +76,18 @@ const MonthlyPrecipBreakdownChart = () => {
                 <Row className="justify-content-between">
                     <Col xs="auto">
                         <Form.Select value={selectedMonth} onChange={e => changeMonthlyBreakdown(e.target.value)}>
-                            <option value="0">January</option>
-                            <option value="1">February</option>
-                            <option value="2">March</option>
-                            <option value="3">April</option>
-                            <option value="4">May</option>
-                            <option value="5">June</option>
-                            <option value="6">July</option>
-                            <option value="7">August</option>
-                            <option value="8">September</option>
-                            <option value="9">October</option>
-                            <option value="10">November</option>
-                            <option value="11">December</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
                         </Form.Select>
                     </Col>
                     <Col xs="auto">
@@ -147,10 +147,10 @@ const MonthlyPrecipBreakdownChart = () => {
                     />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="2"/>
+                    <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                     {
                         showClimatology &&
-                        <Line type="linear" dataKey="precip_avg" stroke="#ed8f38" dot={false} strokeWidth="2" strokeDasharray="8"/>
+                        <Line type="linear" dataKey="precip_hist" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
 
                     }
                 </ComposedChart>

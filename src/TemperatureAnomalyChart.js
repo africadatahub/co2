@@ -37,7 +37,7 @@ const TemperatureAnomalyChart = () => {
                     <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
                     <Row>
                         <Col className="tooltip-item-name">Temperature Anomaly</Col>
-                        <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.avg_anomaly))}}>{parseFloat(payload[0].payload.avg_anomaly).toFixed(2)}&deg;</span></Col>
+                        <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.TAVG_anomaly))}}>{parseFloat(payload[0].payload.TAVG_anomaly)}&deg;</span></Col>
                     </Row>
                 </Container>
             );
@@ -48,7 +48,7 @@ const TemperatureAnomalyChart = () => {
 
     useEffect(() => {
 
-        const uniqueTime = [...new Set(datasets.data.map(item => item.time))];
+        const uniqueTime = [...new Set(datasets.data.map(item => item.year))];
 
         setChartData(datasets.data);
         setTickCount(uniqueTime.length);
@@ -110,7 +110,7 @@ const TemperatureAnomalyChart = () => {
                         left: 0
                     }}
                    >
-                    <XAxis dataKey="time" angle={-90} interval={11}/>
+                    <XAxis dataKey="year" angle={-90} interval={11}/>
                     <YAxis label={{ 
                         value: `°C`,
                         style: { textAnchor: 'middle' },
@@ -120,10 +120,10 @@ const TemperatureAnomalyChart = () => {
                     />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
-                    <Bar dataKey="avg_anomaly">
+                    <Bar dataKey="TAVG_anomaly">
                     {
                         chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.avg_anomaly)} />
+                            <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.TAVG_anomaly)} />
                         ))
                     }
                     </Bar>

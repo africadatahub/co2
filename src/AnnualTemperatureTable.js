@@ -30,7 +30,7 @@ const AnnualTemperaturetable = () => {
 
     const changeYear = () => {
 
-        let yearData = datasets.data.filter(item => parseInt(item.time) == parseInt(selectedYear));
+        let yearData = datasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
 
         setChartData(yearData);
     
@@ -107,11 +107,11 @@ const AnnualTemperaturetable = () => {
                                 return (
                                     <tr key={i}>
                                         <td>{monthNames[row.month_number]}</td>
-                                        <td className="text-end">{row.avg_climatology.toFixed(2)}&deg;</td>
-                                        <td className="text-end">{row.avg_temperature.toFixed(2)}&deg;</td>
+                                        <td className="text-end">{row.TAVG_climatology}&deg;</td>
+                                        <td className="text-end">{row.TAVG_temperature}&deg;</td>
                                         <td className="text-end">
-                                            {row.avg_anomaly.toFixed(2)}&deg;
-                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.avg_anomaly) }}></div>
+                                            {row.TAVG_anomaly}&deg;
+                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.TAVG_anomaly) }}></div>
                                         </td>
                                     </tr>
                                 )
