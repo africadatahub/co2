@@ -109,7 +109,7 @@ export const AppProvider = ({ children }) => {
 
     
 
-    convertCountry = (type, value) => {
+    const convertCountry = (type, value) => {
 
         if(value == '' || value == undefined) return '';
 
