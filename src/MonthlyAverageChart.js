@@ -33,7 +33,7 @@ const MonthlyAverageChart = () => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]} {payload[0].payload.year}</div>
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number-1]} {payload[0].payload.year}</div>
                     {
                         showMaxMin &&
                         <Row style={{color: '#fca5a5'}}>

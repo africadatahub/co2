@@ -34,7 +34,7 @@ const TemperatureAnomalyChart = () => {
         if (active && payload && payload.length) {
             return (
                 <Container className="custom-tooltip">
-                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
+                    <div className="tooltip-date">{monthNames[payload[0].payload.month_number-1]}  {label}</div>
                     <Row>
                         <Col className="tooltip-item-name">Temperature Anomaly</Col>
                         <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.TAVG_anomaly))}}>{parseFloat(payload[0].payload.TAVG_anomaly)}&deg;</span></Col>
