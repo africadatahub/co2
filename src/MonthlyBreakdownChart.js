@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyBreakdownChart = () => {
 
-    const { cities, countries, city, country, convertCountry, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
+    const { cities, countries, city, country, convertCountry, address, datasets, currentData, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -50,7 +50,7 @@ const MonthlyBreakdownChart = () => {
 
     const changeMonthlyBreakdown = (month) => {
        
-        let monthData = datasets.data.filter(item => item.month_number == parseInt(month));
+        let monthData = currentData.filter(item => item.month_number == parseInt(month));
 
         setChartData(monthData);
         setSelectedMonth(month);
@@ -59,7 +59,7 @@ const MonthlyBreakdownChart = () => {
 
     useEffect(() => {
         changeMonthlyBreakdown(selectedMonth);
-    }, [datasets]);
+    }, [currentData]);
 
     return (
         <section className="chart-wrapper">

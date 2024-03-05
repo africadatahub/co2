@@ -21,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyAverageChart = () => {
 
-    const { cities, countries, city, country, convertCountry, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
+    const { cities, countries, city, country, convertCountry, address, datasets, currentData, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -69,10 +69,10 @@ const MonthlyAverageChart = () => {
     useEffect(() => {
 
        
-        setChartData(datasets.data);
+        setChartData(currentData);
         
     
-    }, [datasets]);
+    }, [currentData]);
 
     return (
         <section className="chart-wrapper">

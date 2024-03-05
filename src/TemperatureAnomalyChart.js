@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const TemperatureAnomalyChart = () => {
 
-    const { cities, countries, city, country, convertCountry, address, datasets, dateRange, getAnomalyColor, monthNames, temperatureScale, downloadData } = useContext(AppContext);
+    const { cities, countries, city, country, convertCountry, address, datasets, currentData, dateRange, getAnomalyColor, monthNames, temperatureScale, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -48,12 +48,12 @@ const TemperatureAnomalyChart = () => {
 
     useEffect(() => {
 
-        const uniqueTime = [...new Set(datasets.data.map(item => item.year))];
+        const uniqueTime = [...new Set(currentData.map(item => item.year))];
 
-        setChartData(datasets.data);
+        setChartData(currentData);
         setTickCount(uniqueTime.length);
     
-    }, [datasets]);
+    }, [currentData]);
 
     return (
         <section className="chart-wrapper">

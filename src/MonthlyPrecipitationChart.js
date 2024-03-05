@@ -21,7 +21,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const MonthlyPrecipitationChart = () => {
 
-    const { cities, city, country, convertCountry, address, datasets, dateRange, monthNames, downloadData } = useContext(AppContext);
+    const { cities, city, country, convertCountry, address, datasets, currentData, dateRange, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -39,7 +39,7 @@ const MonthlyPrecipitationChart = () => {
             heatmapData.push({key: monthNames[i-1], data: []});
         }
 
-        datasets.data.forEach((d) => {
+        currentData.forEach((d) => {
             if(d.year < 2024) {
                 heatmapData.filter(h => h.key ==  monthNames[d.month_number-1])[0].data.push({key: d.year, data: parseFloat(d.precip)});
             }
@@ -50,7 +50,7 @@ const MonthlyPrecipitationChart = () => {
 
         setChartData(heatmapData);
     
-    }, [datasets]);
+    }, [currentData]);
 
     
 

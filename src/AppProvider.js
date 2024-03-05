@@ -34,6 +34,7 @@ export const AppProvider = ({ children }) => {
             }
         }
     );
+    const [currentData, setCurrentData] = useState([]);
     const [annualAvgTemperature, setAnnualAvgTemperature] = useState(null);
     const [annualAvgPrecipitation, setAnnualAvgPrecipitation] = useState(null);
     const [maxPrecipitation, setMaxPrecipitation] = useState(null);
@@ -137,7 +138,7 @@ export const AppProvider = ({ children }) => {
 
     async function getAllData() {
         setLoading(true);
-        axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + datasets.all_data + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(position[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(position[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(position[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(position[1]) + 0.5) + '%20AND%20year%20%3E%3D%20' + dateRange[0] + '%20AND%20year%20%3C%3D%20' + (dateRange[1] + 1) + '%20', {
+        axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + datasets.all_data + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(position[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(position[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(position[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(position[1]) + 0.5) + '%20', {
                 headers: {
                     "Authorization": process.env.CKAN
                 }
@@ -147,8 +148,6 @@ export const AppProvider = ({ children }) => {
                 let max = 0;
 
                 let data = response.data.result.records;
-
-                console.log(data);
 
 
                 // read all data as floats
@@ -198,13 +197,25 @@ export const AppProvider = ({ children }) => {
                 
                 })
 
-
                 setMaxPrecipitation(max);
+
                 setDatasets({...datasets, data: data});
+                
                 setLoading(false);
 
             })
             
+    }
+
+    const filterDataByDate = () => {
+        
+        let filteredData = datasets.data.filter(record => {
+            return parseInt(record.year) >= dateRange[0] && parseInt(record.year) <= dateRange[1];
+        });
+
+        console.log(filteredData);
+
+        setCurrentData(filteredData);
     }
     
 
@@ -387,13 +398,11 @@ export const AppProvider = ({ children }) => {
     
 
     useEffect(() => {
-
         if(datasets.data.length > 0) {
             setAnnualAvgTemperature(getAnnualAvgTemperature());
             setAnnualAvgPrecipitation(getAnnualPrecipitation());
         }
-
-
+        filterDataByDate();
     }, [datasets]);
 
    
@@ -423,12 +432,12 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
 
         if(position.length > 0) {
-            // getTempData();
-            // getPrecipData();
             getAllData();
         }
 
-    },[position, dateRange])
+    },[position])
+
+
 
 
     useEffect(() => {
@@ -437,6 +446,10 @@ export const AppProvider = ({ children }) => {
         //     '', 
         //     window.location.pathname.includes('?') ? window.location.pathname + '&daterange=' + dateRange.join(',') : window.location.pathname + '?daterange=' + dateRange.join(',')
         // );
+        if(dateRange[0] > dateRange[1]) {
+            setDateRange([dateRange[1], dateRange[0]]);
+        }
+        filterDataByDate();
     }, [dateRange]);
 
     const values = {
@@ -456,6 +469,7 @@ export const AppProvider = ({ children }) => {
         findAddress,
         changeDateRange,
         datasets,
+        currentData,
         temperatureScale,
         getAnomalyColor,
         monthNames,

@@ -22,7 +22,7 @@ import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
 const AnnualTemperaturetable = () => {
 
-    const { cities, countries, city, country, convertCountry, address, datasets, dateRange, temperatureScale, getAnomalyColor, monthNames, downloadData } = useContext(AppContext);
+    const { cities, countries, city, country, convertCountry, address, datasets, currentData, dateRange, temperatureScale, getAnomalyColor, monthNames, downloadData } = useContext(AppContext);
 
     const [chartData, setChartData] = useState([]);
 
@@ -30,7 +30,7 @@ const AnnualTemperaturetable = () => {
 
     const changeYear = () => {
 
-        let yearData = datasets.data.filter(item => parseInt(item.year) == parseInt(selectedYear));
+        let yearData = currentData.filter(item => parseInt(item.year) == parseInt(selectedYear));
 
         setChartData(yearData);
     
@@ -40,7 +40,7 @@ const AnnualTemperaturetable = () => {
 
         changeYear();        
     
-    }, [datasets, selectedYear]);
+    }, [currentData, selectedYear]);
 
     return (
         <section className="chart-wrapper">
