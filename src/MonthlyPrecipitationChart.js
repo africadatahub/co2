@@ -60,7 +60,7 @@ const MonthlyPrecipitationChart = () => {
             <header>
                 {<h3>
                     {
-                        <>Monthly Rainfall in <span className="location-highlight">
+                        <>Monthly rainfall in <span className="location-highlight">
                                 <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
                                 <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>

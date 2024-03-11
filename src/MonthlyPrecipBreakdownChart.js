@@ -10,7 +10,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { linearRegression } from 'simple-statistics';
+
+import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
@@ -25,7 +27,11 @@ const MonthlyPrecipBreakdownChart = () => {
 
     const [selectedMonth, setSelectedMonth] = useState(1);
 
+    const [trend, setTrend] = useState(0);
+
     const [showClimatology, setShowClimatology] = useState(true);
+
+    const [showTrendline, setShowTrendline] = useState(true);
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -40,6 +46,10 @@ const MonthlyPrecipBreakdownChart = () => {
                         <Col className="tooltip-item-name">Historical Average</Col>
                         <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.precip_hist).toFixed(2)}mm</Col>
                     </Row>
+                    <Row style={{color: "#3182bd"}}>
+                        <Col className="tooltip-item-name">Trend</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.trendline).toFixed(2)}mm ({trend.toFixed(2)}mm)</Col>
+                    </Row>
                 </Container>
             );
         }
@@ -49,8 +59,27 @@ const MonthlyPrecipBreakdownChart = () => {
        
         let monthData = currentData.filter(item => parseInt(item.month_number) == (parseInt(month)));
 
+        let month_values = monthData.map(d => parseFloat(d.precip));
+
+        // calculate trendline
+        let trendline = linearRegression(month_values.map((v,i) => [i,v]));
+
+        setTrend(trendline.m);
+
+        // fill for all
+        let thetrendline = [];
+        for (let i = 0; i < month_values.length; i++) {
+            monthData[i].trendline = parseFloat(trendline.m * i + trendline.b);
+        }
+
+       
         setChartData(monthData);
         setSelectedMonth(month);
+
+        
+
+
+
         
     }
 
@@ -64,7 +93,7 @@ const MonthlyPrecipBreakdownChart = () => {
             <header>
                 {<h3>
                     {
-                        <>Monthly Precipitation Breakdown in <span className="location-highlight">
+                        <>Monthly precipitation breakdown in <span className="location-highlight">
                                 <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
                                 <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>
@@ -100,7 +129,10 @@ const MonthlyPrecipBreakdownChart = () => {
 
                                     <Dropdown.Menu>
                                         <Dropdown.Item onClick={() => setShowClimatology(!showClimatology)}><input type="checkbox" checked={showClimatology}/> Historical Avg</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => setShowTrendline(!showTrendline)}><input type="checkbox" checked={showTrendline}/> Trendline</Dropdown.Item>
                                     </Dropdown.Menu>
+
+                                    
                                 </Dropdown>
                             </Col>
                             <Col xs="auto">
@@ -147,12 +179,24 @@ const MonthlyPrecipBreakdownChart = () => {
                     />
                     <Tooltip content={CustomTooltip}/>
                     <CartesianGrid stroke="#f5f5f5" />
+                    
                     <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                     {
                         showClimatology &&
                         <Line type="linear" dataKey="precip_hist" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
 
                     }
+                    {
+                        showTrendline &&
+                        <Line
+                            type="linear"
+                            dataKey="trendline"
+                            dot={false} strokeWidth="1"
+                            strokeDasharray="2"
+                            stroke="#3182bd"
+                        />
+                    }
+                    
                 </ComposedChart>
                 </ResponsiveContainer>
             </div>

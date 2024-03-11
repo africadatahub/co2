@@ -31,6 +31,7 @@ const Navigator = () => {
             <div>
                 {
                     position.length > 0 &&
+                    
                     <MapContainer center={position} zoom={6} scrollWheelZoom={false} style={{ height: 500, width: "100%" }} ref={mapRef}>
                         <TileLayer
                             attribution=''

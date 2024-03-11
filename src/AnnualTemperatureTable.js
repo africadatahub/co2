@@ -98,7 +98,7 @@ const AnnualTemperaturetable = () => {
                             <th>Month</th>
                             <th style={{width: '100px', maxWidth: '100px'}} className="text-end">Avg</th>
                             <th  style={{width: '100px', maxWidth: '100px'}} className="text-end">{selectedYear}</th>
-                            <th style={{width: '100px', maxWidth: '100px'}} className="text-end">Change</th>
+                            <th style={{width: '100px', maxWidth: '100px'}} className="text-end">Anomaly</th>
                         </tr>
                     </thead>
                     <tbody>

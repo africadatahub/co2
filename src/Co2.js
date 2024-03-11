@@ -93,8 +93,11 @@ const Co2 = () => {
 
                 <div className="my-5">
                     <Row>
-                        <Col lg={5}>
+                        <Col lg={5} className="d-flex flex-column">
                             <LocationInfoPanel />
+                            <div className="mt-auto info-block">
+                                Location data is mapped to grid squares which measure 1x1 degree latitude and longitude and all positions are rounded to the nearest 1x1 square.
+                            </div>
                         </Col>
                         <Col>
                             <Navigator />
@@ -182,6 +185,14 @@ const Co2 = () => {
                                 </Card>
                                 <Card>
                                     <Card.Header>
+                                        <ContextAwareToggle eventKey="2">How is the historical average calculated?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="2">
+                                        <Card.Body>Many climatologists use historical averages to compare temperatures, and usually take an average of a 30 year period. In our case, the historical average calculated over the period 1950-1980 - and there are very few months in the last 30 years which have been below that measurement.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
                                         <ContextAwareToggle eventKey="1">How do I use this chart?</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="1">
@@ -232,14 +243,6 @@ const Co2 = () => {
                                         <Card.Body>This chart would be useful to include in a story to show a pattern of increasing temperatures over time, since it is comparing like for like. We've included a trend line to show change over time, and a line marking the historical average temperature.</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
-                                <Card>
-                                    <Card.Header>
-                                        <ContextAwareToggle eventKey="2">How is the historical average calculated?</ContextAwareToggle>
-                                    </Card.Header>
-                                    <Accordion.Collapse eventKey="2">
-                                        <Card.Body>Many climatologists use historical averages to compare temperatures, and usually take an average of a 30 year period. In our case, the historical average calculated over the period 1950-1980 - and there are very few months in the last 30 years which have been below that measurement.</Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
                             </Accordion>
                         </Col>
                         <Col>
@@ -271,7 +274,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4>Temperature Anomaly</h4>
                             <p>
-                                This chart is created using the anomaly described above, and is based on the work of Ed Hawkins and #ShowYourStripes. Red bars show years in which the temperature has been higher than the historical average, blue bars years in which it has been colder.
+                                This chart is created using the anomaly described above, and is based on the work of Ed Hawkins and <a href="https://showyourstripes.info/" target="_blank">#ShowYourStripes</a>. Red bars show years in which the temperature has been higher than the historical average, blue bars years in which it has been colder.
                             </p>
                         </Col>
                         <Col>
@@ -293,7 +296,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4>Monthly Actual Rainfall</h4>
                             <p>
-                                Our rainfall data comes from the <a href="https://gpcc.dwd.de/" target="_blank">Global Precipitation Climatology Centre (GPCC)</a>. As with the temperature data above, this data is modelled at the global scale to estimate rainfall at any given moment in time. It is measured in millimetres of rain per month (mm).
+                                Historical baseline rainfall data (1950 - 1980) comes from the <a href="https://gpcc.dwd.de/" target="_blank">Global Precipitation Climatology Centre (GPCC)</a>. Recent rainfall data comes from <a href="https://www.gloh2o.org/" target="_blank">GloH2O</a>As with the temperature data above, this data is modelled at the global scale to estimate rainfall at any given moment in time. It is measured in millimetres of rain per month (mm).
                             </p>
                             <Accordion className="faq">
                                 <Card>
@@ -362,6 +365,15 @@ const Co2 = () => {
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="2">
                                         <Card.Body>Glad you asked. That honour goes to San Antonio de Ureca, in Equatorial  Guinea. It receives a <a href="https://www.africadatahub.org/data-resources/climate-observer?position=3.2553153,8.584609" target="_blank">staggering 10 450mm of rain a year</a>. That's almost 20 times more rain than London!
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="3">How is the historical average calculated? </ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="3">
+                                        <Card.Body>Just as with the temperature data, we use the GPCC dataset to calculate the average monthly rainfall for each location based on the period 1950-1980.
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>

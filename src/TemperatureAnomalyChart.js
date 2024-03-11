@@ -61,7 +61,7 @@ const TemperatureAnomalyChart = () => {
             <header>
                 {<h3>
                     {
-                        <>Relative Temperatures in <span className="location-highlight">
+                        <>Relative temperatures in <span className="location-highlight">
                                 <div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3',country).iso2} svg /></div> 
                                 <span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }</span>
                             </span> from {dateRange[0]} to {dateRange[1]}</>

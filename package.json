@@ -27,6 +27,7 @@
     "react-vis": "1.11.12",
     "reaviz": "^15.7.1",
     "recharts": "^2.10.4",
+    "simple-statistics": "^7.8.3",
     "svg-to-png": "^4.0.0"
   },
   "devDependencies": {
