@@ -309,6 +309,8 @@ export const AppProvider = ({ children }) => {
             }
         });
 
+        annualAvg = annualAvg / 12;
+
         return annualAvg;
 
     }
