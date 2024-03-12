@@ -10,8 +10,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
 
-import { Heatmap, HeatmapSeries, SequentialLegend } from 'reaviz';
+import { Heatmap, HeatmapSeries, SequentialLegend, TooltipTemplate, TooltipArea, Tooltip, ChartTooltip, HeatmapCell } from 'reaviz';
 
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
@@ -99,7 +100,18 @@ const MonthlyPrecipitationChart = () => {
                     height={(dateRange[1] - dateRange[0]) > 10 ? 700 : 300}
                     width={document.querySelector('.chart-container') != null ? (document.querySelector('.chart-container').getBoundingClientRect().width - 50) : 1000}
                     data={chartData}
-                    series={<HeatmapSeries colorScheme="blues"/>}
+                    series={<HeatmapSeries colorScheme="blues" cell={<HeatmapCell
+                        tooltip={<ChartTooltip
+                            content={d =>
+                                {
+                                    return ReactHtmlParser('<strong>' + d.data.key + ' ' + d.data.x + '</strong><br/> ' + d.data.y + 'mm')
+                                }
+                            }
+                        />
+                        }
+                    />}/>}
+                    
+
                 />
             </div>
 

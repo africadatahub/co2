@@ -29,17 +29,17 @@ const LocationInfoPanel = () => {
                 <h2><div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3', country).iso2} svg /></div><span>{address}</span>, <span>{convertCountry('iso3', country).location}</span></h2> : ''
             }
 
-            <br />
+            
 
             {
 
             loading ?     
-                <h5 className="mt-5"><Placeholder style={{width: '100px'}} /></h5>
+                <h5 className="mt-4"><Placeholder style={{width: '100px'}} /></h5>
             :
             (city != '' && city != 'location') ? 
-            <h5 className="mt-5">Summary of the latest year's (2023) data for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {convertCountry('iso3', country).location}</h5> : 
+            <h5 className="mt-4">Summary of the latest year's (2023) data for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {convertCountry('iso3', country).location}</h5> : 
             address ?
-            <h5 className="mt-5">Summary of the latest year's (2023) data for {address}, {convertCountry('iso3', country).location}</h5> : ''
+            <h5 className="mt-4">Summary of the latest year's (2023) data for {address}, {convertCountry('iso3', country).location}</h5> : ''
             }
             
             

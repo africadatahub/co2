@@ -93,10 +93,15 @@ const Co2 = () => {
 
                 <div className="my-5">
                     <Row>
-                        <Col lg={5} className="d-flex flex-column">
+                        <Col lg={5} className="d-flex flex-column locationPanel">
+                            <div className="introduction">
+                                <strong>The Africa Data Hub Climate Observer</strong> is designed to help journalists and academics reporting and researching climate change in Africa.
+                            </div>
+
                             <LocationInfoPanel />
+
                             <div className="mt-auto info-block">
-                                Location data is mapped to grid squares which measure 1x1 degree latitude and longitude and all positions are rounded to the nearest 1x1 square.
+                                Location data is mapped to grid squares which measure <strong>1x1 degree latitude and longitude</strong> and all positions are rounded to the nearest 1x1 square. These squares are approximately 100km x 100km in size.
                             </div>
                         </Col>
                         <Col>
@@ -170,7 +175,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4>Average Monthly Temperature</h4>
                             <p>
-                                This chart shows the average monthly temperature for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }, {convertCountry('iso3', country).location}. The red and blue areas show peak maximum and minimum temperatures for that month.
+                                This chart shows the average monthly temperature for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }, {convertCountry('iso3', country).location}. The red and blue areas show average maximum and minimum temperatures for that month.
                             </p>
                             <h5>Frequently Asked Questions</h5>
                             
@@ -180,7 +185,8 @@ const Co2 = () => {
                                         <ContextAwareToggle eventKey="0">Where does this data come from?</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
-                                        <Card.Body>This data comes from Berkeley Earth's climate repository, which is one of the largest datasets relating to historical temperature in the world. It's important to remember that a lot of the data is modelled rather than directly observed, and other data sources may differ in exact estimations of temperature.</Card.Body>
+                                        <Card.Body>This data comes from Berkeley Earth's climate repository, which is one of the largest datasets relating to historical temperature in the world. It's important to remember that a lot of the data is modelled rather than directly observed, and other data sources may differ in exact estimations of temperature.<p className="mt-3 mb-0">It's important to remember that a lot of the data is modelled rather than directly observed, which means the data for a specific location may be calculated based on measurements taken nearby, and other sources may differ in their estimations of temperature.</p>
+                                        </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                                 <Card>
@@ -276,6 +282,35 @@ const Co2 = () => {
                             <p>
                                 This chart is created using the anomaly described above, and is based on the work of Ed Hawkins and <a href="https://showyourstripes.info/" target="_blank">#ShowYourStripes</a>. Red bars show years in which the temperature has been higher than the historical average, blue bars years in which it has been colder.
                             </p>
+                            <h5>Frequently Asked Questions</h5>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">What is a temperature anomaly?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>The anomaly shows the difference between the monthly recorded temperature and the historical average (see above), is used to illustrate the underlying trends of the changing climate. Red bars show years in which the temperature has been higher than the historical average, blue bars years in which it has been colder.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="1">What trend can I see here?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="1">
+                                        <Card.Body>The internationally agreed objective is to try and keep temperature change to below <a target="_blank" href="https://unfccc.int/process-and-meetings/the-paris-agreement">1.5 degrees difference to the pre-industrial era</a>. You can see from the size and number of red lines just how hard this objective is, and that rather than slowing the rate of change, things are still heating up.
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="2">What can we do about it?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="2">
+                                        <Card.Body>The climate crisis is a systemic issue which requires action at all levels, both to limit and mitigate the impact of a warming world. While there are things individuals can do to minimise their own carbon footprint, for example, tackling issues such as <a href="https://unsettleddebt.africadatahub.org/" target="_blank">climate debt</a> can only be done through collaboration and co-ordinated action.
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </Col>
                         <Col>
                             <TemperatureAnomalyChart />
@@ -296,7 +331,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4>Monthly Actual Rainfall</h4>
                             <p>
-                                Historical baseline rainfall data (1950 - 1980) comes from the <a href="https://gpcc.dwd.de/" target="_blank">Global Precipitation Climatology Centre (GPCC)</a>. Recent rainfall data comes from <a href="https://www.gloh2o.org/" target="_blank">GloH2O</a>As with the temperature data above, this data is modelled at the global scale to estimate rainfall at any given moment in time. It is measured in millimetres of rain per month (mm).
+                                Historical baseline rainfall data (1950 - 1980) comes from the <a href="https://gpcc.dwd.de/" target="_blank">Global Precipitation Climatology Centre (GPCC)</a>. Recent rainfall data comes from <a href="https://www.gloh2o.org/" target="_blank">GloH2O</a>. As with the temperature data above, this data is modelled at the global scale to estimate rainfall at any given moment in time. It is measured in millimetres of rain per month (mm).
                             </p>
                             <Accordion className="faq">
                                 <Card>
@@ -321,6 +356,15 @@ const Co2 = () => {
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="2">
                                         <Card.Body>Probably not. Again, this is a very high level view of what is happening relating to rainfall. It requires some effort to see details. Readers may be better served with a more simple visualisation, like below.
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="3">How is the historical average calculated?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="3">
+                                        <Card.Body>Just as with the temperature data, we use the GPCC dataset to calculate the average monthly rainfall for each location based on the period 1950-1980.
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
