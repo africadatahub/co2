@@ -48,13 +48,13 @@ const LocationInfoPanel = () => {
 
             <div className="country-snapshot mt-4">
                 <Row className="mb-3">
-                    <Col><Icon path={mdiThermometer} size={1} /> Average annual <a href="#temperature">temperature</a>:</Col>
+                    <Col><Icon path={mdiThermometer} size={1} /> Average monthly <a href="#temperature">temperature</a>:</Col>
                     <Col xs="auto">
                         {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgTemperature == null ? '-' : annualAvgTemperature.toFixed(2) + '°C')}
                     </Col>
                 </Row>
                 <Row className="mb-3">
-                    <Col><Icon path={mdiWeatherPouring} size={1} /> Average monthly <a href="#rainfall">rainfall</a>:</Col>
+                    <Col><Icon path={mdiWeatherPouring} size={1} /> Average annual <a href="#rainfall">rainfall</a>:</Col>
                     <Col xs="auto">
                         {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgPrecipitation == null ? '-' : annualAvgPrecipitation.toFixed(2) + 'mm')}
                     </Col>
