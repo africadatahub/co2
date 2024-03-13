@@ -54,7 +54,7 @@ const LocationInfoPanel = () => {
                     </Col>
                 </Row>
                 <Row className="mb-3">
-                    <Col><Icon path={mdiWeatherPouring} size={1} /> Average annual <a href="#rainfall">rainfall</a>:</Col>
+                    <Col><Icon path={mdiWeatherPouring} size={1} /> Total <a href="#rainfall">rainfall</a> in last 12 months:</Col>
                     <Col xs="auto">
                         {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgPrecipitation == null ? '-' : annualAvgPrecipitation.toFixed(2) + 'mm')}
                     </Col>
