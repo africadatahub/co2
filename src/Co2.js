@@ -191,25 +191,25 @@ const Co2 = () => {
                                 </Card>
                                 <Card>
                                     <Card.Header>
-                                        <ContextAwareToggle eventKey="2">How is the historical average calculated?</ContextAwareToggle>
+                                        <ContextAwareToggle eventKey="1">How is the historical average calculated?</ContextAwareToggle>
                                     </Card.Header>
-                                    <Accordion.Collapse eventKey="2">
+                                    <Accordion.Collapse eventKey="1">
                                         <Card.Body>Many climatologists use historical averages to compare temperatures, and usually take an average of a 30 year period. In our case, the historical average calculated over the period 1950-1980 - and there are very few months in the last 30 years which have been below that measurement.</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                                 <Card>
                                     <Card.Header>
-                                        <ContextAwareToggle eventKey="1">How do I use this chart?</ContextAwareToggle>
+                                        <ContextAwareToggle eventKey="2">How do I use this chart?</ContextAwareToggle>
                                     </Card.Header>
-                                    <Accordion.Collapse eventKey="1">
+                                    <Accordion.Collapse eventKey="2">
                                         <Card.Body>This chart can help you quickly identify key temperature metrics for any given place in Africa, for any month. You can compare the temperature today, for example, with a past date to understand whether or not it is unusually hot or cold.</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                                 <Card>
                                     <Card.Header>
-                                        <ContextAwareToggle eventKey="2">Should I embed this chart for readers?</ContextAwareToggle>
+                                        <ContextAwareToggle eventKey="3">Should I embed this chart for readers?</ContextAwareToggle>
                                     </Card.Header>
-                                    <Accordion.Collapse eventKey="2">
+                                    <Accordion.Collapse eventKey="3">
                                         <Card.Body>Probably not, if we're honest. It's hard to decipher any narrative in this chart without close inspection, and the only easy to understand story is that the year has seasons. Seeing the impact of global heating is here is not easy. It's a data explorer, not a storytelling device.</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
