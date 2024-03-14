@@ -13,6 +13,6 @@ function App() {
 	)
 }
 
-const container = document.getElementById('app');
+const container = document.getElementsByClassName('app')[0];
 const root = createRoot(container);
 root.render(<App />);
