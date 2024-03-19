@@ -12,7 +12,7 @@ import { mdiThermometer, mdiWeatherPouring, mdiFactory, mdiLandPlots } from '@md
 
 const LocationInfoPanel = () => {
 
-    const { country, convertCountry, cities, city, address, position, annualAvgTemperature, annualAvgPrecipitation, loading } = useContext(AppContext);
+    const { country, convertCountry, cities, city, address, extraLocation, position, annualAvgTemperature, annualAvgPrecipitation, loading } = useContext(AppContext);
 
     
     return (
@@ -26,7 +26,7 @@ const LocationInfoPanel = () => {
             (city != '' && city != 'location') ? 
                 <h2><div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3', country).iso2} svg /></div><span>{ city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {convertCountry('iso3', country).location}</span></h2> : 
             address ?
-                <h2><div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3', country).iso2} svg /></div><span>{address}</span>, <span>{convertCountry('iso3', country).location}</span></h2> : ''
+                <h2><div className="country-flag-circle"><ReactCountryFlag countryCode={convertCountry('iso3', country).iso2} svg /></div><span>{extraLocation != '' ? extraLocation : address}</span>, <span>{convertCountry('iso3', country).location}</span></h2> : ''
             }
 
             
@@ -39,7 +39,7 @@ const LocationInfoPanel = () => {
             (city != '' && city != 'location') ? 
             <h5 className="mt-4">Summary of the latest year's (2023) data for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {convertCountry('iso3', country).location}</h5> : 
             address ?
-            <h5 className="mt-4">Summary of the latest year's (2023) data for {address}, {convertCountry('iso3', country).location}</h5> : ''
+            <h5 className="mt-4">Summary of the latest year's (2023) data for {extraLocation != '' ? extraLocation : address}, {convertCountry('iso3', country).location}</h5> : ''
             }
             
             

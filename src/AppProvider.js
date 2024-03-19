@@ -19,6 +19,7 @@ export const AppProvider = ({ children }) => {
     const [city, setCity] = useState('');
 	const [country, setCountry] = useState('');
 	const [address, setAddress] = useState('');
+    const [extraLocation, setExtraLocation] = useState('');
     const [datasets, setDatasets] = useState(
         {
             locations: '9d764714-2094-4455-8754-63b87d1fdce0',
@@ -91,9 +92,11 @@ export const AppProvider = ({ children }) => {
                     ''
                 );
                 setCity('location');
+                setExtraLocation('');
                 setCountry(convertCountry('iso2', data[0].country_code).iso3);
                 
             } else {
+                setExtraLocation('');
                 setAddress('');
                 setCity('');
                 setCountry('');
@@ -212,8 +215,6 @@ export const AppProvider = ({ children }) => {
         let filteredData = datasets.data.filter(record => {
             return parseInt(record.year) >= dateRange[0] && parseInt(record.year) <= dateRange[1];
         });
-
-        console.log(filteredData);
 
         setCurrentData(filteredData);
     }
@@ -465,6 +466,8 @@ export const AppProvider = ({ children }) => {
         setCountry,
         address,
         findAddress,
+        extraLocation,
+        setExtraLocation,
         changeDateRange,
         datasets,
         currentData,

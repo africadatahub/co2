@@ -15,7 +15,7 @@ import getCountryISO2 from 'country-iso-3-to-2';
 
 const LocationBar = () => {
 
-    const { cities, countries, city, setCity, address, findAddress, position, setPosition } = useContext(AppContext);
+    const { cities, countries, city, setCity, address, findAddress, extraLocation, setExtraLocation, position, setPosition } = useContext(AppContext);
 
     const [searchResults, setSearchResults] = useState([]);
 
@@ -24,7 +24,6 @@ const LocationBar = () => {
 
     useEffect(() => {
         if(address != '' && address != undefined) {
-            console.log('LocationBar.js: address:', address);
             searchRef.current.value = address.display_name;
         }
     }, [address]);
@@ -45,7 +44,7 @@ const LocationBar = () => {
 
                 axios.get(`https://nominatim.openstreetmap.org/search?q=${e}&format=json&polygon=1&addressdetails=1&countrycodes=${countries.map(country => getCountryISO2(country.iso3)).join(',')}`)
                 .then(function (response) {
-                    
+
                     response.data.forEach(result => {
                         results.push({
                             place_id: result.place_id,
@@ -72,17 +71,15 @@ const LocationBar = () => {
         }
     }
 
-    const changeLocation = (type, value) => {
-        console.log(searchRef);
-        
+    const changeLocation = (type, value, extra) => {
+
+        setExtraLocation('');
+
         if(value != 'location' && value != '') {
             if(type == 'city') {
-                console.log('here1');
-                
                 searchRef.current.value = '';
                 setCity(value);
             } else {
-                console.log('here2');
                 window.history.pushState(
                     {}, 
                     '', 
@@ -91,6 +88,7 @@ const LocationBar = () => {
                 searchRef.current.value = '';
                 setCity('location');
                 findAddress(value);
+                setExtraLocation(extra);
             }
         }
         searchRef.current.value = '';
@@ -131,12 +129,12 @@ const LocationBar = () => {
             </Col>
             <Col>
                 <div className="position-relative">
-                    <Form.Control id="searchRef" className="py-2" type="text" placeholder="Search for a specific location" onChange={(e) => addressLookup(e.target.value) ? addressLookup(e.target.value) : ''} ref={searchRef}/>
+                    <Form.Control id="searchRef" className="py-2" type="text" placeholder="Search for a specific location" onChange={(e) => addressLookup(e.target.value) ? addressLookup(e.target.value) : ''} ref={searchRef} />
                     <div className="search-results">
                         <ul>
                             {
                                 searchResults.map(result => {
-                                    return <li key={result.place_id} onClick={() => changeLocation('position', [result.lat, result.lon])}>{result.display_name}</li>
+                                    return <li key={result.place_id} onClick={() => changeLocation('position', [result.lat, result.lon], result.display_name)}>{result.display_name}</li>
                                 })
                             }
                         </ul>
