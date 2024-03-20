@@ -87,8 +87,11 @@ const LocationBar = () => {
                 );
                 searchRef.current.value = '';
                 setCity('location');
-                findAddress(value);
-                setExtraLocation(extra);
+                if(extra == undefined || extra == '') {
+                    findAddress(value);
+                } else {
+                    findAddress(value, extra);
+                }
             }
         }
         searchRef.current.value = '';

@@ -59,10 +59,6 @@ const LocationInfoPanel = () => {
                         {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgPrecipitation == null ? '-' : annualAvgPrecipitation.toFixed(2) + 'mm')}
                     </Col>
                 </Row>
-                {/* <Row className="mb-3" style={{opacity: 0.4}}>
-                    <Col><Icon path={mdiFactory} size={1} /> Annual CO<sub>2</sub> <a href="#emissions">emissions</a>:</Col>
-                    <Col xs="auto">-Gt</Col>
-                </Row> */}
             </div>
 
             

@@ -69,7 +69,7 @@ export const AppProvider = ({ children }) => {
     
     
 
-    const findAddress = (middlePoint) => {
+    const findAddress = (middlePoint, extra) => {
 
         axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + datasets.locations + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(middlePoint[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(middlePoint[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(middlePoint[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(middlePoint[1]) + 0.5) + '%20', {
             headers: {
@@ -92,7 +92,11 @@ export const AppProvider = ({ children }) => {
                     ''
                 );
                 setCity('location');
-                setExtraLocation('');
+                if(extra != undefined) {
+                    setExtraLocation(extra);
+                } else {
+                    setExtraLocation('');
+                }
                 setCountry(convertCountry('iso2', data[0].country_code).iso3);
                 
             } else {
