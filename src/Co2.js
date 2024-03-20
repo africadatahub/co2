@@ -43,7 +43,7 @@ const Co2 = () => {
 
             const navbarTop = navbar.getBoundingClientRect().top;
 
-            if (navbarTop <= 0) {
+            if (navbarTop < 0) {
                 navbar.classList.add('sticking');
             } else {
                 navbar.classList.remove('sticking');
