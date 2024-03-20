@@ -104,7 +104,7 @@ const LocationBar = () => {
     return (
         <Row>
             <Col>
-                <h1 className="text-nowrap"><a href="/" className="text-decoration-none">African Climate Observer</a></h1>
+                <h1 className="text-nowrap"><a href="/data-resources/climate-observer" className="text-decoration-none">African Climate Observer</a></h1>
             </Col>
             <Col xs={1}></Col>
             <Col>
