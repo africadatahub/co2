@@ -1296,7 +1296,7 @@
 .unique-lpxjij .section-jump-btn:hover{background-color:#e6e6e6}
 .unique-lpxjij .co2-header{padding:2em 0}
 .unique-lpxjij .navbar{background-color:#fff!important}
-.unique-lpxjij .navbar.sticking{width:100%;position:fixed;top:0;box-shadow:0 0 10px #11415133}
+.unique-lpxjij .navbar.sticking{box-shadow:0 0 10px #11415133}
 .unique-lpxjij .navbar .container{justify-content:unset!important;display:block!important}
 .unique-lpxjij .navbar .container .row{justify-content:space-between;align-items:center;display:flex}
 .unique-lpxjij .co2-section{background-color:#f2f2f2;padding:2em 0}
