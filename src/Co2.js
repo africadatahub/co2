@@ -40,6 +40,9 @@ const Co2 = () => {
         const navbar = document.querySelector('.navbar');
 
         const handleScroll = () => {
+
+            console.log('scrolling');            
+
             const navbarTop = navbar.getBoundingClientRect().top;
 
             if (navbarTop === 0) {
