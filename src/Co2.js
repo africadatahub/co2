@@ -45,6 +45,8 @@ const Co2 = () => {
 
             const navbarTop = navbar.getBoundingClientRect().top;
 
+            console.log(navbarTop);
+
             if (navbarTop === 0) {
                 navbar.classList.add('sticking');
             } else {
