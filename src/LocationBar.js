@@ -66,7 +66,16 @@ const LocationBar = () => {
     const useLocation = () => {
         if (window.navigator.geolocation) {
             window.navigator.geolocation.getCurrentPosition((position) => {
-                changeLocation('position', [position.coords.latitude,position.coords.longitude]);
+
+                // https://nominatim.openstreetmap.org/reverse?lat=<value>&lon=<value>
+
+                axios.get(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json&polygon=1&addressdetails=1`)
+                .then(function (response) {
+
+                    changeLocation('position', [position.coords.latitude,position.coords.longitude], response.data.display_name);
+                
+                })
+
             })
         }
     }
@@ -74,6 +83,8 @@ const LocationBar = () => {
     const changeLocation = (type, value, extra) => {
 
         setExtraLocation('');
+
+        
 
         if(value != 'location' && value != '') {
             if(type == 'city') {
