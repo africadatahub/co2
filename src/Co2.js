@@ -41,13 +41,9 @@ const Co2 = () => {
 
         const handleScroll = () => {
 
-            console.log('scrolling');            
-
             const navbarTop = navbar.getBoundingClientRect().top;
 
-            console.log(navbarTop);
-
-            if (navbarTop === 0) {
+            if (navbarTop <= 0) {
                 navbar.classList.add('sticking');
             } else {
                 navbar.classList.remove('sticking');
