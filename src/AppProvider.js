@@ -326,8 +326,8 @@ export const AppProvider = ({ children }) => {
 
             let svgContainer = document.getElementById(set);
             let svg = svgContainer.getElementsByTagName('svg')[0];
-            let watermark = svgContainer.querySelector('.adh-watermark');
-            watermark.style.opacity = '0.3';
+            // let watermark = svgContainer.querySelector('.adh-watermark');
+            // watermark.style.opacity = '0.3';
             
             html2canvas(svgContainer)
             .then(canvas => {
@@ -336,6 +336,7 @@ export const AppProvider = ({ children }) => {
                 link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
                 link.href = canvas.toDataURL();
                 link.click();
+                watermark.style.opacity = '0';
             })
             .catch(error => {
                 console.error('Error:', error);
