@@ -338,7 +338,9 @@ export const AppProvider = ({ children }) => {
                     link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
                     link.href = canvas.toDataURL();
                     link.click();
-                    watermark.style.opacity = '0';
+                    setTimeout(() => {
+                        watermark.style.opeacity = '0';
+                    },5000);
                 })
                 .catch(error => {
                     console.error('Error:', error);
