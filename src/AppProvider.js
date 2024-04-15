@@ -329,24 +329,18 @@ export const AppProvider = ({ children }) => {
             let watermark = svgContainer.querySelector('.adh-watermark');
             watermark.style.opacity = '0.3';
             
-
-            setTimeout(() => {
             html2canvas(svgContainer)
-                .then(canvas => {
-                    const ctx = canvas.getContext('2d');
-                    const link = document.createElement('a');
-                    link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
-                    link.href = canvas.toDataURL();
-                    link.click();
-
-                    setTimeout(() => {
-                        watermark.style.opacity = '0';
-                    }, 1000)
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            },1000);
+            .then(canvas => {
+                const ctx = canvas.getContext('2d');
+                const link = document.createElement('a');
+                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            
             
 
             
