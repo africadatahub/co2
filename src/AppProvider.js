@@ -326,8 +326,8 @@ export const AppProvider = ({ children }) => {
 
             let svgContainer = document.getElementById(set);
             let svg = svgContainer.getElementsByTagName('svg')[0];
-            // let watermark = svgContainer.querySelector('.adh-watermark');
-            // watermark.style.opacity = '0.3';
+            let watermark = svgContainer.querySelector('.adh-watermark');
+            watermark.style.opacity = '0.3';
             
             html2canvas(svgContainer)
             .then(canvas => {
