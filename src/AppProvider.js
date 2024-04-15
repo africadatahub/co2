@@ -330,7 +330,7 @@ export const AppProvider = ({ children }) => {
             watermark.style.opacity = '0.3';
             
 
-
+            setTimeout(() => {
             html2canvas(svgContainer)
                 .then(canvas => {
                     const ctx = canvas.getContext('2d');
@@ -338,13 +338,15 @@ export const AppProvider = ({ children }) => {
                     link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
                     link.href = canvas.toDataURL();
                     link.click();
+
                     setTimeout(() => {
-                        watermark.style.opeacity = '0';
-                    },5000);
+                        watermark.style.opacity = '0';
+                    }, 1000)
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+            },1000);
             
 
             
