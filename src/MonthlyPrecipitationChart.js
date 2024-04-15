@@ -95,36 +95,39 @@ const MonthlyPrecipitationChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container precipitation-chart-container" id="monthly-precipitation">
-                <Heatmap
-                    height={(dateRange[1] - dateRange[0]) > 10 ? 700 : 300}
-                    width={document.querySelector('.chart-container') != null ? (document.querySelector('.chart-container').getBoundingClientRect().width - 50) : 1000}
-                    data={chartData}
-                    series={<HeatmapSeries colorScheme="blues" cell={<HeatmapCell
-                        tooltip={<ChartTooltip
-                            content={d =>
-                                {
-                                    return ReactHtmlParser('<strong>' + d.data.key + ' ' + d.data.x + '</strong><br/> ' + d.data.y + 'mm')
+            <div className="chart-export" id="monthly-precipitation">
+                <div className="adh-watermark"></div>
+                <div className="chart-container precipitation-chart-container">
+                    <Heatmap
+                        height={(dateRange[1] - dateRange[0]) > 10 ? 700 : 300}
+                        width={document.querySelector('.chart-container') != null ? (document.querySelector('.chart-container').getBoundingClientRect().width - 50) : 1000}
+                        data={chartData}
+                        series={<HeatmapSeries colorScheme="blues" cell={<HeatmapCell
+                            tooltip={<ChartTooltip
+                                content={d =>
+                                    {
+                                        return ReactHtmlParser('<strong>' + d.data.key + ' ' + d.data.x + '</strong><br/> ' + d.data.y + 'mm')
+                                    }
                                 }
+                            />
                             }
-                        />
-                        }
-                    />}/>}
-                    
+                        />}/>}
+                        
 
-                />
+                    />
+                </div>
+
+                <footer>
+                    <Row className="justify-content-between">
+                        <Col xs="6">
+                            <SequentialLegend data={chartData} orientation="horizontal"  colorScheme="blues"/>
+                        </Col>
+                        <Col xs="auto">
+                            Historical Average: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a> | Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
+                        </Col>
+                    </Row>
+                </footer>
             </div>
-
-            <footer>
-                <Row className="justify-content-between">
-                    <Col xs="6">
-                        <SequentialLegend data={chartData} orientation="horizontal"  colorScheme="blues"/>
-                    </Col>
-                    <Col xs="auto">
-                        Historical Average: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a> | Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
-                    </Col>
-                </Row>
-            </footer>
         
         </section >
 

@@ -154,73 +154,75 @@ const MonthlyPrecipBreakdownChart = () => {
                     </Col>
                 </Row>                
             </div>
-           
-            <div className="chart-container" id="monthly-precipitation-breakdown">
-                <ResponsiveContainer width="100%" height={250}>
-                <ComposedChart
-                    width={800} 
-                    height={250} 
-                    data={chartData} 
-                    margin={{
-                        top: 0,
-                        right: 40, 
-                        bottom: 20,
-                        left: 0
-                    }}
-                   >
-                    
-                    <XAxis dataKey="year" angle={-90}/>
-                    <YAxis label={{ 
-                        value: `mm`,
-                        style: { textAnchor: 'middle' },
-                        angle: -90,
-                        position: 'left',
-                        offset: -20, }}
-                    />
-                    <Tooltip content={CustomTooltip}/>
-                    <CartesianGrid stroke="#f5f5f5" />
-                    
-                    <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="1"/>
-                    {
-                        showClimatology &&
-                        <Line type="linear" dataKey="precip_hist" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
-
-                    }
-                    {
-                        showTrendline &&
-                        <Line
-                            type="linear"
-                            dataKey="trendline"
-                            dot={false} strokeWidth="1"
-                            strokeDasharray="2"
-                            stroke="#3182bd"
+            <div className="chart-export" id="monthly-precipitation-breakdown">
+                <div className="adh-watermark"></div>
+                <div className="chart-container">
+                    <ResponsiveContainer width="100%" height={250}>
+                    <ComposedChart
+                        width={800} 
+                        height={250} 
+                        data={chartData} 
+                        margin={{
+                            top: 0,
+                            right: 40, 
+                            bottom: 20,
+                            left: 0
+                        }}
+                    >
+                        
+                        <XAxis dataKey="year" angle={-90}/>
+                        <YAxis label={{ 
+                            value: `mm`,
+                            style: { textAnchor: 'middle' },
+                            angle: -90,
+                            position: 'left',
+                            offset: -20, }}
                         />
-                    }
-                    
-                </ComposedChart>
-                </ResponsiveContainer>
-            </div>
-
-            <footer>
-                <Row>
-                    <Col>
-                        <div className="legend-item">
-                            <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
-                            <div className="legend-item-label">{monthNames[selectedMonth]}</div>
-                        </div>
+                        <Tooltip content={CustomTooltip}/>
+                        <CartesianGrid stroke="#f5f5f5" />
+                        
+                        <Line type="linear" dataKey="precip" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                         {
                             showClimatology &&
-                            <div className="legend-item">
-                                <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
-                                <div className="legend-item-label">Historical Avg</div>
-                            </div>
+                            <Line type="linear" dataKey="precip_hist" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
+
                         }
-                    </Col>
-                    <Col xs="auto">
-                        Historical Average: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a> | Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
-                    </Col>
-                </Row>
-            </footer>
+                        {
+                            showTrendline &&
+                            <Line
+                                type="linear"
+                                dataKey="trendline"
+                                dot={false} strokeWidth="1"
+                                strokeDasharray="2"
+                                stroke="#3182bd"
+                            />
+                        }
+                        
+                    </ComposedChart>
+                    </ResponsiveContainer>
+                </div>
+
+                <footer>
+                    <Row>
+                        <Col>
+                            <div className="legend-item">
+                                <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
+                                <div className="legend-item-label">{monthNames[selectedMonth]}</div>
+                            </div>
+                            {
+                                showClimatology &&
+                                <div className="legend-item">
+                                    <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
+                                    <div className="legend-item-label">Historical Avg</div>
+                                </div>
+                            }
+                        </Col>
+                        <Col xs="auto">
+                            Historical Average: <a target="_blank" href="https://gpcc.dwd.de/">GPCC</a> | Data source: <a target="_blank" href="https://www.gloh2o.org/mswep/">GloH2O</a>
+                        </Col>
+                    </Row>
+                </footer>
+            </div>
         
         </section >
 

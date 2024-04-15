@@ -3,9 +3,9 @@ import { AppContext } from './AppContext';
 
 import axios from 'axios';
 
-import {svgAsPng} from 'svg-to-png';
+import { svgAsPng } from 'svg-to-png';
 import { saveAs } from 'file-saver';
-import {toPng} from 'dom-to-image-more';
+import { toPng } from 'dom-to-image-more';
 import html2canvas from 'html2canvas';
 
 import * as cities from './data/cities.json';
@@ -15,10 +15,10 @@ export const AppProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(true);
     const [dateRange, setDateRange] = useState([1993, 2023]);
-	const [position, setPosition] = useState([]);
+    const [position, setPosition] = useState([]);
     const [city, setCity] = useState('');
-	const [country, setCountry] = useState('');
-	const [address, setAddress] = useState('');
+    const [country, setCountry] = useState('');
+    const [address, setAddress] = useState('');
     const [extraLocation, setExtraLocation] = useState('');
     const [datasets, setDatasets] = useState(
         {
@@ -39,35 +39,35 @@ export const AppProvider = ({ children }) => {
     const [annualAvgTemperature, setAnnualAvgTemperature] = useState(null);
     const [annualAvgPrecipitation, setAnnualAvgPrecipitation] = useState(null);
     const [maxPrecipitation, setMaxPrecipitation] = useState(null);
-    
-    
+
+
     const temperatureScale = [
-        {min: -Infinity, max: -1, color: '#08306b'},
-        {min: -1, max: -0.5, color: '#6baed6'},
-        {min: -0.5, max: 0, color: '#deebf7'},
-        {min: 0, max: 0.5, color: '#fee0d2'},
-        {min: 0.5, max: 1, color: '#fdcc8a'},
-        {min: 1, max: 1.5, color: '#fc9272'},
-        {min: 1.5, max: Infinity, color: '#67000d'}
+        { min: -Infinity, max: -1, color: '#08306b' },
+        { min: -1, max: -0.5, color: '#6baed6' },
+        { min: -0.5, max: 0, color: '#deebf7' },
+        { min: 0, max: 0.5, color: '#fee0d2' },
+        { min: 0.5, max: 1, color: '#fdcc8a' },
+        { min: 1, max: 1.5, color: '#fc9272' },
+        { min: 1.5, max: Infinity, color: '#67000d' }
     ]
 
     const getAnomalyColor = (anomaly) => {
 
         if (anomaly < -1) return '#08306b';
-        if (anomaly < -0.5) return '#6baed6'; 
+        if (anomaly < -0.5) return '#6baed6';
         if (anomaly < 0) return '#deebf7';
         if (anomaly < 0.5) return '#fee0d2';
         if (anomaly < 1) return '#fdcc8a';
         if (anomaly < 1.5) return '#fc9272';
-      
+
         return '#67000d';
-      
+
     }
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    
-    
-    
+
+
+
 
     const findAddress = (middlePoint, extra) => {
 
@@ -79,26 +79,26 @@ export const AppProvider = ({ children }) => {
 
 
             let data = response.data.result.records;
-            
-            if(data.length > 0) {
+
+            if (data.length > 0) {
                 setAddress(
                     data[0].city != '' ? data[0].city :
-                    data[0].town != '' ? data[0].town :
-                    data[0].village != '' ? data[0].village :
-                    data[0].hamlet != '' ? data[0].hamlet :
-                    data[0].county != '' ? data[0].county :
-                    data[0].region != '' ? data[0].region :
-                    data[0].state != '' ? data[0].state :
-                    ''
+                        data[0].town != '' ? data[0].town :
+                            data[0].village != '' ? data[0].village :
+                                data[0].hamlet != '' ? data[0].hamlet :
+                                    data[0].county != '' ? data[0].county :
+                                        data[0].region != '' ? data[0].region :
+                                            data[0].state != '' ? data[0].state :
+                                                ''
                 );
                 setCity('location');
-                if(extra != undefined) {
+                if (extra != undefined) {
                     setExtraLocation(extra);
                 } else {
                     setExtraLocation('');
                 }
                 setCountry(convertCountry('iso2', data[0].country_code).iso3);
-                
+
             } else {
                 setExtraLocation('');
                 setAddress('');
@@ -109,47 +109,47 @@ export const AppProvider = ({ children }) => {
             setPosition(middlePoint);
 
 
-            
+
         }).catch(e => console.log(e));
 
     }
 
-    
+
 
     const convertCountry = (type, value) => {
 
-        if(value == '' || value == undefined) return '';
+        if (value == '' || value == undefined) return '';
 
         let country = countries.filter(c => c[type].toUpperCase() == value.toUpperCase())[0];
 
-        if(country == undefined) {
+        if (country == undefined) {
             return '';
         } else {
             return country;
         }
-    
+
     }
 
     const changeDateRange = (type, value) => {
-        
-        if(type == 'start') {
+
+        if (type == 'start') {
             setDateRange([parseInt(value), dateRange[1]]);
         } else {
             setDateRange([dateRange[0], parseInt(value)]);
         }
-        
-        
+
+
     }
 
-   
+
 
     async function getAllData() {
         setLoading(true);
         axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + datasets.all_data + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(position[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(position[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(position[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(position[1]) + 0.5) + '%20', {
-                headers: {
-                    "Authorization": process.env.CKAN
-                }
-            })
+            headers: {
+                "Authorization": process.env.CKAN
+            }
+        })
             .then(response => {
 
                 let max = 0;
@@ -172,57 +172,57 @@ export const AppProvider = ({ children }) => {
                     record.precip_hist = parseFloat(record.precip_hist);
                 });
 
-               
 
-                
-                
+
+
+
                 data.sort((a, b) => {
 
                     const aYear = parseInt(a.year);
                     const bYear = parseInt(b.year);
-                  
-                    const aMonth = parseInt(a.month_number); 
+
+                    const aMonth = parseInt(a.month_number);
                     const bMonth = parseInt(b.month_number);
-                  
-                    if(aYear < bYear) return -1;
-                    if(aYear > bYear) return 1;
-                    
-                    if(aMonth < bMonth) return -1; 
-                    if(aMonth > bMonth) return 1;
-                  
+
+                    if (aYear < bYear) return -1;
+                    if (aYear > bYear) return 1;
+
+                    if (aMonth < bMonth) return -1;
+                    if (aMonth > bMonth) return 1;
+
                     return 0;
-                  
+
                 });
 
                 data.forEach(record => {
-                        
-                    if(record.precip > max) {
+
+                    if (record.precip > max) {
                         max = record.precip;
                     }
 
                     record.minmax_temperature = [record.TMAX_temperature, record.TMIN_temperature]
-                
+
                 })
 
                 setMaxPrecipitation(max);
 
-                setDatasets({...datasets, data: data});
-                
+                setDatasets({ ...datasets, data: data });
+
                 setLoading(false);
 
             })
-            
+
     }
 
     const filterDataByDate = () => {
-        
+
         let filteredData = datasets.data.filter(record => {
             return parseInt(record.year) >= dateRange[0] && parseInt(record.year) <= dateRange[1];
         });
 
         setCurrentData(filteredData);
     }
-    
+
 
     // INIT
 
@@ -285,14 +285,14 @@ export const AppProvider = ({ children }) => {
         }
 
     }, []);
-    
+
 
     const getAnnualAvgTemperature = () => {
-            
+
         let annualAvg = 0;
 
         datasets.data.forEach(record => {
-            if(parseInt(record.year) == 2023) {
+            if (parseInt(record.year) == 2023) {
                 annualAvg += parseFloat(record.TAVG_temperature);
             }
         });
@@ -301,7 +301,7 @@ export const AppProvider = ({ children }) => {
 
         return annualAvg;
 
-    
+
     }
 
     const getAnnualPrecipitation = () => {
@@ -309,7 +309,7 @@ export const AppProvider = ({ children }) => {
         let annualAvg = 0;
 
         datasets.data.forEach(record => {
-            if(parseInt(record.year) == 2023) {
+            if (parseInt(record.year) == 2023) {
                 annualAvg += parseFloat(record.precip);
             }
         });
@@ -318,104 +318,115 @@ export const AppProvider = ({ children }) => {
 
     }
 
-    async function downloadData(type,set,month = null) {
+    async function downloadData(type, set, month = null) {
 
-        if(type == 'png') {
+        if (type == 'png') {
+
+
 
             let svgContainer = document.getElementById(set);
             let svg = svgContainer.getElementsByTagName('svg')[0];
+            let watermark = svgContainer.querySelector('.adh-watermark');
+            watermark.style.opacity = '0.3';
+            
 
-            html2canvas(svgContainer).then(canvas => {
-                const link = document.createElement('a');
-                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png'; 
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-           
+
+            html2canvas(svgContainer)
+                .then(canvas => {
+                    const ctx = canvas.getContext('2d');
+                    const link = document.createElement('a');
+                    link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                    watermark.style.opacity = '0';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            
+
+            
+
         } else {
 
             let csvContent = "data:text/csv;charset=utf-8,";
 
-            if(set == 'monthly-temperature') {
+            if (set == 'monthly-temperature') {
                 csvContent += "Month,Year,Average Temperature,Historical Average,Max Temperature,Min Temperature,Historical Max,Historical Min\n";
                 datasets.data.forEach(record => {
-                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + ',' + record.TMAX_temperature + ',' + record.TMIN_temperature + ',' + record.TMAX_climatology + ',' + record.TMIN_climatology + '\n';
+                    csvContent += monthNames[record.month_number - 1] + ',' + record.year + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + ',' + record.TMAX_temperature + ',' + record.TMIN_temperature + ',' + record.TMAX_climatology + ',' + record.TMIN_climatology + '\n';
                 });
-            } else if(set == 'monthly-temperature-anomaly') {
+            } else if (set == 'monthly-temperature-anomaly') {
                 csvContent += "Month,Year,Average Anomaly";
                 datasets.data.forEach(record => {
-                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.TAVG_anomaly + '\n';
+                    csvContent += monthNames[record.month_number - 1] + ',' + record.year + ',' + record.TAVG_anomaly + '\n';
                 });
-            } else if(set == 'monthly-temperature-breakdown') {
+            } else if (set == 'monthly-temperature-breakdown') {
                 csvContent += "Month,Year,Average Temperature,Historical Average,Max Temperature,Min Temperature,Historical Max,Historical Min\n";
                 datasets.data.forEach(record => {
-                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + ',' + record.TMAX_temperature + ',' + record.TMIN_temperature + ',' + record.TMAX_climatology + ',' + record.TMIN_climatology + '\n';
+                    csvContent += monthNames[record.month_number - 1] + ',' + record.year + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + ',' + record.TMAX_temperature + ',' + record.TMIN_temperature + ',' + record.TMAX_climatology + ',' + record.TMIN_climatology + '\n';
                 });
                 month = monthNames[month];
-            } else if(set == 'monthly-precipitation') {
+            } else if (set == 'monthly-precipitation') {
                 csvContent += "Month,Year,Precipitation";
                 datasets.data.forEach(record => {
-                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.precip + '\n';
+                    csvContent += monthNames[record.month_number - 1] + ',' + record.year + ',' + record.precip + '\n';
                 });
                 month = monthNames[month];
-            } else if(set == 'monthly-precipitation-breakdown') {
+            } else if (set == 'monthly-precipitation-breakdown') {
                 csvContent += "Month,Year,Precipitation";
                 datasets.data.forEach(record => {
-                    csvContent += monthNames[record.month_number-1] + ',' + record.year + ',' + record.precip + '\n';
+                    csvContent += monthNames[record.month_number - 1] + ',' + record.year + ',' + record.precip + '\n';
                 });
                 month = monthNames[month];
-            } else if(set == 'annual-temperature') {
+            } else if (set == 'annual-temperature') {
                 csvContent += "Year,Month,Average Temperature,Historical Average\n";
                 datasets.data.forEach(record => {
-                    csvContent += record.time + ',' + monthNames[record.month_number-1] + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + '\n';
+                    csvContent += record.time + ',' + monthNames[record.month_number - 1] + ',' + record.TAVG_temperature + ',' + record.TAVG_climatology + '\n';
                 });
-            } else if(set == 'annual-precipitation') {
+            } else if (set == 'annual-precipitation') {
                 csvContent += "Year,Month,Precipitation,Historical Average\n";
                 datasets.data.forEach(record => {
-                    csvContent += record.year + ',' + monthNames[record.month_number-1] + ',' + record.precip + ',' + record.precip_hist + '\n';
+                    csvContent += record.year + ',' + monthNames[record.month_number - 1] + ',' + record.precip + ',' + record.precip_hist + '\n';
                 });
             }
-
-
 
             // save the csvContent to a file and download
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            
-            
 
-            if(city != 'location') {
+            if (city != 'location') {
                 link.setAttribute("download", `${set}${month != null ? '-' + month : ''}.${city}.${dateRange[0]}-${dateRange[1]}.csv`);
             } else {
                 link.setAttribute("download", `${set}${month != null ? '-' + month : ''}.${position[0]},${position[1]}.${dateRange[0]}-${dateRange[1]}.csv`);
             }
-            document.body.appendChild(link); 
+            document.body.appendChild(link);
             link.click();
         }
 
-        
+
     }
 
-    
-    
+
+
 
     useEffect(() => {
-        if(datasets.data.length > 0) {
+        if (datasets.data.length > 0) {
             setAnnualAvgTemperature(getAnnualAvgTemperature());
             setAnnualAvgPrecipitation(getAnnualPrecipitation());
         }
         filterDataByDate();
     }, [datasets]);
 
-   
+
 
 
     useEffect(() => {
         if (city != '' && city != 'location') {
             let city_data = cities.filter(c => c.city.replaceAll(' ', '-').toLowerCase() == city)[0];
 
-            if(city_data == undefined) {
+            if (city_data == undefined) {
                 setCity('');
                 return;
             }
@@ -425,8 +436,8 @@ export const AppProvider = ({ children }) => {
 
 
             window.history.pushState(
-                {}, 
-                '', 
+                {},
+                '',
                 `${window.location.pathname}?city=${city}`
             );
         }
@@ -434,11 +445,11 @@ export const AppProvider = ({ children }) => {
 
     useEffect(() => {
 
-        if(position.length > 0) {
+        if (position.length > 0) {
             getAllData();
         }
 
-    },[position])
+    }, [position])
 
 
 
@@ -449,7 +460,7 @@ export const AppProvider = ({ children }) => {
         //     '', 
         //     window.location.pathname.includes('?') ? window.location.pathname + '&daterange=' + dateRange.join(',') : window.location.pathname + '?daterange=' + dateRange.join(',')
         // );
-        if(dateRange[0] > dateRange[1]) {
+        if (dateRange[0] > dateRange[1]) {
             setDateRange([dateRange[1], dateRange[0]]);
         }
         filterDataByDate();

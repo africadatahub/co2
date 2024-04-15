@@ -121,81 +121,84 @@ const MonthlyAverageChart = () => {
                     </Col>
                 </Row>                
             </div>
-           
-            <div className="chart-container" id="monthly-temperature">
-                <ResponsiveContainer width="100%" height={250}>
-                <ComposedChart
-                    width={800} 
-                    height={250} 
-                    data={chartData}
-                    margin={{
-                        top: 0,
-                        right: 40, 
-                        bottom: 20,
-                        left: 0
-                    }}
-                   >
-                    <defs>
-                        <linearGradient id="maxmin" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#fca5a5" stopOpacity={0.6}/>
-                            <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
-                        </linearGradient>
-                    </defs>
-                    <XAxis dataKey="year"  angle={-90} interval={11}/>
-                    <YAxis label={{ 
-                        value: `°C`,
-                        style: { textAnchor: 'middle' },
-                        angle: -90,
-                        position: 'left',
-                        offset: -20, }}
-                    />
-                    <Tooltip content={CustomTooltip}/>
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="1"/>
-                    {
-                        showMaxMin && <Area type="linear" dataKey="minmax_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
-                    }
-                    {
-                        showClimatology && <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
-                    }
-                </ComposedChart>
-                </ResponsiveContainer>
-                
-            </div>
 
-            <footer>
-                <Row>
-                    <Col>
-                        <div className="legend-item">
-                            <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
-                            <div className="legend-item-label">Avg Temp</div>
-                        </div>
+            <div className="chart-export" id="monthly-temperature">
+                <div className="adh-watermark"></div>
+                <div className="chart-container">
+                    <ResponsiveContainer width="100%" height={250}>
+                    <ComposedChart
+                        width={800} 
+                        height={250} 
+                        data={chartData}
+                        margin={{
+                            top: 0,
+                            right: 40, 
+                            bottom: 20,
+                            left: 0
+                        }}
+                    >
+                        <defs>
+                            <linearGradient id="maxmin" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#fca5a5" stopOpacity={0.6}/>
+                                <stop offset="95%" stopColor="#a0c4fd" stopOpacity={0.6}/>
+                            </linearGradient>
+                        </defs>
+                        <XAxis dataKey="year"  angle={-90} interval={11}/>
+                        <YAxis label={{ 
+                            value: `°C`,
+                            style: { textAnchor: 'middle' },
+                            angle: -90,
+                            position: 'left',
+                            offset: -20, }}
+                        />
+                        <Tooltip content={CustomTooltip}/>
+                        <CartesianGrid stroke="#f5f5f5" />
+                        <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="1"/>
                         {
-                            showMaxMin &&
-                            <>
-                                <div className="legend-item">
-                                    <div className="legend-item-color" style={{backgroundColor: '#fca5a5'}}></div>
-                                    <div className="legend-item-label">Max Temp</div>
-                                </div>
-                                <div className="legend-item">
-                                    <div className="legend-item-color" style={{backgroundColor: '#a0c4fd'}}></div>
-                                    <div className="legend-item-label">Min Temp</div>
-                                </div>
-                            </>
+                            showMaxMin && <Area type="linear" dataKey="minmax_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
                         }
                         {
-                            showClimatology &&
+                            showClimatology && <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
+                        }
+                    </ComposedChart>
+                    </ResponsiveContainer>
+                </div>
+
+                <footer>
+                    <Row>
+                        <Col>
                             <div className="legend-item">
-                                <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
-                                <div className="legend-item-label">Historical Avg</div>
+                                <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
+                                <div className="legend-item-label">Avg Temp</div>
                             </div>
-                        }
-                    </Col>
-                    <Col xs="auto">
-                        Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
-                    </Col>
-                </Row>
-            </footer>
+                            {
+                                showMaxMin &&
+                                <>
+                                    <div className="legend-item">
+                                        <div className="legend-item-color" style={{backgroundColor: '#fca5a5'}}></div>
+                                        <div className="legend-item-label">Max Temp</div>
+                                    </div>
+                                    <div className="legend-item">
+                                        <div className="legend-item-color" style={{backgroundColor: '#a0c4fd'}}></div>
+                                        <div className="legend-item-label">Min Temp</div>
+                                    </div>
+                                </>
+                            }
+                            {
+                                showClimatology &&
+                                <div className="legend-item">
+                                    <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
+                                    <div className="legend-item-label">Historical Avg</div>
+                                </div>
+                            }
+                        </Col>
+                        <Col xs="auto">
+                            Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
+                        </Col>
+                    </Row>
+                </footer>
+
+            </div>
         
         </section >
 

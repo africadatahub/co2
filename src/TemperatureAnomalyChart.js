@@ -97,60 +97,63 @@ const TemperatureAnomalyChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container" id="monthly-temperature-anomaly">
-                <ResponsiveContainer width="100%" height={250}>
-                <ComposedChart
-                    width={800} 
-                    height={250} 
-                    data={chartData} 
-                    margin={{
-                        top: 0,
-                        right: 40, 
-                        bottom: 20,
-                        left: 0
-                    }}
-                   >
-                    <XAxis dataKey="year" angle={-90} interval={11}/>
-                    <YAxis label={{ 
-                        value: `°C`,
-                        style: { textAnchor: 'middle' },
-                        angle: -90,
-                        position: 'left',
-                        offset: -20, }}
-                    />
-                    <Tooltip content={CustomTooltip}/>
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Bar dataKey="TAVG_anomaly">
-                    {
-                        chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.TAVG_anomaly)} />
-                        ))
-                    }
-                    </Bar>
-                    
-                </ComposedChart>
-                </ResponsiveContainer>
-            </div>
-
-            <footer>
-                <Row>
-                    <Col>
+            <div className="chart-export" id="monthly-temperature-anomaly">
+                <div className="adh-watermark"></div>
+                <div className="chart-container">
+                    <ResponsiveContainer width="100%" height={250}>
+                    <ComposedChart
+                        width={800} 
+                        height={250} 
+                        data={chartData} 
+                        margin={{
+                            top: 0,
+                            right: 40, 
+                            bottom: 20,
+                            left: 0
+                        }}
+                    >
+                        <XAxis dataKey="year" angle={-90} interval={11}/>
+                        <YAxis label={{ 
+                            value: `°C`,
+                            style: { textAnchor: 'middle' },
+                            angle: -90,
+                            position: 'left',
+                            offset: -20, }}
+                        />
+                        <Tooltip content={CustomTooltip}/>
+                        <CartesianGrid stroke="#f5f5f5" />
+                        <Bar dataKey="TAVG_anomaly">
                         {
-                            temperatureScale.map((item, i) => {
-                                return (
-                                    <div key={i} className="legend-item">
-                                        <div className="legend-item-color" style={{backgroundColor: item.color}}></div>
-                                        <div className="legend-item-label">{item.min == -Infinity ? -1.5 : item.min} - {item.max == Infinity ? 1.5 : item.max}&deg;</div>
-                                    </div>
-                                )
-                            })
+                            chartData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.TAVG_anomaly)} />
+                            ))
                         }
-                    </Col>
-                    <Col xs="auto">
-                        Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
-                    </Col>
-                </Row>
-            </footer>
+                        </Bar>
+                        
+                    </ComposedChart>
+                    </ResponsiveContainer>
+                </div>
+
+                <footer>
+                    <Row>
+                        <Col>
+                            {
+                                temperatureScale.map((item, i) => {
+                                    return (
+                                        <div key={i} className="legend-item">
+                                            <div className="legend-item-color" style={{backgroundColor: item.color}}></div>
+                                            <div className="legend-item-label">{item.min == -Infinity ? -1.5 : item.min} - {item.max == Infinity ? 1.5 : item.max}&deg;</div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </Col>
+                        <Col xs="auto">
+                            Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
+                        </Col>
+                    </Row>
+                </footer>
+            </div>
         
         </section >
 

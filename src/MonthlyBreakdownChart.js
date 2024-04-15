@@ -123,59 +123,62 @@ const MonthlyBreakdownChart = () => {
                 </Row>                
             </div>
            
-            <div className="chart-container" id="monthly-temperature-breakdown">
-                <ResponsiveContainer width="100%" height={250}>
-                <ComposedChart
-                    width={800} 
-                    height={250} 
-                    data={chartData} 
-                    margin={{
-                        top: 0,
-                        right: 40, 
-                        bottom: 20,
-                        left: 0
-                    }}
-                   >
-                    
-                    <XAxis dataKey="year" angle={-90} interval={1}/>
-                    <YAxis label={{ 
-                        value: `°C`,
-                        style: { textAnchor: 'middle' },
-                        angle: -90,
-                        position: 'left',
-                        offset: -20, }}
-                    />
-                    <Tooltip content={CustomTooltip}/>
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff" dot={false} strokeWidth="1"/>
-                    {
-                        showClimatology &&
-                        <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
-                    }
-                </ComposedChart>
-                </ResponsiveContainer>
-            </div>
-
-            <footer>
-                <Row>
-                    <Col>
-                        <div className="legend-item">
-                            <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
-                            <div className="legend-item-label">{monthNames[selectedMonth]} Avg</div>
-                        </div>
+            <div className="chart-export" id="monthly-temperature-breakdown">
+                <div className="adh-watermark"></div>
+                <div className="chart-container">
+                    <ResponsiveContainer width="100%" height={250}>
+                    <ComposedChart
+                        width={800} 
+                        height={250} 
+                        data={chartData} 
+                        margin={{
+                            top: 0,
+                            right: 40, 
+                            bottom: 20,
+                            left: 0
+                        }}
+                    >
+                        
+                        <XAxis dataKey="year" angle={-90} interval={1}/>
+                        <YAxis label={{ 
+                            value: `°C`,
+                            style: { textAnchor: 'middle' },
+                            angle: -90,
+                            position: 'left',
+                            offset: -20, }}
+                        />
+                        <Tooltip content={CustomTooltip}/>
+                        <CartesianGrid stroke="#f5f5f5" />
+                        <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                         {
                             showClimatology &&
-                            <div className="legend-item">
-                                <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
-                                <div className="legend-item-label">Historical Avg</div>
-                            </div>
+                            <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
                         }
-                    </Col>
-                    <Col xs="auto">
-                        Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
-                    </Col>
-                </Row>
-            </footer>
+                    </ComposedChart>
+                    </ResponsiveContainer>
+                </div>
+
+                <footer>
+                    <Row>
+                        <Col>
+                            <div className="legend-item">
+                                <div className="legend-item-color" style={{backgroundColor: '#bd00ff'}}></div>
+                                <div className="legend-item-label">{monthNames[selectedMonth]} Avg</div>
+                            </div>
+                            {
+                                showClimatology &&
+                                <div className="legend-item">
+                                    <div className="legend-item-color" style={{backgroundColor: '#ed8f38'}}></div>
+                                    <div className="legend-item-label">Historical Avg</div>
+                                </div>
+                            }
+                        </Col>
+                        <Col xs="auto">
+                            Data source: <a target="_blank" href="https://berkeleyearth.org/data/">Berkeley Earth</a>
+                        </Col>
+                    </Row>
+                </footer>
+            </div>
         
         </section >
 
