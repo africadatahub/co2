@@ -98,7 +98,7 @@ const TemperatureAnomalyChart = () => {
             </div>
            
             <div className="chart-export" id="monthly-temperature-anomaly">
-                <div className="adh-watermark"></div>
+                
                 <div className="chart-container">
                     <ResponsiveContainer width="100%" height={250}>
                     <ComposedChart

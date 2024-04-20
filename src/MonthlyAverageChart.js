@@ -123,7 +123,7 @@ const MonthlyAverageChart = () => {
             </div>
 
             <div className="chart-export" id="monthly-temperature">
-                <div className="adh-watermark"></div>
+                
                 <div className="chart-container">
                     <ResponsiveContainer width="100%" height={250}>
                     <ComposedChart

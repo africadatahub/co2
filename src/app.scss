@@ -350,20 +350,6 @@ h1, h5 {
     position: relative;
 }
 
-.adh-watermark {
-    background-image: url('./adh-logo.svg');
-    background-repeat: no-repeat;
-    background-size: contain;
-    aspect-ratio: 244/53;
-    width: 150px;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    z-index: 9999;
-    opacity: 0;
-
-}
 
 
 /*** Tables ***/

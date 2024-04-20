@@ -96,7 +96,7 @@ const MonthlyPrecipitationChart = () => {
             </div>
            
             <div className="chart-export" id="monthly-precipitation">
-                <div className="adh-watermark"></div>
+                
                 <div className="chart-container precipitation-chart-container">
                     <Heatmap
                         height={(dateRange[1] - dateRange[0]) > 10 ? 700 : 300}

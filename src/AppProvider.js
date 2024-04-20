@@ -3,9 +3,6 @@ import { AppContext } from './AppContext';
 
 import axios from 'axios';
 
-import { svgAsPng } from 'svg-to-png';
-import { saveAs } from 'file-saver';
-import { toPng } from 'dom-to-image-more';
 import html2canvas from 'html2canvas';
 import ADHLogo from './ADHLogo';
 
@@ -350,9 +347,7 @@ export const AppProvider = ({ children }) => {
             // Append the SVG element to the group
             gElement.appendChild(svgElement);
 
-            // Find the path element within the watermark SVG and set opacity
-            const pathElement = svgElement.querySelector("path");
-            pathElement.setAttribute("fill-opacity", "0.3");
+            svgElement.setAttribute("fill-opacity", "0.3");
 
             svg.appendChild(gElement);
 

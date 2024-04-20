@@ -155,7 +155,7 @@ const MonthlyPrecipBreakdownChart = () => {
                 </Row>                
             </div>
             <div className="chart-export" id="monthly-precipitation-breakdown">
-                <div className="adh-watermark"></div>
+                
                 <div className="chart-container">
                     <ResponsiveContainer width="100%" height={250}>
                     <ComposedChart
