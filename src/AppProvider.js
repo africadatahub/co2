@@ -333,7 +333,7 @@ export const AppProvider = ({ children }) => {
             .then(canvas => {
                 const ctx = canvas.getContext('2d');
                 const link = document.createElement('a');
-                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
+                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.jpg';
                 link.href = canvas.toDataURL();
                 link.click();
                 watermark.style.opacity = '0';
