@@ -224,11 +224,11 @@ export const AppProvider = ({ children }) => {
     // ADD META TAGS
     const addMetaTags = () => {
     
-        let meta = document.createElement('meta');
-        meta.name = 'description';
-        meta.content = 'Africa Data Hub Climate Observer';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-    
+        document.title = 'Co2 | Africa Data Hub';
+      
+        document.querySelector('meta[property="og:title"]').setAttribute("content", title);
+
+        
     
     }
 
