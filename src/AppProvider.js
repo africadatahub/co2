@@ -226,7 +226,7 @@ export const AppProvider = ({ children }) => {
     
         document.title = 'Co2 | Africa Data Hub';
       
-        document.querySelector('meta[property="og:title"]').setAttribute("content", title);
+        document.querySelector('meta[property="og:title"]').setAttribute("content", 'Co2 | Africa Data Hub');
 
         
     
