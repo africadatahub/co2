@@ -7,6 +7,7 @@ import { svgAsPng } from 'svg-to-png';
 import { saveAs } from 'file-saver';
 import { toPng } from 'dom-to-image-more';
 import html2canvas from 'html2canvas';
+import ADHLogo from './ADHLogo';
 
 import * as cities from './data/cities.json';
 import * as countries from './data/countries.json';
@@ -326,25 +327,52 @@ export const AppProvider = ({ children }) => {
 
             let svgContainer = document.getElementById(set);
             let svg = svgContainer.getElementsByTagName('svg')[0];
-            let watermark = svgContainer.querySelector('.adh-watermark');
-            watermark.style.opacity = '0.3';
-            
-            html2canvas(svgContainer)
-            .then(canvas => {
-                const ctx = canvas.getContext('2d');
-                const link = document.createElement('a');
-                link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
-                link.href = canvas.toDataURL();
-                link.click();
-                watermark.style.opacity = '0';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            
-            
 
-            
+            // Create a new SVG element
+            const svgElement = new DOMParser().parseFromString(ADHLogo(), "image/svg+xml").querySelector("svg");
+
+            // Set any attributes you need on the new SVG element
+            svgElement.setAttribute("width", "244");
+            svgElement.setAttribute("height", "53");
+            svgElement.setAttribute("viewBox", "0 0 244 53");
+            svgElement.setAttribute("fill", "none");
+
+            // Create a new group element to hold the watermark
+            const gElement = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+            // Calculate center position for x and y
+            const centerX = (svg.width.baseVal.value - 244) / 2;
+            const centerY = (svg.height.baseVal.value - 53) / 2;
+
+            // Set the transform for centering
+            gElement.setAttribute("transform", `translate(${centerX}, ${centerY})`);
+
+            // Append the SVG element to the group
+            gElement.appendChild(svgElement);
+
+            // Find the path element within the watermark SVG and set opacity
+            const pathElement = svgElement.querySelector("path");
+            pathElement.setAttribute("fill-opacity", "0.3");
+
+            svg.appendChild(gElement);
+
+            html2canvas(svgContainer)
+                .then(canvas => {
+                    const ctx = canvas.getContext('2d');
+                    const link = document.createElement('a');
+                    link.download = set + '-' + position[0] + '-' + position[1] + '-' + dateRange[0] + '-' + dateRange[1] + '.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+
+                    // Remove the watermark SVG
+                    svg.removeChild(gElement);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+
+
 
         } else {
 
