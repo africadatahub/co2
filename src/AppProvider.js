@@ -221,6 +221,17 @@ export const AppProvider = ({ children }) => {
         setCurrentData(filteredData);
     }
 
+    // ADD META TAGS
+    const addMetaTags = () => {
+    
+        let meta = document.createElement('meta');
+        meta.name = 'description';
+        meta.content = 'Africa Data Hub Climate Observer';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+    
+    
+    }
+
 
     // INIT
 
@@ -281,6 +292,8 @@ export const AppProvider = ({ children }) => {
             setCity(randomCity.city.replaceAll(' ', '-').toLowerCase());
 
         }
+
+        addMetaTags();
 
     }, []);
 
