@@ -223,13 +223,25 @@ export const AppProvider = ({ children }) => {
 
     // ADD META TAGS
     const addMetaTags = () => {
-    
-        document.title = 'Co2 | Africa Data Hub';
-      
-        document.querySelector('meta[property="og:title"]').setAttribute("content", 'Co2 | Africa Data Hub');
 
-        
-    
+        document.title = 'Co2 | Africa Data Hub';
+
+        // Remove existing meta description
+        let existingDescription = document.querySelector('meta[name="description"]');
+        if (existingDescription) {
+            existingDescription.remove();
+        }
+
+        // Create new meta description
+        let newMetaDescription = document.createElement('meta');
+        newMetaDescription.setAttribute('name', 'description');
+        newMetaDescription.setAttribute('content', 'Explore climate data for cities in Africa');
+
+        // Append new meta description to head
+        document.head.appendChild(newMetaDescription);
+
+
+
     }
 
 
