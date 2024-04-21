@@ -223,26 +223,71 @@ export const AppProvider = ({ children }) => {
 
     // ADD META TAGS
     const addMetaTags = () => {
+        // Set title
+        document.title = 'Co2 - Climate Observer | Africa Data Hub';
 
-        document.title = 'Co2 - Climate Observer| Africa Data Hub';
+        // Remove existing meta tags
+        let existingTitle = document.querySelector('meta[property="og:title"]');
+        if (existingTitle) { existingTitle.remove(); }
 
-        // Remove existing meta description
-        let existingDescription = document.querySelector('meta[property="og:description"]');
-        if (existingDescription) {
-            existingDescription.remove();
-        }
+        let existingDescriptionOG = document.querySelector('meta[property="og:description"]');
+        if (existingDescriptionOG) { existingDescriptionOG.remove(); }
 
-        // Create new meta description
-        let newMetaDescription = document.createElement('meta');
-        newMetaDescription.setAttribute('property', 'og:description');
-        newMetaDescription.setAttribute('content', 'Explore climate data for cities in Africa');
+        let existingUrlOG = document.querySelector('meta[property="og:url"]');
+        if (existingUrlOG) { existingUrlOG.remove(); }
 
-        // Append new meta description to head
-        document.head.appendChild(newMetaDescription);
+        let existingTwitterTitle = document.querySelector('meta[name="twitter:title"]');
+        if (existingTwitterTitle) { existingTwitterTitle.remove(); }
+
+        let existingDescriptionTwitter = document.querySelector('meta[name="twitter:description"]');
+        if (existingDescriptionTwitter) { existingDescriptionTwitter.remove(); }
+
+        let existingUrlTwitter = document.querySelector('meta[name="twitter:url"]');
+        if (existingUrlTwitter) { existingUrlTwitter.remove(); }
+
+        let existingDescriptionNormal = document.querySelector('meta[name="description"]');
+        if (existingDescriptionNormal) { existingDescriptionNormal.remove(); }
+
+        // Create new meta tags
+        let newMetaTitle = document.createElement('meta');
+        newMetaTitle.setAttribute('property', 'og:title');
+        newMetaTitle.setAttribute('content', 'Co2 - Climate Observer | Africa Data Hub');
+
+        let newMetaDescriptionOG = document.createElement('meta');
+        newMetaDescriptionOG.setAttribute('property', 'og:description');
+        newMetaDescriptionOG.setAttribute('content', 'Explore climate data for cities in Africa');
+
+        let newMetaUrlOG = document.createElement('meta');
+        newMetaUrlOG.setAttribute('property', 'og:url');
+        newMetaUrlOG.setAttribute('content', window.location.href);
+
+        let newMetaTitleTwitter = document.createElement('meta');
+        newMetaTitleTwitter.setAttribute('name', 'twitter:title');
+        newMetaTitleTwitter.setAttribute('content', 'Co2 - Climate Observer | Africa Data Hub');
+
+        let newMetaDescriptionTwitter = document.createElement('meta');
+        newMetaDescriptionTwitter.setAttribute('name', 'twitter:description');
+        newMetaDescriptionTwitter.setAttribute('content', 'Explore climate data for cities in Africa');
+
+        let newMetaUrlTwitter = document.createElement('meta');
+        newMetaUrlTwitter.setAttribute('name', 'twitter:url');
+        newMetaUrlTwitter.setAttribute('content', window.location.href);
+
+        let newMetaDescriptionNormal = document.createElement('meta');
+        newMetaDescriptionNormal.setAttribute('name', 'description');
+        newMetaDescriptionNormal.setAttribute('content', 'Explore climate data for cities in Africa');
+
+        // Append new meta tags to head
+        document.head.appendChild(newMetaTitle);
+        document.head.appendChild(newMetaDescriptionOG);
+        document.head.appendChild(newMetaUrlOG);
+        document.head.appendChild(newMetaTitleTwitter);
+        document.head.appendChild(newMetaDescriptionTwitter);
+        document.head.appendChild(newMetaUrlTwitter);
+        document.head.appendChild(newMetaDescriptionNormal);
+    };
 
 
-
-    }
 
 
     // INIT
