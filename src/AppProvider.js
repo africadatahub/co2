@@ -224,7 +224,7 @@ export const AppProvider = ({ children }) => {
     // ADD META TAGS
     const addMetaTags = () => {
         // Set title
-        document.title = 'Co2 - Climate Observer | Africa Data Hub';
+        document.title = 'Climate Observer | Africa Data Hub';
 
         // Remove existing meta tags
         let existingTitle = document.querySelector('meta[property="og:title"]');
@@ -251,7 +251,7 @@ export const AppProvider = ({ children }) => {
         // Create new meta tags
         let newMetaTitle = document.createElement('meta');
         newMetaTitle.setAttribute('property', 'og:title');
-        newMetaTitle.setAttribute('content', 'Co2 - Climate Observer | Africa Data Hub');
+        newMetaTitle.setAttribute('content', 'Climate Observer | Africa Data Hub');
 
         let newMetaDescriptionOG = document.createElement('meta');
         newMetaDescriptionOG.setAttribute('property', 'og:description');
@@ -349,8 +349,6 @@ export const AppProvider = ({ children }) => {
             setCity(randomCity.city.replaceAll(' ', '-').toLowerCase());
 
         }
-
-        addMetaTags();
 
     }, []);
 
