@@ -62,6 +62,19 @@ h1, h5 {
     background: rgba(242, 242, 242, 1);
 }
 
+.social-share-btn {
+    .btn-primary {
+        background: rgba(17, 65, 81, 0.04);
+        color: rgba(17, 65, 81, 1);
+        border-color: rgba(17, 65, 81, 0.04);
+
+        &:hover {
+            background: rgba(17, 65, 81, 0.1);
+            border-color: rgba(17, 65, 81, 0.1);
+        }
+    }
+}
+
 
 /* Form */
 

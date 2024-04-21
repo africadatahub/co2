@@ -27,6 +27,7 @@ import TemperatureAnomalyChart from './TemperatureAnomalyChart';
 import MonthlyPrecipitationChart from './MonthlyPrecipitationChart';
 import MonthlyPrecipBreakdownChart from './MonthlyPrecipBreakdownChart';
 import AnnualPrecipTable from './AnnualPrecipTable';
+import SocialShare from './SocialShare';
 
 
 import './app.scss';
@@ -100,6 +101,12 @@ const Co2 = () => {
                             </div>
 
                             <LocationInfoPanel />
+                            <div className="mt-5">
+                                <SocialShare/>
+                            </div>
+                            
+
+
 
                             <div className="mt-auto info-block">
                                 Location data is mapped to grid squares which measure <strong>1x1 degree latitude and longitude</strong> and all positions are rounded to the nearest 1x1 square. These squares are approximately 100km x 100km in size.

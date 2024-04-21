@@ -1284,6 +1284,8 @@
 .unique-lpxjij .info-block{background:#f6f8f8;border-radius:5px;padding:1em}
 .unique-lpxjij .locationPanel h2, .unique-lpxjij .locationPanel .h2{font-size:24px}
 .unique-lpxjij .introduction{background:#f2f2f2;border-radius:5px;margin-bottom:2em;padding:1em;font-size:1.2em}
+.unique-lpxjij .social-share-btn .btn-primary{color:#114151;background:#1141510a;border-color:#1141510a}
+.unique-lpxjij .social-share-btn .btn-primary:hover{background:#1141511a;border-color:#1141511a}
 .unique-lpxjij .form-control, .unique-lpxjij .form-select{background-color:#f2f2f2;border:none}
 .unique-lpxjij .form-label{font-weight:600}
 .unique-lpxjij .search-results{z-index:9999;background:#fff;position:absolute}
