@@ -1337,7 +1337,8 @@
 .unique-lpxjij .chart-export{position:relative}
 .unique-lpxjij .table{--bs-table-striped-bg:#f7f9f9!important;--bs-table-striped-color:#114151!important;--bs-table-color-state:#114151!important}
 .unique-lpxjij .table-container{padding:1em;font-size:.9em}
-.unique-lpxjij .col, .unique-lpxjij .introduction, .unique-lpxjij .info-block{display:block}@keyframes progress-bar-stripes{0%{background-position-x:14px}}
+.unique-lpxjij .col, .unique-lpxjij .introduction, .unique-lpxjij .info-block{display:block}
+.unique-lpxjij .dropdown{margin-right:unset}@keyframes progress-bar-stripes{0%{background-position-x:14px}}
 @keyframes spinner-border{to{transform:rotate(360deg)}}
 @keyframes spinner-grow{0%{transform:scale(0)}50%{opacity:1;transform:none}}
 @keyframes placeholder-glow{50%{opacity:.2}}
