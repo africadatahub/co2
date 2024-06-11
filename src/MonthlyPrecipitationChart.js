@@ -17,6 +17,8 @@ import { Heatmap, HeatmapSeries, SequentialLegend, TooltipTemplate, TooltipArea,
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
+import SocialShare from "./SocialShare";
+
 
 
 
@@ -88,6 +90,9 @@ const MonthlyPrecipitationChart = () => {
                                         <Dropdown.Item onClick={() => downloadData('png','monthly-precipitation')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
+                            </Col>
+                            <Col xs="auto">
+                                <SocialShare chart="monthly-actual-rainfall" />
                             </Col>
                            
                         </Row>

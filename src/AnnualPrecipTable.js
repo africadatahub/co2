@@ -11,10 +11,10 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
 
-
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
+import SocialShare from "./SocialShare";
 
 
 
@@ -98,6 +98,9 @@ const AnnualPrecipTable = () => {
                                         <Dropdown.Item onClick={() => downloadData('csv','annual-precipitation')}>CSV</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
+                            </Col>
+                            <Col xs="auto">
+                                <SocialShare chart="annual-rainfall" />
                             </Col>
                            
                         </Row>

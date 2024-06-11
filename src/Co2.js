@@ -181,7 +181,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Average Monthly Temperature</h4>
+                            <h4><a name="average-monthly-temperature">Average Monthly Temperature</a></h4>
                             <p>
                                 This chart shows the average monthly temperature for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }, {convertCountry('iso3', country).location}. The red and blue areas show average maximum and minimum temperatures for that month.
                             </p>
@@ -235,7 +235,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Monthly Temperature Breakdown</h4>
+                            <h4><a name="monthly-temperature-breakdown">Monthly Temperature Breakdown</a></h4>
                             <p>
                                 To make the temperature data a little easier to communicate, we've broken it down by months in this chart. Comparing the average monthly temperature for every August for the last 30 years, for example, is more visually revealing than looking at all the data for all seasons.
                             </p>
@@ -270,7 +270,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Annual Temperature</h4>
+                            <h4><a name="annual-temperature">Annual Temperature</a></h4>
                             <p>
                                 To assist you with your own analysis, we've also prepared the temperature record as a table. Here we are showing the "climate anomaly" in the fourth column. This tells you exactly how much hotter or colder than the historical average a month was.
                             </p>
@@ -286,7 +286,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Temperature Anomaly</h4>
+                            <h4><a name="temperature-anomaly">Temperature Anomaly</a></h4>
                             <p>
                                 This chart is created using the anomaly described above, and is based on the work of Ed Hawkins and <a href="https://showyourstripes.info/" target="_blank">#ShowYourStripes</a>. Red bars show years in which the temperature has been higher than the historical average, blue bars years in which it has been colder.
                             </p>
@@ -337,7 +337,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Monthly Actual Rainfall</h4>
+                            <h4><a name="monthly-actual-rainfall">Monthly Actual Rainfall</a></h4>
                             <p>
                                 Historical baseline rainfall data (1950 - 1980) comes from the <a href="https://gpcc.dwd.de/" target="_blank">Global Precipitation Climatology Centre (GPCC)</a>. Recent rainfall data comes from <a href="https://www.gloh2o.org/" target="_blank">GloH2O</a>. As with the temperature data above, this data is modelled at the global scale to estimate rainfall at any given moment in time. It is measured in millimetres of rain per month (mm).
                             </p>
@@ -389,7 +389,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Monthly Rainfall Breakdown</h4>
+                            <h4><a name="monthly-rainfall-breakdown">Monthly Rainfall Breakdown</a></h4>
                             <p>
                                 This chart also shows the GPCC data for your location, but in this case we have illustrated it as a line chart showing a single month over time. 
                             </p>
@@ -442,7 +442,7 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4>Annual Rainfall</h4>
+                            <h4><a name="annual-rainfall">Annual Rainfall</a></h4>
                             <p>
                              We've also included the rainfall data as an interactive table for you, which shows the difference between a particular month and the historical average. 
                             </p>

@@ -10,6 +10,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 
+import SocialShare from "./SocialShare";
+
+
 import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 import { Icon } from '@mdi/react';
@@ -117,6 +120,9 @@ const MonthlyBreakdownChart = () => {
                                         <Dropdown.Item onClick={() => downloadData('png','monthly-temperature-breakdown',selectedMonth)}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
+                            </Col>
+                            <Col xs="auto">
+                                <SocialShare chart="monthly-temperature-breakdown" />
                             </Col>
                         </Row>
                     </Col>

@@ -17,6 +17,8 @@ import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
+import SocialShare from "./SocialShare";
+
 
 
 const MonthlyPrecipBreakdownChart = () => {
@@ -147,9 +149,9 @@ const MonthlyPrecipBreakdownChart = () => {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            {/* <Col xs="auto">
-                                <Button className="chart-control-btn"><Icon path={mdiShareVariant} size={1} /> Share</Button>
-                            </Col>      */}
+                            <Col xs="auto">
+                                <SocialShare chart="monthly-rainfall-breakdown" />
+                            </Col>
                         </Row>
                     </Col>
                 </Row>                

@@ -11,6 +11,8 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Table from 'react-bootstrap/Table';
 
+import SocialShare from "./SocialShare";
+
 
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
@@ -83,9 +85,9 @@ const AnnualTemperaturetable = () => {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            {/* <Col xs="auto">
-                                <Button className="chart-control-btn"><Icon path={mdiShareVariant} size={1} /> Share</Button>
-                            </Col>      */}
+                            <Col xs="auto">
+                                <SocialShare chart="annual-temperature" />
+                            </Col>
                         </Row>
                     </Col>
                 </Row>                

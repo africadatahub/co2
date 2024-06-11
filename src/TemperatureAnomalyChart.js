@@ -15,7 +15,7 @@ import { ComposedChart, Line, Area, Bar, Cell, XAxis, YAxis, CartesianGrid, Tool
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
-
+import SocialShare from "./SocialShare";
 
 
 
@@ -91,7 +91,9 @@ const TemperatureAnomalyChart = () => {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
-                            
+                            <Col xs="auto">
+                                <SocialShare chart="temperature-anomaly" />
+                            </Col>
                         </Row>
                     </Col>
                 </Row>                

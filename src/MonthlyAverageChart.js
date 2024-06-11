@@ -14,6 +14,8 @@ import { ComposedChart, Line, Area, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 
 import { ChartContainer, LineChart, AreaChart } from 'reaviz';
 
+import SocialShare from "./SocialShare";
+
 import { Icon } from '@mdi/react';
 import { mdiCog, mdiDownload, mdiShare, mdiShareVariant } from '@mdi/js';
 
@@ -116,6 +118,9 @@ const MonthlyAverageChart = () => {
                                         <Dropdown.Item onClick={() => downloadData('png','monthly-temperature')}>PNG</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
+                            </Col>
+                            <Col xs="auto">
+                                <SocialShare chart="average-monthly-temperature" />
                             </Col>
                         </Row>
                     </Col>
