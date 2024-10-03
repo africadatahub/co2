@@ -40,25 +40,25 @@ const MonthlyAverageChart = () => {
                         showMaxMin &&
                         <Row style={{color: '#fca5a5'}}>
                             <Col className="tooltip-item-name">Maximum Temperature</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TMAX_temperature).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.tmax_temperature).toFixed(2)}&deg;</Col>
                         </Row>
                     }
                     <Row style={{color: '#bd00ff'}}>
                         <Col className="tooltip-item-name">Average Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_temperature)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.tavg_temperature)}&deg;</Col>
                     </Row>
                     {
                         showMaxMin &&
                         <Row style={{color: '#a0c4fd'}}>
                             <Col className="tooltip-item-name">Minumum Temperature</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TMIN_temperature).toFixed(2)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.tmin_temperature).toFixed(2)}&deg;</Col>
                         </Row>
                     }
                     {
                         showClimatology &&
                         <Row style={{color: '#ed8f38'}}>
                             <Col className="tooltip-item-name">Historical Average</Col>
-                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_climatology)}&deg;</Col>
+                            <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.tavg_climatology)}&deg;</Col>
                         </Row>
                     }   
                 </Container>
@@ -70,9 +70,9 @@ const MonthlyAverageChart = () => {
 
     useEffect(() => {
 
-       
+        console.log('currentData',currentData);
+
         setChartData(currentData);
-        
     
     }, [currentData]);
 
@@ -158,12 +158,12 @@ const MonthlyAverageChart = () => {
                         />
                         <Tooltip content={CustomTooltip}/>
                         <CartesianGrid stroke="#f5f5f5" />
-                        <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="1"/>
+                        <Line type="linear" dataKey="tavg_temperature" stroke="#bd00ff"  dot={false}  strokeWidth="1"/>
                         {
                             showMaxMin && <Area type="linear" dataKey="minmax_temperature" fill="url(#maxmin)" stroke="#8884d8" strokeOpacity={0.2} />
                         }
                         {
-                            showClimatology && <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
+                            showClimatology && <Line type="linear" dataKey="tavg_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
                         }
                     </ComposedChart>
                     </ResponsiveContainer>

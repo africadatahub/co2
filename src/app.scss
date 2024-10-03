@@ -11,6 +11,17 @@ $theme-colors: (
 );
 $border-radius: 5px;
 
+@mixin contrast-color($background) {
+    // Convert background color to HSL
+    $hsl: hsl(hue($background), saturation($background), lightness($background));
+    $lightness: lightness($hsl);
+  
+    // If lightness is more than 50%, set text color to black, otherwise set to white
+    $text-color: if($lightness > 50%, #000, #fff);
+  
+    color: $text-color;
+  }
+
 @import "bootstrap/scss/bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 html {
@@ -197,6 +208,95 @@ h1, h5 {
     }
 }
 
+
+.air-quality-summary {
+    padding: 1em;
+    font-size: 1.2em;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(17, 65, 81, 0.2);
+    border-radius: 5px;
+
+   
+
+    .quality-badge {
+        display: inline;
+        border-radius: 5px;    
+        padding: 0.2em 0.5em;
+        font-weight: bold;
+    }
+    
+
+}
+
+.air-quality-guage {
+    position: relative;
+
+    .air-quality-guage-needle {
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 20px solid #333;
+        transform: translateX(-50%);
+    }
+
+    .air-quality-guage-segment {
+        display: inline-block;
+        width: 16.666667%;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        font-weight: bold;
+        color: #333;
+        padding: 1em 0;
+
+        /*
+        "Good": "rgb(251, 255, 201)",
+        "Moderate": "rgb(251, 240, 140)",
+        "Not good": "rgb(255, 159, 47)",
+        "Unhealthy": "rgb(255, 56, 17)",
+        "Very Unhealthy": "rgb(221, 0, 6)",
+        "Hazardous": "rgb(143, 0, 33)"
+        */
+
+        &:first-child {
+            @include contrast-color(rgb(251, 255, 201));
+        }
+
+        &:nth-child(2) {
+            @include contrast-color(rgb(251, 240, 140));
+        }
+
+        &:nth-child(3) {
+            @include contrast-color(rgb(255, 159, 47));
+        }
+
+        &:nth-child(4) {
+            @include contrast-color(rgb(255, 56, 17));
+        }
+
+        &:nth-child(5) {
+            @include contrast-color(rgb(221, 0, 6));
+        }
+
+        &:last-child {
+            @include contrast-color(rgb(143, 0, 33));
+        }
+
+
+        &:first-of-type {
+            border-radius: 5px 0 0 5px;
+        }
+
+        &:last-of-type {
+            border-radius: 0 5px 5px 0;
+        }
+    }
+}
+
 .country-flag-circle {
     display: inline-block;
     width: 1em;
@@ -228,6 +328,8 @@ h1, h5 {
     margin-left: 0.5em;
     border-radius: 5px;
 }
+
+
 
 /*** Charts ***/
 
@@ -283,6 +385,10 @@ h1, h5 {
         padding: 2em 0;
 
         &.precipitation-chart-container {
+            padding: 0 25px;
+        }
+
+        &.air-quality-chart-container {
             padding: 0 25px;
         }
 

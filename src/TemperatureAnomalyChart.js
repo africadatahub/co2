@@ -37,7 +37,7 @@ const TemperatureAnomalyChart = () => {
                     <div className="tooltip-date">{monthNames[payload[0].payload.month_number-1]}  {label}</div>
                     <Row>
                         <Col className="tooltip-item-name">Temperature Anomaly</Col>
-                        <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.TAVG_anomaly))}}>{parseFloat(payload[0].payload.TAVG_anomaly)}&deg;</span></Col>
+                        <Col xs={3} className="tooltip-item-value"><span style={{color: getAnomalyColor(parseFloat(payload[0].payload.tavg_anomaly))}}>{parseFloat(payload[0].payload.tavg_anomaly)}&deg;</span></Col>
                     </Row>
                 </Container>
             );
@@ -124,10 +124,10 @@ const TemperatureAnomalyChart = () => {
                         />
                         <Tooltip content={CustomTooltip}/>
                         <CartesianGrid stroke="#f5f5f5" />
-                        <Bar dataKey="TAVG_anomaly">
+                        <Bar dataKey="tavg_anomaly">
                         {
                             chartData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.TAVG_anomaly)} />
+                                <Cell key={`cell-${index}`} fill={getAnomalyColor(entry.tavg_anomaly)} />
                             ))
                         }
                         </Bar>

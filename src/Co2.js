@@ -27,6 +27,9 @@ import TemperatureAnomalyChart from './TemperatureAnomalyChart';
 import MonthlyPrecipitationChart from './MonthlyPrecipitationChart';
 import MonthlyPrecipBreakdownChart from './MonthlyPrecipBreakdownChart';
 import AnnualPrecipTable from './AnnualPrecipTable';
+import MonthlyAirQualityChart from './MonthlyAirQualityChart';
+import AirQualityChart from './AirQualityChart';
+import AirQualityMap from './AirQualityMap';
 import SocialShare from './SocialShare';
 
 
@@ -34,7 +37,7 @@ import './app.scss';
 
 const Co2 = () => {
 
-    const { cities, city, country, convertCountry, address, dateRange, changeDateRange } = useContext(AppContext);
+    const { cities, city, country, convertCountry, address, dateRange, changeDateRange, airQuality } = useContext(AppContext);
 
 
     useEffect(() => {
@@ -465,7 +468,7 @@ const Co2 = () => {
                 </Container>
             </Container>
 
-            {/* <Container className="co2-header">
+            <Container className="co2-header">
                 <header>
                     <h3><a name="emissions"><Icon path={mdiFactory} size={1} /> Emissions</a></h3>
                 </header>
@@ -474,38 +477,46 @@ const Co2 = () => {
             <Container fluid className="co2-section">
                 <Container>
                     <Row>
-                        <Col md={4}>
-                            <h4>Lorem ipsum</h4>
+                        <Col md={4} className="section-info">
+                            <h4><a name="air-quality">Air Quality</a></h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc.
+                                Aerosol Optical Depth (AOD) measures the degree to which aerosols (tiny particles like dust, smoke, and pollution) in the atmosphere prevent light from passing through by scattering and absorption. A higher AOD value indicates more aerosols and greater light blockage.
                             </p>
+                            <p>AOD can be used as a proxy for air quality, with higher values indicating worse air quality. This chart shows the average AOD for the time period.</p>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">Is Aerosol Optical Depth a reliable indicator?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>AOD measures air thickness which can indicate the presence of pollutants. AOD by itself does not take into account cloud cover, weather conditions and other factors that might affect the air thickness.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="1">What unit is AOD measured in?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="1">
+                                        <Card.Body>AOD is a unitless measurement and represents the level of light scattering due to aerosols in the atmosphere. Values range from &lt; 0.1 to &gt 0.3 which would indicate a hight presence of aerosols.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </Col>
                         <Col>
+                            <AirQualityChart />
+                            <AirQualityMap />
+                            <div className="mt-4">
+                                <MonthlyAirQualityChart />
+                            </div>
                         </Col>
                     </Row>
                 </Container>
             </Container>
 
-            <Container className="co2-header">
-                <header>
-                    <h3><a name="landcover"><Icon path={mdiLandPlots} size={1} /> Land Cover</a></h3>
-                </header>
-            </Container>
 
-            <Container fluid className="co2-section">
-                <Container>
-                    <Row>
-                        <Col md={4}>
-                            <h4>Lorem ipsum</h4>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc.
-                            </p>
-                        </Col>
-                        <Col>
-                        </Col>
-                    </Row>
-                </Container>
-            </Container> */}
+
+
+            
         </>
     )
 

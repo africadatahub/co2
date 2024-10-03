@@ -109,11 +109,11 @@ const AnnualTemperaturetable = () => {
                                 return (
                                     <tr key={i}>
                                         <td>{monthNames[row.month_number-1]}</td>
-                                        <td className="text-end">{row.TAVG_climatology}&deg;C</td>
-                                        <td className="text-end">{row.TAVG_temperature}&deg;C</td>
+                                        <td className="text-end">{row.tavg_climatology}&deg;C</td>
+                                        <td className="text-end">{row.tavg_temperature}&deg;C</td>
                                         <td className="text-end">
-                                            {row.TAVG_anomaly}&deg;C
-                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.TAVG_anomaly) }}></div>
+                                            {row.tavg_anomaly}&deg;C
+                                            <div className="legend-box" style={{backgroundColor: getAnomalyColor(row.tavg_anomaly) }}></div>
                                         </td>
                                     </tr>
                                 )

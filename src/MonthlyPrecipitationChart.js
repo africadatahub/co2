@@ -48,14 +48,18 @@ const MonthlyPrecipitationChart = () => {
             }
         })
         
-        
-
+        // sort years in descending order
+        heatmapData.forEach((h) => {
+            h.data.sort((a,b) => a.key - b.key);
+        })
 
         setChartData(heatmapData);
+
+        
     
     }, [currentData]);
 
-    
+   
 
     return (
         <section className="chart-wrapper">

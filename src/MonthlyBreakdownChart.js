@@ -40,11 +40,11 @@ const MonthlyBreakdownChart = () => {
                     <div className="tooltip-date">{monthNames[payload[0].payload.month_number]}  {label}</div>
                     <Row style={{color: "#bd00ff"}}>
                         <Col className="tooltip-item-name">Average Temperature</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_temperature).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.tavg_temperature).toFixed(2)}&deg;</Col>
                     </Row>
                     <Row style={{color: "#ed8f38"}}>
                         <Col className="tooltip-item-name">Historical Average</Col>
-                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.TAVG_climatology).toFixed(2)}&deg;</Col>
+                        <Col xs={3} className="tooltip-item-value">{parseFloat(payload[0].payload.tavg_climatology).toFixed(2)}&deg;</Col>
                     </Row>
                 </Container>
             );
@@ -62,6 +62,7 @@ const MonthlyBreakdownChart = () => {
 
     useEffect(() => {
         changeMonthlyBreakdown(selectedMonth);
+        
     }, [currentData]);
 
     return (
@@ -155,10 +156,10 @@ const MonthlyBreakdownChart = () => {
                         />
                         <Tooltip content={CustomTooltip}/>
                         <CartesianGrid stroke="#f5f5f5" />
-                        <Line type="linear" dataKey="TAVG_temperature" stroke="#bd00ff" dot={false} strokeWidth="1"/>
+                        <Line type="linear" dataKey="tavg_temperature" stroke="#bd00ff" dot={false} strokeWidth="1"/>
                         {
                             showClimatology &&
-                            <Line type="linear" dataKey="TAVG_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
+                            <Line type="linear" dataKey="tavg_climatology" stroke="#ed8f38" dot={false} strokeWidth="1" strokeDasharray="2"/>
                         }
                     </ComposedChart>
                     </ResponsiveContainer>
