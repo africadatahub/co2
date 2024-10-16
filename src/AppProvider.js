@@ -224,7 +224,7 @@ export const AppProvider = ({ children }) => {
             min_year = 2002;
         }
 
-        airQualityDataFilter = allAirQualityData.filter(d => d.year >= dateRange[0] && d.year <= dateRange[1]);
+        let airQualityDataFilter = allAirQualityData.filter(d => d.year >= dateRange[0] && d.year <= dateRange[1]);
 
         setAirQualityData(sortData(airQualityDataFilter));
 
