@@ -223,6 +223,7 @@ h1, h5 {
         border-radius: 5px;    
         padding: 0.2em 0.5em;
         font-weight: bold;
+        color: #fff;
     }
     
 
@@ -250,41 +251,11 @@ h1, h5 {
         text-transform: uppercase;
         font-size: 0.8em;
         font-weight: bold;
-        color: #333;
+        color: #fff;
         padding: 1em 0;
 
-        /*
-        "Good": "rgb(251, 255, 201)",
-        "Moderate": "rgb(251, 240, 140)",
-        "Not good": "rgb(255, 159, 47)",
-        "Unhealthy": "rgb(255, 56, 17)",
-        "Very Unhealthy": "rgb(221, 0, 6)",
-        "Hazardous": "rgb(143, 0, 33)"
-        */
-
-        &:first-child {
-            @include contrast-color(rgb(251, 255, 201));
-        }
-
-        &:nth-child(2) {
-            @include contrast-color(rgb(251, 240, 140));
-        }
-
-        &:nth-child(3) {
-            @include contrast-color(rgb(255, 159, 47));
-        }
-
-        &:nth-child(4) {
-            @include contrast-color(rgb(255, 56, 17));
-        }
-
-        &:nth-child(5) {
-            @include contrast-color(rgb(221, 0, 6));
-        }
-
-        &:last-child {
-            @include contrast-color(rgb(143, 0, 33));
-        }
+      
+        
 
 
         &:first-of-type {
@@ -295,6 +266,60 @@ h1, h5 {
             border-radius: 0 5px 5px 0;
         }
     }
+}
+
+.heatmap-row {
+    width: 100%;
+    height: 25px;
+
+    .heatmap-year {
+        display: inline-block;
+        width: 40px;
+        height: 100%;
+
+        .heatmap-year-text {
+            top: 30%;
+            right: 0;
+            transform: translateY(-50%);
+            font-size: 11px;
+            color: #333;
+        }
+    }
+
+    .heatmap-cell {
+        height: 100%;
+        display: inline-block;
+        width: calc((100% - 40px)/12);
+        border: 1px solid #fff;
+        border-radius: 4px;
+        position: relative;
+        cursor: pointer;
+
+        &.heatmap-month {
+            font-size: 10px;
+            text-align: center;
+        }
+
+        &.active {
+            border: 1px solid #333;
+        }
+    }
+    
+}
+
+.heatmap-tooltip {
+    position: absolute;
+    z-index: 9999;
+    background: rgba(255,255,255,0.95);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(17, 65, 81, 0.2);
+    width: unset !important;
+    top: -400% !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    padding: 0.5em;
+    min-width: 150px;
+    pointer-events: none;
 }
 
 .country-flag-circle {
