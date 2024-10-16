@@ -20,13 +20,23 @@ import LocationBar from './LocationBar';
 import Navigator from './Navigator';
 import LocationInfoPanel from './LocationInfoPanel';
 
-import MonthlyAverageChart from './MonthlyAverageChart';
-import MonthlyBreakdownChart from './MonthlyBreakdownChart';
-import AnnualTemperatureTable from './AnnualTemperatureTable';
-import TemperatureAnomalyChart from './TemperatureAnomalyChart';
-import MonthlyPrecipitationChart from './MonthlyPrecipitationChart';
-import MonthlyPrecipBreakdownChart from './MonthlyPrecipBreakdownChart';
-import AnnualPrecipTable from './AnnualPrecipTable';
+// TEMPERATURE
+import TEMPMonthlyAverageChart from './TEMPMonthlyAverageChart';
+import TEMPMonthlyBreakdownChart from './TEMPMonthlyBreakdownChart';
+import TEMPAnnualTable from './TEMPAnnualTable';
+import TEMPAnomalyChart from './TEMPAnomalyChart';
+
+// RAINFALL
+import PRECIPMonthlyChart from './PRECIPMonthlyChart';
+import PRECIPMonthlyBreakdownChart from './PRECIPMonthlyBreakdownChart';
+import PRECIPAnnualTable from './PRECIPAnnualTable';
+
+// AIRE QUALITY
+import AQMonthlyChart from './AQMonthlyChart';
+import AQChart from './AQChart';
+import AQMap from './AQMap';
+
+
 import SocialShare from './SocialShare';
 
 
@@ -34,7 +44,7 @@ import './app.scss';
 
 const Co2 = () => {
 
-    const { cities, city, country, convertCountry, address, dateRange, changeDateRange } = useContext(AppContext);
+    const { cities, city, country, convertCountry, address, dateRange, changeDateRange, airQuality } = useContext(AppContext);
 
 
     useEffect(() => {
@@ -104,9 +114,6 @@ const Co2 = () => {
                             <div className="mt-5">
                                 <SocialShare/>
                             </div>
-                            
-
-
 
                             <div className="mt-auto info-block">
                                 Location data is mapped to grid squares which measure <strong>1x1 degree latitude and longitude</strong> and all positions are rounded to the nearest 1x1 square. These squares are approximately 100km x 100km in size.
@@ -131,7 +138,7 @@ const Co2 = () => {
                                     <Col>
                                         <a href="#temperature" className="section-jump-btn"><Icon path={mdiThermometer} size={1} /> Temperature</a>
                                         <a href="#rainfall" className="section-jump-btn"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a>
-                                        {/* <a href="#" className="section-jump-btn disabled"><Icon path={mdiFactory} size={1} />CO<sub>2</sub> Emissions</a> */}
+                                        <a href="#airquality" className="section-jump-btn"><Icon path={mdiFactory} size={1} /> Air Quality</a>
                                         {/* <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a> */}
                                     </Col>
                                 </Row>
@@ -144,7 +151,7 @@ const Co2 = () => {
                                     <Col xs="auto">
                                         <Form.Select aria-label="Default select example" value={dateRange[0]} onChange={(e) => changeDateRange('start', e.target.value)}>
                                             {
-                                                [...Array(2023 - 1993 + 1)].map((_, i) => {
+                                                [...Array(2024 - 1993 + 1)].map((_, i) => {
                                                     let year = 1993 + i;
                                                     return <option key={year} value={year}>{year}</option>
                                                 })
@@ -155,7 +162,7 @@ const Co2 = () => {
                                     <Col xs="auto">
                                         <Form.Select aria-label="Default select example" value={dateRange[1]} onChange={(e) => changeDateRange('end', e.target.value)}>
                                             {
-                                                [...Array(2023 - 1993 + 1)].map((_, i) => {
+                                                [...Array(2024 - 1993 + 1)].map((_, i) => {
                                                     let year = 1993 + i;
                                                     return <option key={year} value={year}>{year}</option>
                                                 })
@@ -225,7 +232,7 @@ const Co2 = () => {
 
                         </Col>
                         <Col>
-                            <MonthlyAverageChart />
+                            <TEMPMonthlyAverageChart />
                         </Col>
                     </Row>
                 </Container>
@@ -260,7 +267,7 @@ const Co2 = () => {
                             </Accordion>
                         </Col>
                         <Col>
-                            <MonthlyBreakdownChart />
+                            <TEMPMonthlyBreakdownChart />
                         </Col>
                     </Row>
                 </Container>
@@ -276,7 +283,7 @@ const Co2 = () => {
                             </p>
                         </Col>
                         <Col>
-                            <AnnualTemperatureTable />
+                            <TEMPAnnualTable />
                         </Col>
                     </Row>
                 </Container>
@@ -321,7 +328,7 @@ const Co2 = () => {
                             </Accordion>
                         </Col>
                         <Col>
-                            <TemperatureAnomalyChart />
+                            <TEMPAnomalyChart />
                         </Col>
                     </Row>
                 </Container>
@@ -379,7 +386,7 @@ const Co2 = () => {
                             </Accordion>
                         </Col>
                         <Col>
-                            <MonthlyPrecipitationChart />
+                            <PRECIPMonthlyChart />
                         </Col>
                     </Row>
                 </Container>
@@ -432,7 +439,7 @@ const Co2 = () => {
                             </Accordion>
                         </Col>
                         <Col>
-                            <MonthlyPrecipBreakdownChart />
+                            <PRECIPMonthlyBreakdownChart />
                         </Col>
                     </Row>
                 </Container>
@@ -459,28 +466,7 @@ const Co2 = () => {
                             </Accordion>
                         </Col>
                         <Col>
-                            <AnnualPrecipTable />
-                        </Col>
-                    </Row>
-                </Container>
-            </Container>
-
-            {/* <Container className="co2-header">
-                <header>
-                    <h3><a name="emissions"><Icon path={mdiFactory} size={1} /> Emissions</a></h3>
-                </header>
-            </Container>
-
-            <Container fluid className="co2-section">
-                <Container>
-                    <Row>
-                        <Col md={4}>
-                            <h4>Lorem ipsum</h4>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc.
-                            </p>
-                        </Col>
-                        <Col>
+                            <PRECIPAnnualTable />
                         </Col>
                     </Row>
                 </Container>
@@ -488,24 +474,69 @@ const Co2 = () => {
 
             <Container className="co2-header">
                 <header>
-                    <h3><a name="landcover"><Icon path={mdiLandPlots} size={1} /> Land Cover</a></h3>
+                    <h3><a name="airquality"><Icon path={mdiFactory} size={1} /> Air Quality</a></h3>
                 </header>
             </Container>
 
             <Container fluid className="co2-section">
                 <Container>
                     <Row>
-                        <Col md={4}>
-                            <h4>Lorem ipsum</h4>
+                        <Col md={4} className="section-info">
+                            <h4><a name="air-quality">Air Quality</a></h4>
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc. Donec euismod, nisl eget ultricies ultrices, nunc nisl ultricies nunc, nec aliquam nisl nisl vitae nunc.
+                                Aerosol Optical Depth (AOD) data can be used as a proxy to suggest air quality, specifically to infer particulate matter concentrations (like PM2.5). AOD represents the degree to which particles in the atmosphere (dust, smoke, pollutants) prevent sunlight from passing through the atmosphere. Higher AOD values generally indicate higher levels of aerosols, which can correspond to poorer air quality.
                             </p>
+                            <p>AOD can be used as a proxy for air quality, with higher values indicating worse air quality. This chart shows the average AOD for the time period.</p>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">Is Aerosol Optical Depth a reliable indicator?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>AOD measures air thickness which can indicate the presence of pollutants. AOD by itself does not take into account cloud cover, weather conditions and other factors that might affect the air thickness and should be considered alongside ground-station measurements.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="1">What unit is AOD measured in?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="1">
+                                        <Card.Body>NASA's MODIS satellite data measures AOD on a scale between 0 and 5000. Higher values indicate more light scattering due to aerosols in the atmosphere.</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="2">What is PM2.5?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="2">
+                                        <Card.Body><p>PM2.5 refers to particulate matter that is 2.5 micrometers (µm) or smaller in diameter. These tiny particles are about 30 times smaller than the width of a human hair and can be made up of various substances, including organic chemicals, metals, dust, soot, and liquid droplets.</p>
+
+                                        <p>Because of their small size, PM2.5 particles can be easily inhaled deep into the lungs and even enter the bloodstream, posing significant health risks, especially to the respiratory and cardiovascular systems. Long-term exposure to elevated PM2.5 levels has been linked to serious health issues like asthma, lung disease, heart attacks, and premature death.</p>
+                                        
+                                        <p>An AOD value <strong>between 0 and 100</strong> would be an indication of clean air, minimal aerosols, equivalent to PM2.5 levels under 12 µg/m³ (good air quality).</p>
+                                        <p>An AOD value bwteeen <strong>601 and 1000</strong> would indicate significant air pollution, equating to PM2.5 levels between 55–150 µg/m³, affecting most of the population.</p>
+                                        <p>An AOD value <strong>higher than 2000</strong> would indicate extremely high levels of pollution, likely corresponding to events like wildfires or dust storms. PM2.5 values in this range could exceed 250 µg/m³, severely impacting health and visibility.</p>
+                                        
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </Col>
                         <Col>
+                            <AQChart />
+                            {/* <AirQualityMap /> */}
+                            <div className="mt-4">
+                                <AQMonthlyChart />
+                            </div>
                         </Col>
                     </Row>
                 </Container>
-            </Container> */}
+            </Container>
+
+
+
+
+            
         </>
     )
 

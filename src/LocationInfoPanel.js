@@ -12,7 +12,7 @@ import { mdiThermometer, mdiWeatherPouring, mdiFactory, mdiLandPlots } from '@md
 
 const LocationInfoPanel = () => {
 
-    const { country, convertCountry, cities, city, address, extraLocation, position, annualAvgTemperature, annualAvgPrecipitation, loading } = useContext(AppContext);
+    const { country, convertCountry, cities, city, address, extraLocation, position, annualAvgTemperature, annualAvgPrecipitation, annualAvgAQ, loading, airQualityScale } = useContext(AppContext);
 
     
     return (
@@ -57,6 +57,12 @@ const LocationInfoPanel = () => {
                     <Col><Icon path={mdiWeatherPouring} size={1} /> Total <a href="#rainfall">rainfall</a> in last 12 months:</Col>
                     <Col xs="auto">
                         {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgPrecipitation == null ? '-' : annualAvgPrecipitation.toFixed(2) + 'mm')}
+                    </Col>
+                </Row>
+                <Row className="mb-3">
+                    <Col><Icon path={mdiFactory} size={1} /> Average <a href="#airquality">air quality</a> in last 12 months:</Col>
+                    <Col xs="auto">
+                        {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgAQ == null ? '-' : airQualityScale.find(aq => aq.min <= annualAvgAQ && aq.max >= annualAvgAQ)?.quality)}
                     </Col>
                 </Row>
             </div>
