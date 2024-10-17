@@ -520,6 +520,16 @@ const Co2 = () => {
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="3">How can I get details about specific pollutants??</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="3">
+                                        <Card.Body><p>As discussed, this data is a proxy for air quality, but more accurate information about different gases and particles can be obtained from sensor networks, the largest of which is at <a target="_blank" href="https://www.aqicn.org/">www.aqicn.org</a>. We will be including this data in future iterations of the Africa Climate Observer.</p>
+                                        
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
                             </Accordion>
                         </Col>
                         <Col>

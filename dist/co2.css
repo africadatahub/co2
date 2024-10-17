@@ -1309,6 +1309,20 @@
 .unique-lpxjij .co2-section .section-info .faq .card{border:none;margin-bottom:.5em}
 .unique-lpxjij .co2-section .section-info .faq .card .card-header{cursor:pointer;font-weight:600}
 .unique-lpxjij .co2-section .section-info .faq .card .card-header:hover{background:#f2f2f2}
+.unique-lpxjij .air-quality-summary{background:#fff;border-radius:5px;padding:1em;font-size:1.2em;box-shadow:0 0 10px #11415133}
+.unique-lpxjij .air-quality-summary .quality-badge{color:#fff;border-radius:5px;padding:.2em .5em;font-weight:700;display:inline}
+.unique-lpxjij .air-quality-guage{position:relative}
+.unique-lpxjij .air-quality-guage .air-quality-guage-needle{width:0;height:0;border-top:20px solid #333;border-left:10px solid #0000;border-right:10px solid #0000;position:absolute;top:-5px;left:50%;transform:translate(-50%)}
+.unique-lpxjij .air-quality-guage .air-quality-guage-segment{width:16.6667%;text-align:center;text-transform:uppercase;color:#fff;padding:1em 0;font-size:.8em;font-weight:700;display:inline-block}
+.unique-lpxjij .air-quality-guage .air-quality-guage-segment:first-of-type{border-radius:5px 0 0 5px}
+.unique-lpxjij .air-quality-guage .air-quality-guage-segment:last-of-type{border-radius:0 5px 5px 0}
+.unique-lpxjij .heatmap-row{width:100%;height:25px}
+.unique-lpxjij .heatmap-row .heatmap-year{width:40px;height:100%;display:inline-block}
+.unique-lpxjij .heatmap-row .heatmap-year .heatmap-year-text{color:#333;font-size:11px;top:30%;right:0;transform:translateY(-50%)}
+.unique-lpxjij .heatmap-row .heatmap-cell{height:100%;width:calc(8.33333% - 3.33333px);cursor:pointer;border:1px solid #fff;border-radius:4px;display:inline-block;position:relative}
+.unique-lpxjij .heatmap-row .heatmap-cell.heatmap-month{text-align:center;font-size:10px}
+.unique-lpxjij .heatmap-row .heatmap-cell.active{border:1px solid #333}
+.unique-lpxjij .heatmap-tooltip{z-index:9999;min-width:150px;pointer-events:none;background:#fffffff2;border-radius:5px;padding:.5em;position:absolute;transform:translate(-50%);box-shadow:0 0 10px #11415133;width:unset!important;top:-400%!important;left:50%!important}
 .unique-lpxjij .country-flag-circle{width:1em;height:1em;background:#fff;border-radius:50%;margin-right:.3em;display:inline-block;position:relative;top:3px;overflow:hidden}
 .unique-lpxjij .country-flag-circle img{width:100%;height:100%;object-fit:cover;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
 .unique-lpxjij .legend-box{width:1em;height:1em;border-radius:5px;margin-left:.5em;display:inline-block}
@@ -1321,7 +1335,7 @@
 .unique-lpxjij .chart-wrapper .chart-controls .btn-primary{color:#114151;background:#1141510a;border-color:#1141510a}
 .unique-lpxjij .chart-wrapper .chart-controls .btn-primary:hover{background:#1141511a;border-color:#1141511a}
 .unique-lpxjij .chart-wrapper .chart-container{padding:2em 0}
-.unique-lpxjij .chart-wrapper .chart-container.precipitation-chart-container{padding:0 25px}
+.unique-lpxjij .chart-wrapper .chart-container.precipitation-chart-container, .unique-lpxjij .chart-wrapper .chart-container.air-quality-chart-container{padding:0 25px}
 .unique-lpxjij .chart-wrapper .chart-container .xAxis .recharts-cartesian-axis-tick{transform:translateY(18px)}
 .unique-lpxjij .chart-wrapper .chart-container .xAxis .recharts-cartesian-axis-tick-line{transform:translateY(-18px)}
 .unique-lpxjij .chart-wrapper .chart-container .xAxis .recharts-cartesian-axis-tick-value{margin-bottom:5px;font-size:11px}
