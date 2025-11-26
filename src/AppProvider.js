@@ -292,9 +292,9 @@ export const AppProvider = ({ children }) => {
 
     const findAddress = (middlePoint, extra) => {
 
-        let ckan_locations = '9d764714-2094-4455-8754-63b87d1fdce0';
+        let ckan_locations = '63810f68-d5de-4025-80b4-e034c7aa7475';
 
-        axios.get('https://ckandev.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ckan_locations + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(middlePoint[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(middlePoint[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(middlePoint[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(middlePoint[1]) + 0.5) + '%20', {
+        axios.get('https://ckan.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ckan_locations + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(middlePoint[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(middlePoint[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(middlePoint[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(middlePoint[1]) + 0.5) + '%20', {
             headers: {
                 "Authorization": process.env.CKAN
             }
