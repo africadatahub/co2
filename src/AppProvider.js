@@ -290,47 +290,48 @@ export const AppProvider = ({ children }) => {
 
     // LOCATION
 
-    const findAddress = (middlePoint, extra) => {
+    const findAddress = async (middlePoint, extra) => {
 
-        let ckan_locations = '63810f68-d5de-4025-80b4-e034c7aa7475';
+        const { data, error } = await supabase
+            .from('locations')
+            .select()
+            .gte('latitude', parseFloat(middlePoint[0]) - 0.5)
+            .lte('latitude', parseFloat(middlePoint[0]) + 0.5)
+            .gte('longitude', parseFloat(middlePoint[1]) - 0.5)
+            .lte('longitude', parseFloat(middlePoint[1]) + 0.5)
+            .limit(1);
 
-        axios.get('https://ckan.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ckan_locations + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(middlePoint[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(middlePoint[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(middlePoint[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(middlePoint[1]) + 0.5) + '%20', {
-            headers: {
-                "Authorization": process.env.CKAN
-            }
-        }).then(response => {
+        if (error) {
+            console.log(error);
+            return;
+        }
 
-            let data = response.data.result.records;
-
-            if (data.length > 0) {
-                setAddress(
-                    data[0].city != '' ? data[0].city :
-                        data[0].town != '' ? data[0].town :
-                            data[0].village != '' ? data[0].village :
-                                data[0].hamlet != '' ? data[0].hamlet :
-                                    data[0].county != '' ? data[0].county :
-                                        data[0].region != '' ? data[0].region :
-                                            data[0].state != '' ? data[0].state :
-                                                ''
-                );
-                setCity('location');
-                if (extra != undefined) {
-                    setExtraLocation(extra);
-                } else {
-                    setExtraLocation('');
-                }
-                setCountry(convertCountry('iso2', data[0].country_code).iso3);
-
+        if (data.length > 0) {
+            setAddress(
+                data[0].city ? data[0].city :
+                    data[0].town ? data[0].town :
+                        data[0].village ? data[0].village :
+                            data[0].hamlet ? data[0].hamlet :
+                                data[0].county ? data[0].county :
+                                    data[0].region ? data[0].region :
+                                        data[0].state ? data[0].state :
+                                            ''
+            );
+            setCity('location');
+            if (extra != undefined) {
+                setExtraLocation(extra);
             } else {
                 setExtraLocation('');
-                setAddress('');
-                setCity('');
-                setCountry('');
             }
+            setCountry(convertCountry('iso2', data[0].country_code).iso3);
+        } else {
+            setExtraLocation('');
+            setAddress('');
+            setCity('');
+            setCountry('');
+        }
 
-            setPosition(middlePoint);
-
-        }).catch(e => console.log(e));
+        setPosition(middlePoint);
 
     }
 
