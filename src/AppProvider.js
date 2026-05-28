@@ -338,6 +338,7 @@ export const AppProvider = ({ children }) => {
     // DATA
     async function getAllData() {
         setLoading(true);
+        console.log('[getAllData] position:', position);
 
         getClimatologyData();
         getHistoricalPrecipData();
@@ -465,20 +466,22 @@ export const AppProvider = ({ children }) => {
 
     async function getClimatologyData() {
 
+        const lat = parseFloat(position[0]);
+        const lon = parseFloat(position[1]);
+        console.log('[getClimatologyData] querying lat/lon:', lat, lon);
+
         const { data, error } = await supabase
             .from('climatology')
             .select()
-            .gt('latitude', parseFloat(position[0]) - 0.5)
-            .lt('latitude', parseFloat(position[0]) + 0.5)
-            .gt('longitude', parseFloat(position[1]) - 0.5)
-            .lt('longitude', parseFloat(position[1]) + 0.5)
+            .gt('latitude', lat - 0.5)
+            .lt('latitude', lat + 0.5)
+            .gt('longitude', lon - 0.5)
+            .lt('longitude', lon + 0.5)
 
         if (error) {
-            
             console.log('error', error)
-
         } else {
-            
+            console.log('[getClimatologyData] rows returned:', data.length);
             setClimatology(data);
         }
         
