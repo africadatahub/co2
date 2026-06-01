@@ -565,9 +565,9 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4><a name="crop-yield">Crop yield (proxy)</a></h4>
+                            <h4><a name="crop-yield">Crop health</a></h4>
                             <p>
-                                This section shows proxy metrics from a local crop dataset. For now we're using a local CSV; we'll move this to Supabase later.
+                                WRSI
                             </p>
                             <Accordion className="faq">
                                 <Card>
@@ -575,7 +575,7 @@ const Co2 = () => {
                                         <ContextAwareToggle eventKey="0">About crop metrics</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
-                                        <Card.Body>Crop data here is a collection of proxy environmental variables (rainfall, soil moisture, temperature) aggregated from a local CSV. We'll replace this with a proper crop yield dataset in Supabase later.</Card.Body>
+                                        <Card.Body>WRSI</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                             </Accordion>
