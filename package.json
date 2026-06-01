@@ -36,6 +36,7 @@
     "svg-to-png": "^4.0.0"
   },
   "devDependencies": {
+    "@parcel/transformer-inline-string": "2.16.4",
     "@parcel/transformer-sass": "^2.16.4",
     "assert": "^2.0.0",
     "buffer": "^5.5.0",

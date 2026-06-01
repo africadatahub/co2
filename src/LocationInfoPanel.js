@@ -65,6 +65,12 @@ const LocationInfoPanel = () => {
                         {loading ? <Placeholder style={{width: '50px'}} /> : (annualAvgAQ == null ? '-' : airQualityScale.find(aq => aq.min <= annualAvgAQ && aq.max >= annualAvgAQ)?.quality)}
                     </Col>
                 </Row>
+                <Row className="mb-3">
+                    <Col><Icon path={mdiLandPlots} size={1} /> Crop metrics near this location:</Col>
+                    <Col xs="auto">
+                        {position && position.length > 0 ? <a href="#crops">View crop metrics</a> : '-'}
+                    </Col>
+                </Row>
             </div>
 
             
