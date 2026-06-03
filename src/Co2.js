@@ -567,7 +567,7 @@ const Co2 = () => {
                         <Col md={4} className="section-info">
                             <h4><a name="crop-yield">Water Requirement Satisfaction Index</a></h4>
                             <p>
-                                Water stress is a key factor in crop health, and the Water Requirement Satisfaction Index (WRSI) is a widely used metric to assess this. WRSI compares the amount of water available to crops with the amount they need for optimal growth. A WRSI value of 100% indicates that crops are receiving all the water they require, while values below 100% suggest varying levels of water stress, which can lead to reduced yields and crop failure if not addressed.
+                                Water stress is a key factor in crop health. The Water Requirement Satisfaction Index (WRSI) is a widely used metric to assess this. WRSI compares the amount of water available to crops with the amount they need for optimal growth. A WRSI value of 100% indicates that crops are receiving all the water they require, while values below 100% suggest varying levels of water stress.
                             </p>
                             <Accordion className="faq">
                                 <Card>
@@ -576,7 +576,7 @@ const Co2 = () => {
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
                                         <Card.Body>
-                                        WRSI is calculated using the formula: WRSI = (Water Available / Water Required) * 100. Water Available is typically derived from rainfall data, while Water Required is based on the specific water needs of the crop being assessed, which can vary depending on the growth stage and environmental conditions. This data is calculated from the detailed FLDAS dataset, which combines rainfall data with soil moisture and crop water requirements to provide a comprehensive picture of water stress for crops across Africa. The data is modeled and not directly observed, so it should be used as a guide to understanding patterns of water stress rather than an exact measurement of conditions on the ground.
+                                        <p>WRSI is calculated using the formula:</p><p><strong>WRSI = (Water Available / Water Required) * 100</strong>.</p><p>Water Available is typically derived from rainfall data, while Water Required is based on the specific water needs of the crop being assessed, which can vary depending on the growth stage and environmental conditions.</p> <p>This data is calculated from the detailed <a href="https://disc.gsfc.nasa.gov/datasets/FLDAS_NOAH01_C_GL_M_001/summary?keywords=FLDAS" target="_blank">FLDAS dataset</a>, which combines rainfall data with soil moisture and crop water requirements to provide a comprehensive picture of water stress for crops across Africa.</p><p><strong>The data is modeled and not directly observed, so it should be used as a guide to understanding patterns of water stress rather than an exact measurement of conditions on the ground.</strong></p>
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
@@ -585,7 +585,7 @@ const Co2 = () => {
                                         <ContextAwareToggle eventKey="1">What does a WRSI value of 50% mean?</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="1">
-                                        <Card.Body>A WRSI value of 50% indicates that crops are receiving only half of the water they require for optimal growth. </Card.Body>
+                                        <Card.Body>A WRSI value of 50% indicates that crops are receiving only half of the water they require for optimal growth. Low WRSI values are indicative of reduced yield and potential crop failures.</Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                                 <Card>
