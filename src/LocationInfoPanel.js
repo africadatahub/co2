@@ -37,9 +37,9 @@ const LocationInfoPanel = () => {
                 <h5 className="mt-4"><Placeholder style={{width: '100px'}} /></h5>
             :
             (city != '' && city != 'location') ? 
-            <h5 className="mt-4">Summary of the latest year's (2023) data for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {convertCountry('iso3', country).location}</h5> : 
+            <h5 className="mt-4">Summary of the latest year's (2025) data for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : '' }, {convertCountry('iso3', country).location}</h5> : 
             address ?
-            <h5 className="mt-4">Summary of the latest year's (2023) data for {extraLocation != '' ? extraLocation : address}, {convertCountry('iso3', country).location}</h5> : ''
+            <h5 className="mt-4">Summary of the latest year's (2025) data for {extraLocation != '' ? extraLocation : address}, {convertCountry('iso3', country).location}</h5> : ''
             }
             
             

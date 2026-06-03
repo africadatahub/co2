@@ -519,7 +519,7 @@ export const AppProvider = ({ children }) => {
         let annualAvg = 0;
 
         allData.forEach(record => {
-            if (parseInt(record.year) == 2023) {
+            if (parseInt(record.year) == 2025) {
                 annualAvg += parseFloat(record.tavg_temperature);
             }
         });
