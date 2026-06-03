@@ -155,7 +155,7 @@ const Co2 = () => {
                                     <Col xs="auto">
                                         <Form.Select aria-label="Default select example" value={dateRange[0]} onChange={(e) => changeDateRange('start', e.target.value)}>
                                             {
-                                                [...Array(2024 - 1993 + 1)].map((_, i) => {
+                                                [...Array(2026 - 1993 + 1)].map((_, i) => {
                                                     let year = 1993 + i;
                                                     return <option key={year} value={year}>{year}</option>
                                                 })
@@ -166,7 +166,7 @@ const Co2 = () => {
                                     <Col xs="auto">
                                         <Form.Select aria-label="Default select example" value={dateRange[1]} onChange={(e) => changeDateRange('end', e.target.value)}>
                                             {
-                                                [...Array(2024 - 1993 + 1)].map((_, i) => {
+                                                [...Array(2026 - 1993 + 1)].map((_, i) => {
                                                     let year = 1993 + i;
                                                     return <option key={year} value={year}>{year}</option>
                                                 })

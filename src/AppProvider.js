@@ -15,7 +15,7 @@ import * as countries from './data/countries.json';
 export const AppProvider = ({ children }) => {
     
     const [loading, setLoading] = useState(true);
-    const [dateRange, setDateRange] = useState([1993, 2024]);
+    const [dateRange, setDateRange] = useState([1993, 2026]);
     const [position, setPosition] = useState([]);
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
