@@ -15,7 +15,7 @@ import * as countries from './data/countries.json';
 export const AppProvider = ({ children }) => {
     
     const [loading, setLoading] = useState(true);
-    const [dateRange, setDateRange] = useState([1993, 2024]);
+    const [dateRange, setDateRange] = useState([1993, 2026]);
     const [position, setPosition] = useState([]);
     const [city, setCity] = useState('');
     const [country, setCountry] = useState('');
@@ -290,53 +290,55 @@ export const AppProvider = ({ children }) => {
 
     // LOCATION
 
-    const findAddress = (middlePoint, extra) => {
+    const findAddress = async (middlePoint, extra) => {
 
-        let ckan_locations = '63810f68-d5de-4025-80b4-e034c7aa7475';
+        const { data, error } = await supabase
+            .from('locations')
+            .select()
+            .gte('latitude', parseFloat(middlePoint[0]) - 0.5)
+            .lte('latitude', parseFloat(middlePoint[0]) + 0.5)
+            .gte('longitude', parseFloat(middlePoint[1]) - 0.5)
+            .lte('longitude', parseFloat(middlePoint[1]) + 0.5)
+            .limit(1);
 
-        axios.get('https://ckan.africadatahub.org/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20"' + ckan_locations + '"%20WHERE%20latitude%20%3E%3D%20' + (parseFloat(middlePoint[0]) - 0.5) + '%20AND%20latitude%20%3C%3D%20' + (parseFloat(middlePoint[0]) + 0.5) + '%20AND%20longitude%20%3E%3D%20' + (parseFloat(middlePoint[1]) - 0.5) + '%20AND%20longitude%20%3C%3D%20' + (parseFloat(middlePoint[1]) + 0.5) + '%20', {
-            headers: {
-                "Authorization": process.env.CKAN
-            }
-        }).then(response => {
+        if (error) {
+            console.log(error);
+            return;
+        }
 
-            let data = response.data.result.records;
-
-            if (data.length > 0) {
-                setAddress(
-                    data[0].city != '' ? data[0].city :
-                        data[0].town != '' ? data[0].town :
-                            data[0].village != '' ? data[0].village :
-                                data[0].hamlet != '' ? data[0].hamlet :
-                                    data[0].county != '' ? data[0].county :
-                                        data[0].region != '' ? data[0].region :
-                                            data[0].state != '' ? data[0].state :
-                                                ''
-                );
-                setCity('location');
-                if (extra != undefined) {
-                    setExtraLocation(extra);
-                } else {
-                    setExtraLocation('');
-                }
-                setCountry(convertCountry('iso2', data[0].country_code).iso3);
-
+        if (data.length > 0) {
+            setAddress(
+                data[0].city ? data[0].city :
+                    data[0].town ? data[0].town :
+                        data[0].village ? data[0].village :
+                            data[0].hamlet ? data[0].hamlet :
+                                data[0].county ? data[0].county :
+                                    data[0].region ? data[0].region :
+                                        data[0].state ? data[0].state :
+                                            ''
+            );
+            setCity('location');
+            if (extra != undefined) {
+                setExtraLocation(extra);
             } else {
                 setExtraLocation('');
-                setAddress('');
-                setCity('');
-                setCountry('');
             }
+            setCountry(convertCountry('iso2', data[0].country_code).iso3);
+        } else {
+            setExtraLocation('');
+            setAddress('');
+            setCity('');
+            setCountry('');
+        }
 
-            setPosition(middlePoint);
-
-        }).catch(e => console.log(e));
+        setPosition(middlePoint);
 
     }
 
     // DATA
     async function getAllData() {
         setLoading(true);
+        console.log('[getAllData] position:', position);
 
         getClimatologyData();
         getHistoricalPrecipData();
@@ -464,20 +466,22 @@ export const AppProvider = ({ children }) => {
 
     async function getClimatologyData() {
 
+        const lat = parseFloat(position[0]);
+        const lon = parseFloat(position[1]);
+        console.log('[getClimatologyData] querying lat/lon:', lat, lon);
+
         const { data, error } = await supabase
             .from('climatology')
             .select()
-            .gt('latitude', parseFloat(position[0]) - 0.5)
-            .lt('latitude', parseFloat(position[0]) + 0.5)
-            .gt('longitude', parseFloat(position[1]) - 0.5)
-            .lt('longitude', parseFloat(position[1]) + 0.5)
+            .gt('latitude', lat - 0.5)
+            .lt('latitude', lat + 0.5)
+            .gt('longitude', lon - 0.5)
+            .lt('longitude', lon + 0.5)
 
         if (error) {
-            
             console.log('error', error)
-
         } else {
-            
+            console.log('[getClimatologyData] rows returned:', data.length);
             setClimatology(data);
         }
         

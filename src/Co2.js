@@ -36,6 +36,9 @@ import AQMonthlyChart from './AQMonthlyChart';
 import AQChart from './AQChart';
 import AQMap from './AQMap';
 
+// CROPS
+import CropYield from './CropYield';
+
 
 import SocialShare from './SocialShare';
 
@@ -139,6 +142,7 @@ const Co2 = () => {
                                         <a href="#temperature" className="section-jump-btn"><Icon path={mdiThermometer} size={1} /> Temperature</a>
                                         <a href="#rainfall" className="section-jump-btn"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a>
                                         <a href="#airquality" className="section-jump-btn"><Icon path={mdiFactory} size={1} /> Air Quality</a>
+                                        <a href="#crops" className="section-jump-btn"><Icon path={mdiLandPlots} size={1} /> Crops</a>
                                         {/* <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a> */}
                                     </Col>
                                 </Row>
@@ -151,7 +155,7 @@ const Co2 = () => {
                                     <Col xs="auto">
                                         <Form.Select aria-label="Default select example" value={dateRange[0]} onChange={(e) => changeDateRange('start', e.target.value)}>
                                             {
-                                                [...Array(2024 - 1993 + 1)].map((_, i) => {
+                                                [...Array(2026 - 1993 + 1)].map((_, i) => {
                                                     let year = 1993 + i;
                                                     return <option key={year} value={year}>{year}</option>
                                                 })
@@ -162,7 +166,7 @@ const Co2 = () => {
                                     <Col xs="auto">
                                         <Form.Select aria-label="Default select example" value={dateRange[1]} onChange={(e) => changeDateRange('end', e.target.value)}>
                                             {
-                                                [...Array(2024 - 1993 + 1)].map((_, i) => {
+                                                [...Array(2026 - 1993 + 1)].map((_, i) => {
                                                     let year = 1993 + i;
                                                     return <option key={year} value={year}>{year}</option>
                                                 })
@@ -188,6 +192,8 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
+
+                
                             <h4><a name="average-monthly-temperature">Average Monthly Temperature</a></h4>
                             <p>
                                 This chart shows the average monthly temperature for { city != '' && city != 'location' ? cities.filter(c => c.city.replaceAll(' ','-').toLowerCase() == city)[0].city : address }, {convertCountry('iso3', country).location}. The red and blue areas show average maximum and minimum temperatures for that month.
@@ -237,6 +243,8 @@ const Co2 = () => {
                     </Row>
                 </Container>
             </Container>
+
+                
 
             <Container fluid className="co2-section">
                 <Container>
@@ -547,6 +555,38 @@ const Co2 = () => {
 
 
             
+            <Container className="co2-header">
+                <header>
+                    <h3><a name="crops"><Icon path={mdiLandPlots} size={1} /> Crops</a></h3>
+                </header>
+            </Container>
+
+            <Container fluid className="co2-section">
+                <Container>
+                    <Row>
+                        <Col md={4} className="section-info">
+                            <h4><a name="crop-yield">Crop health</a></h4>
+                            <p>
+                                WRSI
+                            </p>
+                            <Accordion className="faq">
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="0">About crop metrics</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body>WRSI</Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
+                        </Col>
+                        <Col>
+                            <CropYield />
+                        </Col>
+                    </Row>
+                </Container>
+            </Container>
+
         </>
     )
 
