@@ -565,17 +565,39 @@ const Co2 = () => {
                 <Container>
                     <Row>
                         <Col md={4} className="section-info">
-                            <h4><a name="crop-yield">Crop health</a></h4>
+                            <h4><a name="crop-yield">Water Requirement Satisfaction Index</a></h4>
                             <p>
-                                WRSI
+                                Water stress is a key factor in crop health, and the Water Requirement Satisfaction Index (WRSI) is a widely used metric to assess this. WRSI compares the amount of water available to crops with the amount they need for optimal growth. A WRSI value of 100% indicates that crops are receiving all the water they require, while values below 100% suggest varying levels of water stress, which can lead to reduced yields and crop failure if not addressed.
                             </p>
                             <Accordion className="faq">
                                 <Card>
                                     <Card.Header>
-                                        <ContextAwareToggle eventKey="0">About crop metrics</ContextAwareToggle>
+                                        <ContextAwareToggle eventKey="0">How is WRSI calculated?</ContextAwareToggle>
                                     </Card.Header>
                                     <Accordion.Collapse eventKey="0">
-                                        <Card.Body>WRSI</Card.Body>
+                                        <Card.Body>
+                                        WRSI is calculated using the formula: WRSI = (Water Available / Water Required) * 100. Water Available is typically derived from rainfall data, while Water Required is based on the specific water needs of the crop being assessed, which can vary depending on the growth stage and environmental conditions. This data is calculated from the detailed FLDAS dataset, which combines rainfall data with soil moisture and crop water requirements to provide a comprehensive picture of water stress for crops across Africa. The data is modeled and not directly observed, so it should be used as a guide to understanding patterns of water stress rather than an exact measurement of conditions on the ground.
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="1">What does a WRSI value of 50% mean?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="1">
+                                        <Card.Body>A WRSI value of 50% indicates that crops are receiving only half of the water they require for optimal growth. </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                                <Card>
+                                    <Card.Header>
+                                        <ContextAwareToggle eventKey="2">How are crop-specific WRSI values calculated?</ContextAwareToggle>
+                                    </Card.Header>
+                                    <Accordion.Collapse eventKey="2">
+                                        <Card.Body>
+                                            <p>Crop-specific WRSI values are calculated using the same formula as the general WRSI, but with data specific to the crop in question. This includes the crop's water requirements at different growth stages, as well as localized rainfall and soil moisture data. By using crop-specific data, the WRSI can more accurately reflect the water stress experienced by different crops in varying environmental conditions.</p>
+                                            <p>The table shows a variety of crops, but it does not imply that the selected area has all of these crops present and should be used as reference only.</p>
+
+                                        </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
                             </Accordion>
