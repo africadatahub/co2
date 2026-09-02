@@ -143,7 +143,7 @@ const Co2 = () => {
                                         <a href="#rainfall" className="section-jump-btn"><Icon path={mdiWeatherPouring} size={1} /> Rainfall</a>
                                         <a href="#airquality" className="section-jump-btn"><Icon path={mdiFactory} size={1} /> Air Quality</a>
                                         <a href="#crops" className="section-jump-btn"><Icon path={mdiLandPlots} size={1} /> Crops</a>
-                                        {/* <a href="#" className="section-jump-btn disabled"><Icon path={mdiLandPlots} size={1} /> Land cover</a> */}
+                                        <a href="#landcover" className="section-jump-btn"><Icon path={mdiLandPlots} size={1} /> Land cover</a>
                                     </Col>
                                 </Row>
                             </Col>

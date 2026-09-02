@@ -496,6 +496,43 @@ h1, h5 {
 
 
 
+/*** Land cover ***/
+
+.landcover-legend {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(17, 65, 81, 0.2);
+    border-radius: 5px;
+    padding: 1em;
+    font-size: 0.9em;
+
+    .legend-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5em 1em;
+        margin-top: 0.5em;
+    }
+
+    .legend-item {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 0.5em;
+
+        .legend-item-color {
+            width: 1em;
+            height: 1em;
+            border-radius: 3px;
+            display: inline-block;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-item-label {
+            display: inline-block;
+            margin-left: 0.4em;
+        }
+    }
+}
+
+
 /*** Tables ***/
 
 .table {
